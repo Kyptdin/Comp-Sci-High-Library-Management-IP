@@ -1,6 +1,6 @@
 function Navbar() {
-    return (<div>
-      <h2>COMP-SCI-HIGH-LIBRARY</h2>
+    return (<div className="p-5 mb-5">
+      <h2 className="font-bold">COMP-SCI-HIGH-LIBRARY</h2>
     </div>);
   }
   
