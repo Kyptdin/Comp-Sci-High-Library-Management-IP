@@ -30,13 +30,14 @@ export const BookDisplay = ({
 } : bookData) => {
 
     return <div className={cn(
-        "w-[325px] h-[500px] m-3 relative",
-        "shadow-md bg-white overflow-clip rounded-xl font-outfit",
-        "flex flex-col justify-end items-center"
+        "w-[325px] h-[500px] m-4 relative",
+        "bg-black overflow-clip rounded-2xl font-outfit",
+        "flex flex-col justify-end items-center",
+        "hover:scale-105 transition ease-in-out duration-300"
     )}>
         <img src={image} className="w-full h-full absolute fill-gray-400"/>
 
-        <div className="w-full h-full bg-gradient-to-t from-green-950 absolute">
+        <div className="w-full h-full bg-gradient-to-t from-teal-950 absolute">
         </div>
 
         <div className="p-5 absolute w-full">
