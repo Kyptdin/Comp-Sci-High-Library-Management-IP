@@ -1,13 +1,11 @@
 import { BookDisplay } from "@/components/BookDisplay";
-import { SearchBar } from "@/components/SearchBar";
 import { Navbar } from "@/components/Navbar";
 
 export const HomePage = () => {
-  return (<div className="min-h-screen bg-gradient-to-t from-gray-950 to-green-950">
-      <Navbar />
+  return (<div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
+      <Navbar/>
 
-      <SearchBar className="ml-[40px] mb-[40px]"/>
-      <p className="text-3xl text-white font-outfit my-3 ml-[40px]">2 results found for "Isaac"</p>
+      <p className="text-3xl text-white font-outfit my-3 ml-[40px]">2 results found for "Lorem Ipsum"</p>
 
       <div className="flex justify-start items-center p-5">
         <BookDisplay 

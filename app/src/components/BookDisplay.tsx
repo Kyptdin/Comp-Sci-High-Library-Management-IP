@@ -31,9 +31,8 @@ export const BookDisplay = ({
 
     return <div className={cn(
         "w-[325px] h-[500px] m-4 relative",
-        "bg-black overflow-clip rounded-2xl font-outfit",
-        "flex flex-col justify-end items-center",
-        "hover:scale-105 transition ease-in-out duration-300"
+        "bg-black overflow-clip rounded-3xl font-outfit shadow-lg shadow-gray-900",
+        "flex flex-col justify-end items-center"
     )}>
         <img src={image} className="w-full h-full absolute fill-gray-400"/>
 
