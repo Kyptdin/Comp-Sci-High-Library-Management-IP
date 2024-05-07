@@ -1,7 +1,12 @@
 import { FileWarningIcon } from "lucide-react";
 
-export const Warning = ({children} : {children: string}) => {
-    return <div className="bg-orange-600 px-3 py-2 rounded flex shadow-lg">
+import { cn } from "@/lib/utils";
+
+export const Warning = ({children, className} : {
+    children: string,
+    className?: string
+}) => {
+    return <div className={cn("bg-red-800 px-3 py-2 rounded flex shadow-lg", className)}>
         <div className="mr-2">
             <FileWarningIcon color="white"/>
         </div>
