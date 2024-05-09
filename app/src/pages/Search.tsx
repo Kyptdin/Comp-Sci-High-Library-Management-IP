@@ -1,16 +1,17 @@
 import { BookDisplay } from "@/components/BookDisplay";
 import { Navbar } from "@/components/Navbar";
 
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export const Search = () => {
-  const { search } = useLocation();
-  console.log(search);
+  const { searchQuery } = useParams();
 
   return (<div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
       <Navbar/>
 
-      <p className="text-3xl text-white font-outfit my-3 ml-[40px]">2 results found for "Lorem Ipsum"</p>
+      <p className="text-3xl text-white font-outfit my-3 ml-[40px]">
+        2 results found for "{searchQuery}"
+      </p>
 
       <div className="flex justify-start items-center p-5">
         <BookDisplay 
