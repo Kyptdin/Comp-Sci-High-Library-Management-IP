@@ -1,8 +1,8 @@
 import { isEmail } from "@/utils/isEmail";
-import { supabase } from "../../supabase/supabaseClient";
+import { supabase } from "../supabase/supabaseClient";
 import { User } from "@/types/supabaseTypes.js";
 /*
-Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "CREATE ROUTES" to help you understand what this functions can be sorta understood as
+Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as
 */
 /****** POST ROUTES ******/
 export const signUpUser = async (email: string, password: string) => {

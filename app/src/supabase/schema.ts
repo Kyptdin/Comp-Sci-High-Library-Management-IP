@@ -11,7 +11,7 @@ export type Database = {
     Tables: {
       borrows: {
         Row: {
-          borrow_id: number
+          borrow_id: string
           damaged: boolean
           date_borrowed: string
           isbn: string
@@ -20,7 +20,7 @@ export type Database = {
           user: string
         }
         Insert: {
-          borrow_id?: number
+          borrow_id?: string
           damaged: boolean
           date_borrowed: string
           isbn: string
@@ -29,7 +29,7 @@ export type Database = {
           user: string
         }
         Update: {
-          borrow_id?: number
+          borrow_id?: string
           damaged?: boolean
           date_borrowed?: string
           isbn?: string
@@ -53,21 +53,21 @@ export type Database = {
           email: string
           password: string | null
           user_id: string
-          username: string
+          user_name: string
         }
         Insert: {
           admin_status: string
           email: string
           password?: string | null
           user_id: string
-          username: string
+          user_name: string
         }
         Update: {
           admin_status?: string
           email?: string
           password?: string | null
           user_id?: string
-          username?: string
+          user_name?: string
         }
         Relationships: []
       }
