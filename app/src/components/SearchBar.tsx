@@ -7,7 +7,7 @@ export const SearchBar = ({className} : {
     className?: string
 }) => {
     return <div className={cn(
-        "py-1 font-outfit text-xl",
+        "font-outfit text-xl",
         "w-[500px] flex justify-center items-center", 
         className
     )}>

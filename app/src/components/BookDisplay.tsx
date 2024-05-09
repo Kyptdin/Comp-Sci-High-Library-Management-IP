@@ -3,7 +3,6 @@ import {
     DropdownMenu,
     DropdownMenuTrigger,
     DropdownMenuContent,
-    DropdownMenuLabel,
     DropdownMenuItem
 } from "@/components/ui/dropdown-menu";
 
@@ -36,7 +35,7 @@ export const BookDisplay = ({
     )}>
         <img src={image} className="w-full h-full absolute fill-gray-400"/>
 
-        <div className="w-full h-full bg-gradient-to-t from-teal-950 absolute">
+        <div className="w-full h-full bg-gradient-to-t from-blue-950 absolute">
         </div>
 
         <div className="p-5 absolute w-full">
@@ -44,7 +43,7 @@ export const BookDisplay = ({
             <p className="text-lg mb-3 italic text-white">By: {author}</p>
 
             {!isAvaliable ? 
-            <Warning>NOT AVALIABLE</Warning> :
+            <Warning>NOT AVAILABLE</Warning> :
             <Button className="w-full font-bold shadow-md text-md" variant="outline" size="lg">BORROW</Button>}
 
             <div className="flex justify-end items-center">
