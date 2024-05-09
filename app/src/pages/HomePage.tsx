@@ -1,12 +1,7 @@
 import { BookDisplay } from "@/components/BookDisplay";
 import { Navbar } from "@/components/Navbar";
-import { signUpUserService } from "@/services/users/userService";
-import { useEffect } from "react";
 
 export const HomePage = () => {
-  useEffect(() => {
-    signUpUserService();
-  }, []);
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
       <Navbar />
