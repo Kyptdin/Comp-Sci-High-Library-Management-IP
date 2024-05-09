@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export const Navbar = ({showNavbar = true} : {
   showNavbar?: boolean
 }) => {
-  return (<div className="p-5 py-[30px] mx-[25px] flex justify-between items-center font-outfit">
+  return (<div className="px-5 py-[30px] mx-[25px] flex justify-between items-center font-outfit">
     <Link 
       to={"/"}
       className="flex items-center justify-center text-gray-200"

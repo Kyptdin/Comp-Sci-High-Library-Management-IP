@@ -1,7 +1,7 @@
 import { BookDisplay } from "@/components/BookDisplay";
 import { Navbar } from "@/components/Navbar";
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 export const Search = () => {
   const { search } = useLocation();

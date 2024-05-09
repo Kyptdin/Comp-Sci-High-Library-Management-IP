@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 
 import { PiKeyReturnFill } from "react-icons/pi";
 
+import { Link } from "react-router-dom";
+
 export const SearchBar = ({className} : {
     className?: string
 }) => {
