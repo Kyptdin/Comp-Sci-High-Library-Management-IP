@@ -13,7 +13,7 @@ export const HomePage = () => {
           className="mb-[50px] w-1/4"
         />
 
-        <SearchBar/>
+        <SearchBar />
 
         <p className="text-gray-500 text-center mt-5 font-outfit">
           Welcome to comp-sci-high library management system.
@@ -21,7 +21,7 @@ export const HomePage = () => {
         <p className="text-gray-500 text-center mt-2 font-outfit">
           You are able to search/borrow a book from here.
         </p>
-      </div> 
+      </div>
     </div>
   );
 };
