@@ -20,11 +20,9 @@ export const Navbar = ({showNavbar = true} : {
 
     {showNavbar ? <SearchBar/> : <></>}
 
-    <div>
-      <Button variant="secondary" className="rounded-full">
-        <BsGoogle size={20} className="mr-3"/>
-        LOGIN WITH GOOGLE
-      </Button>
-    </div>
+    <Button variant="secondary" className="rounded-full">
+      <BsGoogle size={20} className="mr-3"/>
+      LOGIN WITH GOOGLE
+    </Button>
   </div>);
 }

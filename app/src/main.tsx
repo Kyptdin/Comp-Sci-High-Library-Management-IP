@@ -4,7 +4,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { HomePage } from "./pages/HomePage.tsx";
-import { Search } from "./pages/Search.tsx";
+import { SearchPage } from "./pages/SearchPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
 
   {
     path: "search/:searchQuery",
-    element: <Search />,
+    element: <SearchPage />,
   },
 ]);
 
