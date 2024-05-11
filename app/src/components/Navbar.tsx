@@ -1,13 +1,15 @@
 import { ImLibrary } from "react-icons/im";
-import { BsGoogle } from "react-icons/bs";
 
-import { Button } from "@/components/ui/button";
+import { LoginButton } from "@/components/AuthUi/LoginButton"; 
+import { UserProfile } from "@/components/AuthUi/UserProfile";
 import { SearchBar } from "@/components/SearchBar";
 
 import { Link } from "react-router-dom";
-import { loginWithGoogle } from "@/services/auth";
 
 export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
+  // const { userData } = useLoggedInUser();
+  // console.log(userData);
+
   return (
     <div className="px-5 py-[30px] mx-[25px] flex justify-between items-center font-outfit">
       <Link to={"/"} className="flex items-center justify-center text-gray-200">
@@ -17,16 +19,8 @@ export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
 
       {showNavbar ? <SearchBar /> : <></>}
 
-      <div>
-        <Button
-          variant="secondary"
-          className="rounded-full"
-          onClick={() => loginWithGoogle()}
-        >
-          <BsGoogle size={20} className="mr-3" />
-          LOGIN WITH GOOGLE
-        </Button>
-      </div>
+      {/* <LoginButton/> */}
+      <UserProfile/>
     </div>
   );
 };
