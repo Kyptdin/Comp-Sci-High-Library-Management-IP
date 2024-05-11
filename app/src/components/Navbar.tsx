@@ -1,6 +1,6 @@
 import { ImLibrary } from "react-icons/im";
 
-import { LoginButton } from "@/components/AuthUi/LoginButton"; 
+import { LoginButton } from "@/components/AuthUi/LoginButton";
 import { UserProfile } from "@/components/AuthUi/UserProfile";
 import { SearchBar } from "@/components/SearchBar";
 
@@ -17,10 +17,10 @@ export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
         <h2 className="font-bold ml-3">COMP SCI HIGH LIBRARY</h2>
       </Link>
 
-      {showNavbar ? <SearchBar /> : <></>}
+      {showNavbar ? <SearchBar /> : null}
 
-      {/* <LoginButton/> */}
-      <UserProfile/>
+      <LoginButton />
+      <UserProfile />
     </div>
   );
 };
