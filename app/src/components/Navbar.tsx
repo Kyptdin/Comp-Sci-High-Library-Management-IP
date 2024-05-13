@@ -19,8 +19,8 @@ export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
 
       {showNavbar ? <SearchBar /> : <></>}
 
-      {/* <LoginButton/> */}
-      <UserProfile/>
+      <LoginButton/>
+      {/* <UserProfile/> */}
     </div>
   );
 };

@@ -13,7 +13,10 @@ import { BiSolidBookAdd } from "react-icons/bi";
 export const UserProfile = () => {
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>
-            <Button className="mt-3 w-[60px] h-[60px] rounded-2xl bg-white border-4 border-green-600" variant="link">
+            <Button 
+                className="mt-3 w-[60px] h-[60px] rounded-2xl bg-white border-4 border-green-600" 
+                variant="link"
+            >
                 <span className="">000</span>
             </Button>
         </DropdownMenuTrigger>
