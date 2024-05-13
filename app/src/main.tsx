@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { HomePage } from "./pages/HomePage.tsx";
 import { SearchPage } from "./pages/SearchPage.tsx";
 import { ErrorPage } from "./pages/ErrorPage.tsx";
+import { InspectPage } from "./pages/InspectPage.tsx";
 import React from "react";
 
 const router = createBrowserRouter([
@@ -18,6 +19,11 @@ const router = createBrowserRouter([
     element: <SearchPage />,
     errorElement: <ErrorPage/>,
   },
+  {
+    path: "inspect/:bookInspectIsbn",
+    element: <InspectPage />,
+    errorElement: <ErrorPage/>,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

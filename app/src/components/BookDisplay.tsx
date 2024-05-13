@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 
 import { Warning } from "./Warning";
 
-import { FaExpandArrowsAlt } from "react-icons/fa";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { FaBug } from "react-icons/fa";
 
@@ -18,14 +17,14 @@ type bookData = {
     children: string,
     author?: string,
     image?: string,
-    isAvaliable?: boolean
+    isAvaliable?: boolean,
 };
 
 export const BookDisplay = ({
     children, 
     image, 
     isAvaliable = true, 
-    author
+    author,
 } : bookData) => {
 
     return <div className={cn(
@@ -44,7 +43,14 @@ export const BookDisplay = ({
 
             {!isAvaliable ? 
             <Warning>NOT AVAILABLE</Warning> :
-            <Button className="w-full font-bold shadow-md text-md" variant="outline" size="lg">BORROW</Button>}
+            <Button 
+                className="w-full font-bold shadow-md text-md" 
+                variant="outline" 
+                onClick={() => {
+                    
+                }}
+                size="lg"
+            >BORROW</Button>}
 
             <div className="flex justify-end items-center">
                 <DropdownMenu>
@@ -58,11 +64,6 @@ export const BookDisplay = ({
                         <DropdownMenuItem className="text-red-800">
                             <FaBug size={20}/>
                             <p className="font-bold font-lg ml-1">Report</p>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem>
-                            <FaExpandArrowsAlt size={20}/>
-                            <p className="font-bold font-lg ml-1">Learn more</p>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

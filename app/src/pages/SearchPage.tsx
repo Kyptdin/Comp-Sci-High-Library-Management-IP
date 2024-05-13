@@ -1,9 +1,10 @@
 import { BookDisplay } from "@/components/BookDisplay";
-import { Loading } from "@/components/Loading";
 import { Navbar } from "@/components/Navbar";
 import { Error } from "@/components/Error";
+import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
 
 import { useParams } from "react-router-dom";
+// @ts-ignore comment
 import { fetcher } from "@/hooks/fetcher";
 import useSWR from "swr";
 
@@ -13,8 +14,7 @@ export const SearchPage = () => {
   const { searchQuery } = useParams();
 
   const filteredSearchParams = searchQuery
-    ?.split(" ")
-    .join("+")
+    ?.split(" ").join("+")
     .toLocaleLowerCase();
 
   const fetchingUrl = openLibraryUrl + filteredSearchParams;
@@ -28,7 +28,7 @@ export const SearchPage = () => {
       </p>
 
       {error ? <Error/> : <></>}
-      {isLoading ? <Loading/> : <></>}
+      {isLoading ? <BookDisplaySkeleton/> : <></>}
 
       <div className="grid grid-cols-5 gap-1 p-5">
         {data ? data.docs.map((bookData : any, key: number) => {
