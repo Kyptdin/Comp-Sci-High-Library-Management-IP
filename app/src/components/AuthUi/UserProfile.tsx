@@ -19,7 +19,7 @@ interface Props {
 
 export const UserProfile = ({ profileImageUrl, resetUserState }: Props) => {
   if (!profileImageUrl) {
-    return <Skeleton className="w-[60px] h-[60px] rounded-2xl" />;
+    return <Skeleton className="w-[60px] h-[60px] rounded-2xl"/>;
   }
 
   return (
