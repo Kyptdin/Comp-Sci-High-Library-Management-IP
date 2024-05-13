@@ -7,17 +7,20 @@ import { SearchPage } from "./pages/SearchPage.tsx";
 import { ErrorPage } from "./pages/ErrorPage.tsx";
 import { InspectPage } from "./pages/InspectPage.tsx";
 import React from "react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
-    errorElement: <ErrorPage/>,
+    errorElement: <ErrorPage />,
   },
   {
     path: "search/:searchQuery",
     element: <SearchPage />,
-    errorElement: <ErrorPage/>,
+    errorElement: <ErrorPage />,
   },
   {
     path: "inspect/:bookInspectIsbn",
@@ -28,6 +31,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   </React.StrictMode>
 );

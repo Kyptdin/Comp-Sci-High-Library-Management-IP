@@ -6,8 +6,8 @@ import { useGetLoggedInUser } from "@/hooks/useGetLoggedInUser";
 import { UserProfile } from "./AuthUi/UserProfile";
 
 export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
-  const { data: loggedInUserData, resetState } = useGetLoggedInUser();
-  const imageUrl = loggedInUserData?.user_metadata.avatar_url;
+  const { data: loggedInUserData } = useGetLoggedInUser();
+  const imageUrl = loggedInUserData?.user_metadata?.avatar_url;
 
   return (
     <div className="px-5 py-[30px] mx-[25px] flex justify-between items-center font-outfit">
@@ -17,11 +17,7 @@ export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
       </Link>
 
       {showNavbar ? <SearchBar /> : null}
-      {loggedInUserData ? (
-        <UserProfile profileImageUrl={imageUrl} resetUserState={resetState} />
-      ) : (
-        <LoginButton />
-      )}
+      {imageUrl ? <UserProfile profileImageUrl={imageUrl} /> : <LoginButton />}
     </div>
   );
 };

@@ -5,26 +5,25 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
-import { Skeleton } from "@/components/ui/skeleton";
 import { IoLogOut } from "react-icons/io5";
 import { BiSolidBookAdd } from "react-icons/bi";
-
-import { logoutUser } from "@/services/auth";
-import { useNavigate } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useLogout } from "@/hooks/useLogout";
 import { cn } from "@/lib/utils";
 
 interface Props {
   profileImageUrl: string | null;
-  resetUserState: () => void;
 }
 
-export const UserProfile = ({ profileImageUrl, resetUserState }: Props) => {
-  const navigate = useNavigate();
-  
+export const UserProfile = ({ profileImageUrl }: Props) => {
+  const { mutateAsync } = useLogout();
+
   if (!profileImageUrl) {
-    return (<Skeleton 
-      className="w-[50px] h-[50px] rounded-2xl"
-    />);
+    return <Skeleton className="w-[60px] h-[60px] rounded-2xl" />;
+  }
+
+  async function logout() {
+    await mutateAsync();
   }
 
   return (
@@ -47,9 +46,7 @@ export const UserProfile = ({ profileImageUrl, resetUserState }: Props) => {
         <DropdownMenuItem
           className="text-red-800"
           onClick={() => {
-            logoutUser();
-            resetUserState();
-            navigate(`/#`);
+            logout();
           }}
         >
           <IoLogOut size={32} />
