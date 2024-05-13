@@ -4,19 +4,10 @@ import { SearchBar } from "@/components/SearchBar";
 import { Link } from "react-router-dom";
 import { useGetLoggedInUser } from "@/hooks/useGetLoggedInUser";
 import { UserProfile } from "./AuthUi/UserProfile";
-import { useEffect } from "react";
 
 export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
   const { data: loggedInUserData } = useGetLoggedInUser();
   const imageUrl = loggedInUserData?.user_metadata?.avatar_url;
-
-  console.log(`The data is below`);
-  console.log(loggedInUserData);
-  console.log(`The image url is ${imageUrl}`);
-
-  useEffect(() => {
-    alert(imageUrl);
-  }, [imageUrl]);
 
   return (
     <div className="px-5 py-[30px] mx-[25px] flex justify-between items-center font-outfit">

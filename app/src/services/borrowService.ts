@@ -10,7 +10,6 @@ export const createBorrow = async (borrowData: Borrow) => {
     .insert([borrowData])
     .select();
   if (error) {
-    console.log(error.message);
     throw new Error(error.message);
   }
   return data;

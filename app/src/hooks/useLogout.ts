@@ -9,7 +9,6 @@ export const useLogout = () => {
   const mutation = useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
-      alert("Was a successfull logout");
       queryClient.resetQueries();
       navigate("/");
     },
