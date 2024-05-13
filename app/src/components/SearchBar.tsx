@@ -27,7 +27,7 @@ export const SearchBar = ({ className }: { className?: string }) => {
       >
         <input
           type="text"
-          placeholder="Search book or author"
+          placeholder="Search book"
           onChange={(event) => setSearchText(event.target.value)}
           value={searchText}
           className={cn(

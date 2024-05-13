@@ -7,7 +7,7 @@ import { UserProfile } from "./AuthUi/UserProfile";
 
 export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
   const { data: loggedInUserData, isLoading } = useGetLoggedInUser();
-  const imageUrl = loggedInUserData?.user_metadata.avatar_url;
+  const profileImageUrl = loggedInUserData?.user_metadata.avatar_url;
 
   return (
     <div className="px-5 py-[30px] mx-[25px] flex justify-between items-center font-outfit">
@@ -15,9 +15,11 @@ export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
         <ImLibrary size={25} />
         <h2 className="font-bold ml-3">COMP SCI HIGH LIBRARY</h2>
       </Link>
+
       {showNavbar ? <SearchBar /> : null}
+
       {isLoading || loggedInUserData ? (
-        <UserProfile profileImageUrl={imageUrl} />
+        <UserProfile profileImageUrl={profileImageUrl} />
       ) : (
         <LoginButton />
       )}
