@@ -5,12 +5,11 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
-import { Button } from "@/components/ui/button";
 import { IoLogOut } from "react-icons/io5";
 import { BiSolidBookAdd } from "react-icons/bi";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLogout } from "@/hooks/useLogout";
-import { useQueryClient } from "@tanstack/react-query";
+import { cn } from "@/lib/utils";
 
 interface Props {
   profileImageUrl: string | null;
@@ -18,7 +17,6 @@ interface Props {
 
 export const UserProfile = ({ profileImageUrl }: Props) => {
   const { mutateAsync } = useLogout();
-  const queryClient = useQueryClient();
 
   if (!profileImageUrl) {
     return <Skeleton className="w-[60px] h-[60px] rounded-2xl" />;
@@ -31,16 +29,19 @@ export const UserProfile = ({ profileImageUrl }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          className="mt-3 w-[60px] h-[60px] rounded-2xl bg-green-600 border-4 border-green-600 p-0"
-          variant="link"
+        <div
+          className={cn(
+            "mt-3 w-[60px] h-[60px] p-0",
+            "rounded-2xl border-[3px] border-gray-600",
+            "hover:cursor-pointer"
+          )}
         >
           <img
             src={profileImageUrl}
             alt="profile image"
             className="w-full h-full rounded-xl"
           />
-        </Button>
+        </div>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-56 mr-[50px]">

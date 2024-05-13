@@ -24,6 +24,7 @@ export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
         <ImLibrary size={25} />
         <h2 className="font-bold ml-3">COMP SCI HIGH LIBRARY</h2>
       </Link>
+
       {showNavbar ? <SearchBar /> : null}
       {imageUrl ? <UserProfile profileImageUrl={imageUrl} /> : <LoginButton />}
     </div>
