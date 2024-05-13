@@ -6,20 +6,26 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
-
 import { IoLogOut } from "react-icons/io5";
 import { BiSolidBookAdd } from "react-icons/bi";
 import { Skeleton } from "@/components/ui/skeleton";
-import { logoutUser } from "@/services/auth";
+import { useLogout } from "@/hooks/useLogout";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   profileImageUrl: string | null;
-  resetUserState: () => void;
 }
 
-export const UserProfile = ({ profileImageUrl, resetUserState }: Props) => {
+export const UserProfile = ({ profileImageUrl }: Props) => {
+  const { mutateAsync } = useLogout();
+  const queryClient = useQueryClient();
+
   if (!profileImageUrl) {
-    return <Skeleton className="w-[60px] h-[60px] rounded-2xl"/>;
+    return <Skeleton className="w-[60px] h-[60px] rounded-2xl" />;
+  }
+
+  async function logout() {
+    await mutateAsync();
   }
 
   return (
@@ -41,8 +47,7 @@ export const UserProfile = ({ profileImageUrl, resetUserState }: Props) => {
         <DropdownMenuItem
           className="text-red-800"
           onClick={() => {
-            logoutUser();
-            resetUserState();
+            logout();
           }}
         >
           <IoLogOut size={32} />
