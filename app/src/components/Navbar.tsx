@@ -6,7 +6,7 @@ import { useGetLoggedInUser } from "@/hooks/useGetLoggedInUser";
 import { UserProfile } from "./AuthUi/UserProfile";
 
 export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
-  const { data: loggedInUserData, isLoading } = useGetLoggedInUser();
+  const { data: loggedInUserData, resetState } = useGetLoggedInUser();
   const imageUrl = loggedInUserData?.user_metadata.avatar_url;
 
   return (
@@ -16,8 +16,8 @@ export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
         <h2 className="font-bold ml-3">COMP SCI HIGH LIBRARY</h2>
       </Link>
       {showNavbar ? <SearchBar /> : null}
-      {isLoading || loggedInUserData ? (
-        <UserProfile profileImageUrl={imageUrl} />
+      {loggedInUserData ? (
+        <UserProfile profileImageUrl={imageUrl} resetUserState={resetState} />
       ) : (
         <LoginButton />
       )}
