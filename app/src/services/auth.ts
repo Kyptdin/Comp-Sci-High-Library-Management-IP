@@ -5,3 +5,8 @@ export const loginWithGoogle = async () => {
     provider: "google",
   });
 };
+
+export const logoutUser = async () => {
+  const { error } = await supabase.auth.signOut();
+  return error;
+};
