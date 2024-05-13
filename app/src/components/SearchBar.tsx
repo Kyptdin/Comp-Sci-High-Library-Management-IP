@@ -10,7 +10,7 @@ export const SearchBar = ({ className }: { className?: string }) => {
   const { searchQuery } = useParams();
   const navigate = useNavigate();
 
-  let initialSearch = searchQuery ? searchQuery : "";
+  const initialSearch = searchQuery ? searchQuery : "";
   const [searchText, setSearchText] = useState(initialSearch);
 
   return (

@@ -69,3 +69,17 @@ export const readUserByEmail = async (email: string) => {
   }
   return users;
 };
+
+export const getLoggedInUser = async () => {
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+  if (error) {
+    throw new Error(error.message);
+  }
+  if (!user) {
+    throw new Error("Failed to get user data");
+  }
+  return user;
+};
