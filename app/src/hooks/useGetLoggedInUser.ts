@@ -5,6 +5,8 @@ export const useGetLoggedInUser = () => {
   const query = useQuery({
     queryKey: ["loggedInUser"],
     queryFn: getLoggedInUser,
+    retryDelay: 1,
+    retry: 10000,
   });
 
   return query;

@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProtectedPage } from "./pages/ProtectedPage.tsx";
 import { Toaster } from "@/components/ui/toaster";
 import { NotAuthorizedPage } from "./pages/NotAuthorizedPage.tsx";
+import { AdminPage } from "./pages/AdminPage.tsx";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
   },
   {
     path: "admin",
-    element: <div>The admin page!!!</div>,
+    element: <AdminPage />,
     children: [
       { path: "search", element: <div>Searching page of admin</div> },
       { path: "add", element: <div>Addition page of admin</div> },

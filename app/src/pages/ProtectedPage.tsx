@@ -1,6 +1,7 @@
 import { useGetLoggedInUser } from "@/hooks/useGetLoggedInUser";
 import { ReactNode, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { LoadingPage } from "./LoadingPage";
 
 interface Props {
   children: ReactNode;
@@ -8,14 +9,16 @@ interface Props {
 
 export const ProtectedPage = ({ children }: Props) => {
   const navigate = useNavigate();
-  const { data: userData } = useGetLoggedInUser();
+  const { data: userData, isLoading } = useGetLoggedInUser();
 
   useEffect(() => {
-    if (!userData) {
-      navigate("notAuthorized");
+    if (!userData && !isLoading) {
+      navigate("/notAuthorized");
       return;
     }
-  }, [userData, navigate]);
+  }, [userData, navigate, isLoading]);
+
+  if (isLoading) return <LoadingPage />;
 
   return <>{children}</>;
 };

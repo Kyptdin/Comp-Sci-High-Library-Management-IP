@@ -5,7 +5,11 @@ import { Link } from "react-router-dom";
 import { useGetLoggedInUser } from "@/hooks/useGetLoggedInUser";
 import { UserProfile } from "./AuthUi/UserProfile";
 
-export const Navbar = ({ showNavbar = true }: { showNavbar?: boolean }) => {
+interface Props {
+  showNavbar?: boolean;
+}
+
+export const Navbar = ({ showNavbar = true }: Props) => {
   const { data: loggedInUserData } = useGetLoggedInUser();
   const imageUrl = loggedInUserData?.user_metadata?.avatar_url;
 
