@@ -5,13 +5,14 @@ import { PiKeyReturnFill } from "react-icons/pi";
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useGetLoggedInUser } from "@/hooks/useGetLoggedInUser";
 
 export const SearchBar = ({ className }: { className?: string }) => {
   const { searchQuery } = useParams();
   const navigate = useNavigate();
-
   const initialSearch = searchQuery ? searchQuery : "";
   const [searchText, setSearchText] = useState(initialSearch);
+  const { data } = useGetLoggedInUser();
 
   return (
     <div
@@ -23,7 +24,12 @@ export const SearchBar = ({ className }: { className?: string }) => {
     >
       <form
         className="w-full m-0 p-0"
-        onSubmit={() => navigate(`/search/${searchText}`)}
+        onSubmit={() => {
+          if (!data) {
+            navigate;
+          }
+          navigate(`/search/${searchText}`);
+        }}
       >
         <input
           type="text"

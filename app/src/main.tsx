@@ -9,6 +9,7 @@ import { InspectPage } from "./pages/InspectPage.tsx";
 import React from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ProtectedPage } from "./pages/ProtectedPage.tsx";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -19,14 +20,27 @@ const router = createBrowserRouter([
   },
   {
     path: "search/:searchQuery",
-    element: <SearchPage />,
+    element: (
+      <ProtectedPage>
+        <SearchPage />
+      </ProtectedPage>
+    ),
     errorElement: <ErrorPage />,
   },
   {
     path: "inspect/:bookInspectIsbn",
-    element: <InspectPage />,
-    errorElement: <ErrorPage/>,
-  }
+    element: (
+      <ProtectedPage>
+        <InspectPage />
+      </ProtectedPage>
+    ),
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "notAuthorized",
+    element: <div>Not authorized page</div>,
+    errorElement: <ErrorPage />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
