@@ -11,6 +11,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProtectedPage } from "./pages/ProtectedPage.tsx";
 import { Toaster } from "@/components/ui/toaster";
+import { NotAuthorizedPage } from "./pages/NotAuthorizedPage.tsx";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
   },
   {
     path: "notAuthorized",
-    element: <div className="text-black-500">Not authorized page</div>,
+    element: <NotAuthorizedPage />,
     errorElement: <ErrorPage />,
   },
 ]);

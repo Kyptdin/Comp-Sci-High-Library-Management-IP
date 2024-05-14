@@ -12,12 +12,10 @@ const openLibraryUrl = "https://openlibrary.org/search.json?title=";
 
 export const SearchPage = () => {
   const { searchQuery } = useParams();
-
   const filteredSearchParams = searchQuery
     ?.split(" ")
     .join("+")
     .toLocaleLowerCase();
-
   const fetchingUrl = openLibraryUrl + filteredSearchParams;
   const { error, isLoading, data } = useSWR(fetchingUrl, fetcher);
   const numberOfBooks = isLoading
