@@ -29,11 +29,13 @@ export const UserProfile = ({ profileImageUrl }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className={cn(
-          "w-[50px] h-[50px] p-0", 
-          "rounded-2xl border-[3px] border-gray-600",
-          "hover:cursor-pointer"
-        )}>
+        <div
+          className={cn(
+            "w-[50px] h-[50px] p-0",
+            "rounded-2xl border-[3px] border-gray-600",
+            "hover:cursor-pointer"
+          )}
+        >
           <img
             src={profileImageUrl}
             alt="profile image"

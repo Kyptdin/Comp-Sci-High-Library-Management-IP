@@ -43,6 +43,16 @@ const router = createBrowserRouter([
     element: <NotAuthorizedPage />,
     errorElement: <ErrorPage />,
   },
+  {
+    path: "admin",
+    element: <div>The admin page!!!</div>,
+    children: [
+      { path: "search", element: <div>Searching page of admin</div> },
+      { path: "add", element: <div>Addition page of admin</div> },
+      { path: "edit", element: <div>Addition page of admin</div> },
+      { path: "reports", element: <div>Addition page of admin</div> },
+    ],
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
