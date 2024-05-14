@@ -27,8 +27,8 @@ export const SearchBar = ({ className }: { className?: string }) => {
         onSubmit={(e) => {
           e.preventDefault();
           if (data) {
-            alert("There's some data");
             navigate(`/search/${searchText}`);
+            return;
           }
           toast({
             title: "Not Authorized",

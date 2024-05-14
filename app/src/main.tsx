@@ -39,7 +39,7 @@ const router = createBrowserRouter([
   },
   {
     path: "notAuthorized",
-    element: <div>Not authorized page</div>,
+    element: <div className="text-black-500">Not authorized page</div>,
     errorElement: <ErrorPage />,
   },
 ]);
