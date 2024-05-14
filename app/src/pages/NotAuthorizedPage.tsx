@@ -22,8 +22,9 @@ export const NotAuthorizedPage = () => {
             Not Authorized
           </CardDescription>
           <p className="text-base sm:text-lg text-gray-600 mb-6">
-            Sorry, you do not have access to this page. Please contact the
-            administrator if you believe this is an error.
+            Access Denied. You're not logged in or you lack permission for this
+            page. Please contact the administrator if you believe this is an
+            error.
           </p>
           <Link to="/">
             <Button className="inline-block bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition duration-200">
