@@ -9,7 +9,7 @@ export const AdminPage = () => {
       <div className="flex-grow flex">
         {/* Sidebar */}
         <div className="w-[20%] p-4 flex flex-col gap-5">
-          <NavLink to={"search"}>
+          <NavLink to={"searchStudents"}>
             {({ isActive }) => (
               <Button
                 className={`w-full ${
@@ -49,7 +49,7 @@ export const AdminPage = () => {
                   isActive ? "bg-teal-800" : "bg-teal-600"
                 } text-white py-4 text-lg rounded hover:bg-teal-800 transition duration-200`}
               >
-                Search Student
+                Reports
               </Button>
             )}
           </NavLink>

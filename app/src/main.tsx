@@ -49,7 +49,7 @@ const router = createBrowserRouter([
     path: "admin",
     element: <AdminPage />,
     children: [
-      { path: "search", element: <SearchAdminPage /> },
+      { path: "searchStudents", element: <SearchAdminPage /> },
       { path: "addBooks", element: <div>Add page</div> },
       { path: "editBooks", element: <div>Edit page</div> },
       { path: "reports", element: <div>Reports</div> },
