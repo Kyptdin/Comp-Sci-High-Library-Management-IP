@@ -1,6 +1,6 @@
-export const SearchAdminPage = () => {
+export const SearchStudentAdminPage = () => {
   return (
-    <div className=" w-[80%] p-4">
+    <div className="w-[80%] p-4">
       <div className=" p-4 rounded-md">
         <input
           type="text"
