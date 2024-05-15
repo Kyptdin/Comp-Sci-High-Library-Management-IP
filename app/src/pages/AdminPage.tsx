@@ -8,16 +8,16 @@ export const AdminPage = () => {
       <div className="flex-grow flex">
         {/* Sidebar */}
         <div className="w-[20%] p-4 space-y-4">
-          <Button className="w-full bg-gray-600 text-white py-4 text-lg rounded hover:bg-gray-500 transition duration-200">
+          <Button className="w-full bg-teal-600 text-white py-4 text-lg rounded hover:bg-teal-700 transition duration-200">
             Search Student
           </Button>
-          <Button className="w-full bg-gray-600 text-white py-4 text-lg rounded hover:bg-gray-500 transition duration-200">
+          <Button className="w-full bg-teal-600 text-white py-4 text-lg rounded hover:bg-teal-700 transition duration-200">
             Add Books
           </Button>
-          <Button className="w-full bg-gray-600 text-white py-4 text-lg rounded hover:bg-gray-500 transition duration-200">
+          <Button className="w-full bg-teal-600 text-white py-4 text-lg rounded hover:bg-teal-700 transition duration-200">
             Edit Books
           </Button>
-          <Button className="w-full bg-gray-600 text-white py-4 text-lg rounded hover:bg-gray-500 transition duration-200">
+          <Button className="w-full bg-teal-600 text-white py-4 text-lg rounded hover:bg-teal-700 transition duration-200">
             Reports
           </Button>
         </div>
