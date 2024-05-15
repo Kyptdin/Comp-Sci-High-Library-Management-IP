@@ -50,13 +50,13 @@ export const SearchBar = ({ className }: { className?: string }) => {
         />
       </form>
 
-      <Button
+      {/* <Button
         variant="link"
         className="hover:scale-[120%] duration-200 ease-linear transition"
         onClick={() => navigate(`/search/${searchText}`)}
       >
         <PiKeyReturnFill color="white" size={35} className="ml-[5px]" />
-      </Button>
+      </Button> */}
     </div>
   );
 };

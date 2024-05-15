@@ -32,11 +32,11 @@ export const SearchPage = () => {
         {numberOfBooks} results found for "{searchQuery}"
       </p>
 
-      {error ? <Error /> : <></>}
-      {isLoading ? <BookDisplaySkeleton /> : <></>}
+      {error && <Error />}
+      {isLoading && <BookDisplaySkeleton />}
 
       <div className="grid grid-cols-5 gap-1 p-5">
-        {data ? (
+        {data &&
           data.docs.map((bookData: any, key: number) => {
             let { title, author_name, isbn } = bookData;
 
@@ -45,15 +45,18 @@ export const SearchPage = () => {
               ? `https://covers.openlibrary.org/b/isbn/${isbn[0]}-L.jpg`
               : "/blank_book.jpg";
 
-          console.log(isbn);
-
-          return (<BookDisplay
-            author={author_name}
-            isAvaliable={true}
-            image={imageLoaded}
-            key={key}
-          >{title}</BookDisplay>);
-      </div> 
+            return (
+              <BookDisplay
+                author={author_name}
+                isAvaliable={true}
+                image={imageLoaded}
+                key={key}
+              >
+                {title}
+              </BookDisplay>
+            );
+          })}
+      </div>
     </div>
   );
 };
