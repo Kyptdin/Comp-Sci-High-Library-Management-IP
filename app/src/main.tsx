@@ -13,6 +13,7 @@ import { ProtectedPage } from "./pages/ProtectedPage.tsx";
 import { Toaster } from "@/components/ui/toaster";
 import { NotAuthorizedPage } from "./pages/NotAuthorizedPage.tsx";
 import { AdminPage } from "./pages/AdminPage.tsx";
+import { SearchAdminPage } from "./subpages/SearchAdminPage.tsx";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -48,10 +49,10 @@ const router = createBrowserRouter([
     path: "admin",
     element: <AdminPage />,
     children: [
-      { path: "search", element: <div>Searching page of admin</div> },
-      { path: "add", element: <div>Addition page of admin</div> },
-      { path: "edit", element: <div>Addition page of admin</div> },
-      { path: "reports", element: <div>Addition page of admin</div> },
+      { path: "search", element: <SearchAdminPage /> },
+      { path: "addBooks", element: <div>Add page</div> },
+      { path: "editBooks", element: <div>Edit page</div> },
+      { path: "reports", element: <div>Reports</div> },
     ],
   },
 ]);

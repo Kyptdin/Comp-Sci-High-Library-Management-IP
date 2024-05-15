@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 export const AdminPage = () => {
   return (
@@ -20,7 +20,7 @@ export const AdminPage = () => {
               </Button>
             )}
           </NavLink>
-          <NavLink to={"add"}>
+          <NavLink to={"addBooks"}>
             {({ isActive }) => (
               <Button
                 className={`w-full ${
@@ -31,7 +31,7 @@ export const AdminPage = () => {
               </Button>
             )}
           </NavLink>
-          <NavLink to={"edit"}>
+          <NavLink to={"editBooks"}>
             {({ isActive }) => (
               <Button
                 className={`w-full ${
@@ -55,7 +55,7 @@ export const AdminPage = () => {
           </NavLink>
         </div>
         {/* Main Content */}
-        <div className=" w-[80%] p-4">
+        {/* <div className=" w-[80%] p-4">
           <div className=" p-4 rounded-md">
             <input
               type="text"
@@ -93,7 +93,8 @@ export const AdminPage = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
+        <Outlet />
       </div>
     </div>
   );
