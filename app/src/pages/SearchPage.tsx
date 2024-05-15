@@ -39,6 +39,8 @@ export const SearchPage = () => {
             `https://covers.openlibrary.org/b/isbn/${isbn[0]}-L.jpg` : 
             "/blank_book.jpg";
 
+          console.log(isbn);
+
           return (<BookDisplay
             author={author_name}
             isAvaliable={true}

@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 import { Warning } from "./Warning";
 
@@ -24,8 +25,10 @@ export const BookDisplay = ({
     children, 
     image, 
     isAvaliable = true, 
-    author,
+    author
 } : bookData) => {
+
+    const navigate = useNavigate(); 
 
     return <div className={cn(
         "w-[325px] h-[500px] m-4 relative",
@@ -47,7 +50,6 @@ export const BookDisplay = ({
                 className="w-full font-bold shadow-md text-md" 
                 variant="outline" 
                 onClick={() => {
-                    
                 }}
                 size="lg"
             >BORROW</Button>}
