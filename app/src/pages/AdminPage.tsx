@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
+import { NavLink } from "react-router-dom";
 
 export const AdminPage = () => {
   return (
@@ -7,19 +8,51 @@ export const AdminPage = () => {
       <Navbar showNavbar={false} />
       <div className="flex-grow flex">
         {/* Sidebar */}
-        <div className="w-[20%] p-4 space-y-4">
-          <Button className="w-full bg-teal-600 text-white py-4 text-lg rounded hover:bg-teal-700 transition duration-200">
-            Search Student
-          </Button>
-          <Button className="w-full bg-teal-600 text-white py-4 text-lg rounded hover:bg-teal-700 transition duration-200">
-            Add Books
-          </Button>
-          <Button className="w-full bg-teal-600 text-white py-4 text-lg rounded hover:bg-teal-700 transition duration-200">
-            Edit Books
-          </Button>
-          <Button className="w-full bg-teal-600 text-white py-4 text-lg rounded hover:bg-teal-700 transition duration-200">
-            Reports
-          </Button>
+        <div className="w-[20%] p-4 flex flex-col gap-5">
+          <NavLink to={"search"}>
+            {({ isActive }) => (
+              <Button
+                className={`w-full ${
+                  isActive ? "bg-teal-800" : "bg-teal-600"
+                } text-white py-4 text-lg rounded hover:bg-teal-800 transition duration-200`}
+              >
+                Search Student
+              </Button>
+            )}
+          </NavLink>
+          <NavLink to={"add"}>
+            {({ isActive }) => (
+              <Button
+                className={`w-full ${
+                  isActive ? "bg-teal-800" : "bg-teal-600"
+                } text-white py-4 text-lg rounded hover:bg-teal-800 transition duration-200`}
+              >
+                Add Books
+              </Button>
+            )}
+          </NavLink>
+          <NavLink to={"edit"}>
+            {({ isActive }) => (
+              <Button
+                className={`w-full ${
+                  isActive ? "bg-teal-800" : "bg-teal-600"
+                } text-white py-4 text-lg rounded hover:bg-teal-800 transition duration-200`}
+              >
+                Edit Books
+              </Button>
+            )}
+          </NavLink>
+          <NavLink to={"reports"}>
+            {({ isActive }) => (
+              <Button
+                className={`w-full ${
+                  isActive ? "bg-teal-800" : "bg-teal-600"
+                } text-white py-4 text-lg rounded hover:bg-teal-800 transition duration-200`}
+              >
+                Search Student
+              </Button>
+            )}
+          </NavLink>
         </div>
         {/* Main Content */}
         <div className=" w-[80%] p-4">
