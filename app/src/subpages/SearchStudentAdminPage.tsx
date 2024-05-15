@@ -1,11 +1,13 @@
+import { Input } from "@/components/ui/input";
+
 export const SearchStudentAdminPage = () => {
   return (
     <div className="w-[80%] p-4">
       <div className=" p-4 rounded-md">
-        <input
+        <Input
           type="text"
           placeholder="Search"
-          className="w-full px-4 py-2 mb-4 rounded bg-gray-800 text-white"
+          className="w-full px-4 py-2 mb-4 rounded "
         />
         <div className="text-white">
           <h2 className="text-xl mb-2">John Doe</h2>

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useGetLoggedInUser } from "@/hooks/useGetLoggedInUser";
 import { useToast } from "@/components/ui/use-toast";
+import { Input } from "./ui/input";
 
 export const SearchBar = ({ className }: { className?: string }) => {
   const { searchQuery } = useParams();
@@ -35,7 +36,7 @@ export const SearchBar = ({ className }: { className?: string }) => {
           });
         }}
       >
-        <input
+        <Input
           type="text"
           placeholder="Search book"
           onChange={(event) => setSearchText(event.target.value)}
@@ -43,7 +44,8 @@ export const SearchBar = ({ className }: { className?: string }) => {
           className={cn(
             "focus:outline-none",
             "rounded-full w-full py-2 px-5",
-            "duration-50 transition ease-out"
+            "duration-50 transition ease-out",
+            "text-xl"
           )}
         />
       </form>
