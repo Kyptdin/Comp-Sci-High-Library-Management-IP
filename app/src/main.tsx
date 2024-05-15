@@ -9,6 +9,10 @@ import { InspectPage } from "./pages/InspectPage.tsx";
 import React from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ProtectedPage } from "./pages/ProtectedPage.tsx";
+import { Toaster } from "@/components/ui/toaster";
+import { NotAuthorizedPage } from "./pages/NotAuthorizedPage.tsx";
+import { AdminPage } from "./pages/AdminPage.tsx";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -19,14 +23,37 @@ const router = createBrowserRouter([
   },
   {
     path: "search/:searchQuery",
-    element: <SearchPage />,
+    element: (
+      <ProtectedPage>
+        <SearchPage />
+      </ProtectedPage>
+    ),
     errorElement: <ErrorPage />,
   },
   {
     path: "inspect/:bookInspectIsbn",
-    element: <InspectPage />,
-    errorElement: <ErrorPage/>,
-  }
+    element: (
+      <ProtectedPage>
+        <InspectPage />
+      </ProtectedPage>
+    ),
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "notAuthorized",
+    element: <NotAuthorizedPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "admin",
+    element: <AdminPage />,
+    children: [
+      { path: "search", element: <div>Searching page of admin</div> },
+      { path: "add", element: <div>Addition page of admin</div> },
+      { path: "edit", element: <div>Addition page of admin</div> },
+      { path: "reports", element: <div>Addition page of admin</div> },
+    ],
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -34,6 +61,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={false} />
+      <Toaster />
     </QueryClientProvider>
   </React.StrictMode>
 );

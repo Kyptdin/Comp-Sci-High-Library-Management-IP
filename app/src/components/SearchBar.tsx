@@ -1,17 +1,18 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-
 import { PiKeyReturnFill } from "react-icons/pi";
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useGetLoggedInUser } from "@/hooks/useGetLoggedInUser";
+import { useToast } from "@/components/ui/use-toast";
 
 export const SearchBar = ({ className }: { className?: string }) => {
   const { searchQuery } = useParams();
   const navigate = useNavigate();
-
   const initialSearch = searchQuery ? searchQuery : "";
   const [searchText, setSearchText] = useState(initialSearch);
+  const { data } = useGetLoggedInUser();
+  const { toast } = useToast();
 
   return (
     <div
@@ -23,7 +24,18 @@ export const SearchBar = ({ className }: { className?: string }) => {
     >
       <form
         className="w-full m-0 p-0"
-        onSubmit={() => navigate(`/search/${searchText}`)}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (data) {
+            navigate(`/search/${searchText}`);
+            return;
+          }
+          toast({
+            title: "Not Authorized",
+            description: "Please login to search for books",
+            variant: "destructive",
+          });
+        }}
       >
         <input
           type="text"
