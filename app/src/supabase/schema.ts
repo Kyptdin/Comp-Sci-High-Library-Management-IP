@@ -9,6 +9,21 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      books: {
+        Row: {
+          id: string
+          total_copies: number
+        }
+        Insert: {
+          id: string
+          total_copies: number
+        }
+        Update: {
+          id?: string
+          total_copies?: number
+        }
+        Relationships: []
+      }
       borrows: {
         Row: {
           borrow_id: string
@@ -53,21 +68,21 @@ export type Database = {
           email: string
           password: string | null
           user_id: string
-          user_name: string
+          user_name: string | null
         }
         Insert: {
           admin_status: string
           email: string
           password?: string | null
           user_id: string
-          user_name: string
+          user_name?: string | null
         }
         Update: {
           admin_status?: string
           email?: string
           password?: string | null
           user_id?: string
-          user_name?: string
+          user_name?: string | null
         }
         Relationships: []
       }
