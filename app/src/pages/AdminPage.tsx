@@ -9,7 +9,7 @@ export const AdminPage = () => {
       <div className="flex-grow flex">
         {/* Sidebar */}
         <div className="w-[20%] p-4 flex flex-col gap-5">
-          <NavLink to={"searchStudents"}>
+          <NavLink to={"searchStudent"}>
             {({ isActive }) => (
               <Button
                 className={`w-full ${
