@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { Separator } from "@/components/ui/separator"
+import { Separator } from "@/components/ui/separator";
 
 import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
@@ -16,7 +16,6 @@ export const AddBooksAdminPage = () => {
   const { mutateAsync: createBook } = useCreateBook();
   const [bookIsbn, setBookIsbn] = useState<string>("");
   const [totalCopies, setTotalCopies] = useState<number>(0);
-
   const { toast } = useToast();
   const { isMutating, trigger } = useSWRMutation(
     isbnApiLink,
@@ -57,7 +56,7 @@ export const AddBooksAdminPage = () => {
   return (
     <div className="p-4 w-[80%] font-outfit text-white full-center flex-col justify-start">
       <h2 className="text-4xl mb-5">Add Book</h2>
-      <Separator className="w-1/3 bg-gray-700"/>
+      <Separator className="w-1/3 bg-gray-700" />
 
       <form
         className="flex flex-col gap-4 w-1/3 p-5 rounded-lg"

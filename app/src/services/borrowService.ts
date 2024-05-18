@@ -37,3 +37,15 @@ export const readBorrowsByISBN = async (isbn: string) => {
   }
   return borrows;
 };
+
+export const readBorrowsByUserId = async (id: string) => {
+  const { data: borrows, error } = await supabase
+    .from("borrows")
+    .select("*")
+    // Filters
+    .eq("user", id);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return borrows;
+};
