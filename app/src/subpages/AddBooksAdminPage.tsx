@@ -27,8 +27,6 @@ export const AddBooksAdminPage = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await trigger(bookIsbn);
-    console.log(data);
-
     if (data?.totalItems <= 0) {
       return toast({
         title: "Failed to add book.",
@@ -42,9 +40,13 @@ export const AddBooksAdminPage = () => {
         total_copies: totalCopies,
       });
     } catch (error) {
+      const errorObj = error as Error;
+      const errorMessage = errorObj.message.includes("duplicate")
+        ? "The book already is in the system."
+        : errorObj.message.includes("duplicate");
       toast({
         title: "Failed to add book.",
-        description: `The book already is in the system.`,
+        description: errorMessage,
         variant: "destructive",
       });
     }
