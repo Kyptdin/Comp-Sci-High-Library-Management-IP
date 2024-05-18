@@ -1,47 +1,48 @@
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast";
 
 import { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { FaInfoCircle } from "react-icons/fa";
 import { useCreateBook } from "@/hooks/book/useCreateBook";
 
-import useSWRMutation from 'swr/mutation'
+import useSWRMutation from "swr/mutation";
 import { isbnApiLink, fetchBookFromIsbn } from "@/utils/isbnApi";
 
 export const AddBooksAdminPage = () => {
-  const { mutateAsync } = useCreateBook();
+  const { mutateAsync: createBook } = useCreateBook();
   const [bookIsbn, setBookIsbn] = useState<string>("");
   const [totalCopies, setTotalCopies] = useState<number>(0);
-
   const { toast } = useToast();
   const { data, isMutating, trigger } = useSWRMutation(
-    isbnApiLink, fetchBookFromIsbn);
+    isbnApiLink,
+    fetchBookFromIsbn
+  );
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await trigger(bookIsbn);
     console.log(data);
-    
+
     if (data?.totalItems <= 0) {
       return toast({
         title: "Failed to add book.",
         description: `Book ${bookIsbn} could not be found.`,
-        variant: "destructive"
-      })
-    };
+        variant: "destructive",
+      });
+    }
     try {
-      await createBook({ 
-        id: bookIsbn, 
-        total_copies: totalCopies 
+      await createBook({
+        id: bookIsbn,
+        total_copies: totalCopies,
       });
     } catch (error) {
       toast({
         title: "Failed to add book.",
         description: `The book already is in the system.`,
-        variant: "destructive"
+        variant: "destructive",
       });
     }
   };
@@ -50,8 +51,8 @@ export const AddBooksAdminPage = () => {
     <div className="p-4 w-[80%] font-outfit text-white full-center flex-col justify-start">
       <h2 className="text-4xl mb-5 text-gray-500">Add Book</h2>
 
-      <form 
-        className="flex flex-col gap-4 w-1/3 p-5 bg-teal-900 shadow-lg shadow-teal-950 rounded-lg" 
+      <form
+        className="flex flex-col gap-4 w-1/3 p-5 bg-teal-900 shadow-lg shadow-teal-950 rounded-lg"
         onSubmit={onSubmit}
       >
         <h2>Enter book ISBN number</h2>
@@ -92,12 +93,12 @@ export const AddBooksAdminPage = () => {
           copies of the book exist in the entire school.
         </p>
 
-        <Button 
-          className="transition duration-200" 
+        <Button
+          className="transition duration-200"
           disabled={isMutating}
           variant="secondary"
         >
-          <FaFileUpload size={20} className="mr-2"/>
+          <FaFileUpload size={20} className="mr-2" />
           Add book
         </Button>
       </form>
