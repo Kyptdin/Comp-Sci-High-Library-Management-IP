@@ -18,22 +18,24 @@ export const AddBooksAdminPage = () => {
   const [totalCopies, setTotalCopies] = useState<number>(0);
 
   const { toast } = useToast();
-  const { data, isMutating, trigger } = useSWRMutation(
+  const { isMutating, trigger } = useSWRMutation(
     isbnApiLink,
-    fetchBookFromIsbn,
-    {revalidate: true}
+    fetchBookFromIsbn
   );
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await trigger(bookIsbn);
-    if (data?.totalItems <= 0) {
-      return toast({
+    const resultData = await trigger(bookIsbn);
+
+    if (resultData?.totalItems <= 0) {
+      toast({
         title: "Failed to add book.",
         description: `Book ${bookIsbn} could not be found.`,
         variant: "destructive",
       });
+      return;
     }
+
     try {
       await createBook({
         id: bookIsbn,
@@ -107,6 +109,9 @@ export const AddBooksAdminPage = () => {
           <FaFileUpload size={20} className="mr-2" />
           Add book
         </Button>
+        <p className="text-xs text-gray-600 flex">
+          Double check your information before submitting!
+        </p>
       </form>
     </div>
   );

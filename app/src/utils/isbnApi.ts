@@ -1,7 +1,7 @@
 
 export const isbnApiLink = `https://www.googleapis.com/books/v1/volumes?q=isbn:`;
 
-export const getIsbnLink = (isbn: string | number) : string => {
+export const getIsbnLink = (isbn: string | number | undefined) : string => {
     return `${isbnApiLink}${isbn}`;
 }
 

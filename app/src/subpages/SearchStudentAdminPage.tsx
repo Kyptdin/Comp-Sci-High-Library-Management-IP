@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area"
 
-import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
+import { BookAdminDisplay } from "@/components/BookAdminDisplay";
 
 export const SearchStudentAdminPage = () => {
   return (
@@ -30,77 +31,12 @@ export const SearchStudentAdminPage = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-4 gap-4">
-            <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
-
-              <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
-                <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
-                <p className="px-4 py-1 bg-red-800 rounded-full">MISSING</p>
-                <p className="px-4 py-1 bg-green-800 rounded-full">RETURNED</p>
-              </div>
-            </div>
-
-            <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
-
-              <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
-                <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
-                <p className="px-4 py-1 bg-red-800 rounded-full">MISSING</p>
-                <p className="px-4 py-1 bg-green-800 rounded-full">RETURNED</p>
-              </div>
-            </div>
-
-            <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
-
-              <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
-                <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
-                <p className="px-4 py-1 bg-red-800 rounded-full">MISSING</p>
-                <p className="px-4 py-1 bg-green-800 rounded-full">RETURNED</p>
-              </div>
-            </div>
-
-            <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
-
-              <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
-                <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
-                <p className="px-4 py-1 bg-red-800 rounded-full">MISSING</p>
-                <p className="px-4 py-1 bg-green-800 rounded-full">RETURNED</p>
-              </div>
-            </div>
-            <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
-
-              <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
-                <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
-                <p className="px-4 py-1 bg-red-800 rounded-full">MISSING</p>
-                <p className="px-4 py-1 bg-green-800 rounded-full">RETURNED</p>
-              </div>
-            </div>
-
-            <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
-
-              <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
-                <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
-                <p className="px-4 py-1 bg-red-800 rounded-full">MISSING</p>
-                <p className="px-4 py-1 bg-green-800 rounded-full">RETURNED</p>
-              </div>
-            </div>
-
-            <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
-
-              <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
-                <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
-                <p className="px-4 py-1 bg-red-800 rounded-full">MISSING</p>
-                <p className="px-4 py-1 bg-green-800 rounded-full">RETURNED</p>
-              </div>
-            </div>
-
-          </div>
+          <ScrollArea className="bg-transparent h-[60vh]">
+            <BookAdminDisplay/>
+            <BookAdminDisplay/>
+            <BookAdminDisplay/>
+            <BookAdminDisplay/>
+          </ScrollArea>
 
         </div>
       </div>

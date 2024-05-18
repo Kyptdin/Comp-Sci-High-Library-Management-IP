@@ -6,7 +6,8 @@ import { BookDisplayImage } from "@/components/BookDisplayImage";
 // import { useParams } from "react-router-dom";
 // @ts-ignore comment
 import { fetcher } from "@/hooks/fetcher";
-import { useParams, useNavigate } from "react-router-dom";
+import { getIsbnLink } from "@/utils/isbnApi";
+import { useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import useSWR from "swr";
 
@@ -18,13 +19,11 @@ function checkDataResults(data: any) {
 }
 
 export const InspectPage = () => {
-    const navigate = useNavigate();
-
     const { bookInspectIsbn } = useParams();
     const isbnSearch = bookInspectIsbn?.split("-").join("");
 
     const {data, isLoading, error} = useSWR(
-        `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbnSearch}`, fetcher)
+        getIsbnLink(isbnSearch), fetcher)
     
     if (!checkDataResults(data) || error) {
         return;   
