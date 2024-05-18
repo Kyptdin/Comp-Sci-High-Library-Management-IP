@@ -18,11 +18,10 @@ export const SearchPage = () => {
     .toLocaleLowerCase();
   const fetchingUrl = openLibraryUrl + filteredSearchParams;
   const { error, isLoading, data } = useSWR(fetchingUrl, fetcher);
+
   const numberOfBooks = isLoading
-    ? "loading"
-    : !data?.numFound
-    ? "No"
-    : data?.numFound;
+    ? "loading" : !data?.numFound
+    ? "No" : data?.numFound;
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
