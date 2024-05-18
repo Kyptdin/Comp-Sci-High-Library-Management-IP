@@ -1,4 +1,4 @@
-import { useGetLoggedInUser } from "@/hooks/useGetLoggedInUser";
+import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { ReactNode, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingPage } from "./LoadingPage";

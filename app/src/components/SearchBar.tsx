@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useGetLoggedInUser } from "@/hooks/useGetLoggedInUser";
+import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "./ui/input";
 

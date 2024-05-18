@@ -2,7 +2,7 @@ import { ImLibrary } from "react-icons/im";
 import { LoginButton } from "@/components/AuthUi/LoginButton";
 import { SearchBar } from "@/components/SearchBar";
 import { Link } from "react-router-dom";
-import { useGetLoggedInUser } from "@/hooks/useGetLoggedInUser";
+import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { UserProfile } from "./AuthUi/UserProfile";
 
 interface Props {
