@@ -2,14 +2,15 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { createBook } from "@/services/bookService";
 
 export const AddBooksAdminPage = () => {
   const [bookIsbn, setBookIsbn] = useState<string>("");
   const [totalCopies, setTotalCopies] = useState<number>(0);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("Submitting");
+    await createBook({ id: bookIsbn, total_copies: totalCopies });
   };
 
   return (
