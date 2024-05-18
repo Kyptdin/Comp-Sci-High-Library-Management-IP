@@ -1,15 +1,18 @@
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area"
 
-import { BookAdminDisplay } from "@/components/BookAdminDisplay";
+import { BorrowBookDisplay } from "@/components/BorrowBookDisplay";
 import { useState } from "react";
 import { useGetUserBorrowDataByUserEmail } from "@/hooks/borrow/useGetUserBorrowDataByUserEmail";
+import { Borrow } from "@/types/supabaseTypes";
 
 export const SearchStudentAdminPage = () => {
   const [emailQuery, setEmailQuery] = useState<string>("");
   const { data: userDataFromSearch, isLoading } =
     useGetUserBorrowDataByUserEmail(emailQuery);
   const username = userDataFromSearch?.userMetaData[0].user_name;
+  const borrows = userDataFromSearch?.borrrows;
+  const userStatistics = userDataFromSearch?.borrowStats;
 
   return (
     <div className="w-[80%] p-4 font-outfit">
@@ -28,25 +31,23 @@ export const SearchStudentAdminPage = () => {
             </h2>
 
             <div className="flex text-lg text-gray-700">
-              {/* <p className="p-1 px-4 mx-1 rounded-full bg-white">
-                Missing: <span className="font-bold text-black">2</span>
-              </p> */}
-
               <p className="p-1 px-4 mx-1 rounded-full bg-white">
-                Borrowed: <span className="font-bold text-black">6</span>
+                Borrowed: <span className="font-bold text-black">{userStatistics?.borrowed}</span>
               </p>
-              <p className="p-1 px-4 mx-1 rounded-full bg-white">
-                Returned: <span className="font-bold text-black">4</span>
+              <p className="p-1 px-4 mx-1 rounded-full bg-white text-black">
+                Returned: <span className="font-bold">{userStatistics?.returned}</span>
+              </p>
+              <p className="p-1 px-4 mx-1 rounded-full bg-orange-700 text-white">
+                Missing: <span className="font-bold">{userStatistics?.missing}</span>
               </p>
             </div>
           </div>
 
-          <ScrollArea className="bg-transparent h-[60vh]">
-            <BookAdminDisplay/>
-            <BookAdminDisplay/>
-            <BookAdminDisplay/>
-            <BookAdminDisplay/>
-          </ScrollArea>
+          {!isLoading ? <ScrollArea className="bg-transparent h-[55vh]">
+            {borrows?.map((borrow: Borrow, key: number) => {
+              return <BorrowBookDisplay bookData={borrow} key={key}/>
+            })}
+          </ScrollArea> : <></>}
 
         </div>
       </div>

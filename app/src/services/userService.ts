@@ -109,8 +109,8 @@ export const createStatsForBooksBorrowed = (
   let missing = 0;
   let borrowed = borrowsArr.length;
   let returned = 0;
+
   for (const record of borrowsArr) {
-    borrowed++;
     if (record.returned) {
       returned++;
     } else {

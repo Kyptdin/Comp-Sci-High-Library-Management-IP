@@ -25,6 +25,7 @@ export const AddBooksAdminPage = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const resultData = await trigger(bookIsbn);
+    console.log(resultData);
 
     if (resultData?.totalItems <= 0) {
       toast({
@@ -35,10 +36,15 @@ export const AddBooksAdminPage = () => {
       return;
     }
 
+    const firstBookItem = resultData.items[0];
+    const info = firstBookItem.volumeInfo;
+    const { title } = info;
+
     try {
       await createBook({
         id: bookIsbn,
         total_copies: totalCopies,
+        book_title: title.toLowerCase();
       });
     } catch (error) {
       const errorObj = error as Error;
