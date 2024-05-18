@@ -1,7 +1,12 @@
 import { Navbar } from "@/components/Navbar";
 import { SearchBar } from "@/components/SearchBar";
+import { searchBookBySimilarTitle } from "@/services/bookService";
+import { useEffect } from "react";
 
 export const HomePage = () => {
+  useEffect(() => {
+    searchBookBySimilarTitle("harry potter");
+  }, []);
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
       <Navbar showNavbar={false} />

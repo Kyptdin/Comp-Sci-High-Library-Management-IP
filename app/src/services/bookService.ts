@@ -27,3 +27,20 @@ export const getBookById = async (id: string) => {
   }
   return books;
 };
+
+// Uses a search engine provided by supabase
+export const searchBookBySimilarTitle = async (searchString: string) => {
+  const { data, error } = await supabase
+    .from("books")
+    .select("title")
+    .textSearch("title", searchString, {
+      type: "websearch",
+      config: "english",
+    });
+  if (error) {
+    console.log(error.message);
+    return new Error(error.message);
+  }
+  console.log(data);
+  return data;
+};

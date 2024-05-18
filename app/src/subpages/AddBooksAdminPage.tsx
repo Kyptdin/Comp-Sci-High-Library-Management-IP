@@ -44,7 +44,7 @@ export const AddBooksAdminPage = () => {
       await createBook({
         id: bookIsbn,
         total_copies: totalCopies,
-        title: title.toLowerCase(),
+        title,
       });
     } catch (error) {
       const errorObj = error as Error;
