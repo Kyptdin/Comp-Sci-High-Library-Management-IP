@@ -1,6 +1,7 @@
 import { isEmail } from "@/utils/isEmail";
 import { supabase } from "../supabase/supabaseClient";
 import { UserData } from "../types/supabaseTypes";
+import { v4 as uuidv4 } from "uuid";
 
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
@@ -64,7 +65,7 @@ export const readUserByEmail = async (email: string) => {
     .select("*")
     // Filters
     // Emails are unique per user, so only 1 user is returned
-    .eq("column", email);
+    .eq("email", email);
   if (error) {
     throw new Error(error.message);
   }
@@ -81,6 +82,21 @@ export const getLoggedInUser = async () => {
   }
   if (!user) {
     throw new Error("Failed to get user data");
+  }
+  const id = uuidv4();
+  const username: string = user.user_metadata.name;
+  const password = null;
+  const email: string = user.user_metadata.email;
+  const userMetaData = await readUserByEmail(email);
+  // If no user exists then create the metadata
+  if (userMetaData.length === 0) {
+    await createUser({
+      user_id: id,
+      user_name: username,
+      password,
+      admin_status: "student",
+      email,
+    });
   }
   return user;
 };
