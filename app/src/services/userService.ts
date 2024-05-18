@@ -1,6 +1,6 @@
 import { isEmail } from "@/utils/isEmail";
 import { supabase } from "../supabase/supabaseClient";
-import { UserData } from "../types/supabaseTypes";
+import { Borrow, BorrowStats, UserData } from "../types/supabaseTypes";
 import { v4 as uuidv4 } from "uuid";
 
 /*
@@ -99,4 +99,27 @@ export const getLoggedInUser = async () => {
     });
   }
   return user;
+};
+
+export const createStatsForBooksBorrowed = (
+  borrowsArr: Borrow[]
+): BorrowStats => {
+  const currentDate = new Date();
+
+  let missing = 0;
+  let borrowed = borrowsArr.length;
+  let returned = 0;
+  for (const record of borrowsArr) {
+    borrowed++;
+    if (record.returned) {
+      returned++;
+    } else {
+      const returnDueDate = new Date(record.return_due_date);
+      if (currentDate > returnDueDate) {
+        missing++;
+      }
+    }
+  }
+
+  return { missing, borrowed, returned };
 };

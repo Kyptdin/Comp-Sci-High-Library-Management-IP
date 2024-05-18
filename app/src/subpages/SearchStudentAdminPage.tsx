@@ -6,13 +6,11 @@ export const SearchStudentAdminPage = () => {
   return (
     <div className="w-[80%] p-4 font-outfit">
       <div className=" p-4 rounded-md">
-
         <Input
           type="text"
-          placeholder="Search"
+          placeholder="Search user by their email"
           className="w-full px-4 py-2 mb-4 rounded "
         />
-
         <div className="text-white">
           <div className="my-[40px] p-2">
             <h2 className="text-3xl mb-5">Name: John Doe</h2>
@@ -32,7 +30,7 @@ export const SearchStudentAdminPage = () => {
 
           <div className="grid grid-cols-4 gap-4">
             <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
+              <BookDisplaySkeleton className="w-full p-0 m-0" />
 
               <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
                 <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
@@ -42,7 +40,7 @@ export const SearchStudentAdminPage = () => {
             </div>
 
             <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
+              <BookDisplaySkeleton className="w-full p-0 m-0" />
 
               <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
                 <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
@@ -52,7 +50,7 @@ export const SearchStudentAdminPage = () => {
             </div>
 
             <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
+              <BookDisplaySkeleton className="w-full p-0 m-0" />
 
               <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
                 <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
@@ -62,7 +60,7 @@ export const SearchStudentAdminPage = () => {
             </div>
 
             <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
+              <BookDisplaySkeleton className="w-full p-0 m-0" />
 
               <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
                 <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
@@ -71,17 +69,7 @@ export const SearchStudentAdminPage = () => {
               </div>
             </div>
             <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
-
-              <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
-                <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
-                <p className="px-4 py-1 bg-red-800 rounded-full">MISSING</p>
-                <p className="px-4 py-1 bg-green-800 rounded-full">RETURNED</p>
-              </div>
-            </div>
-
-            <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
+              <BookDisplaySkeleton className="w-full p-0 m-0" />
 
               <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
                 <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
@@ -91,7 +79,7 @@ export const SearchStudentAdminPage = () => {
             </div>
 
             <div className="p-2 rounded-[35px]">
-              <BookDisplaySkeleton className="w-full p-0 m-0"/>
+              <BookDisplaySkeleton className="w-full p-0 m-0" />
 
               <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
                 <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
@@ -100,8 +88,16 @@ export const SearchStudentAdminPage = () => {
               </div>
             </div>
 
+            <div className="p-2 rounded-[35px]">
+              <BookDisplaySkeleton className="w-full p-0 m-0" />
+
+              <div className="px-5 gap-2 py-2 pb-5 text-xs flex flex-wrap">
+                <p className="px-4 py-1 bg-orange-700 rounded-full">BORROWED</p>
+                <p className="px-4 py-1 bg-red-800 rounded-full">MISSING</p>
+                <p className="px-4 py-1 bg-green-800 rounded-full">RETURNED</p>
+              </div>
+            </div>
           </div>
-
         </div>
       </div>
     </div>

@@ -68,21 +68,21 @@ export type Database = {
           email: string
           password: string | null
           user_id: string
-          user_name: string | null
+          user_name: string
         }
         Insert: {
           admin_status: string
           email: string
           password?: string | null
           user_id: string
-          user_name?: string | null
+          user_name: string
         }
         Update: {
           admin_status?: string
           email?: string
           password?: string | null
           user_id?: string
-          user_name?: string | null
+          user_name?: string
         }
         Relationships: []
       }
