@@ -8,7 +8,7 @@ import {
 import { IoLogOut } from "react-icons/io5";
 import { BiSolidBookAdd } from "react-icons/bi";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useLogout } from "@/hooks/useLogout";
+import { useLogout } from "@/hooks/auth/useLogout";
 import { cn } from "@/lib/utils";
 
 interface Props {

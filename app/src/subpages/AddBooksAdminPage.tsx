@@ -4,15 +4,15 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast"
 
 import { useState } from "react";
-import { createBook } from "@/services/bookService";
-
 import { FaFileUpload } from "react-icons/fa";
 import { FaInfoCircle } from "react-icons/fa";
+import { useCreateBook } from "@/hooks/book/useCreateBook";
 
 import useSWRMutation from 'swr/mutation'
 import { isbnApiLink, fetchBookFromIsbn } from "@/utils/isbnApi";
 
 export const AddBooksAdminPage = () => {
+  const { mutateAsync } = useCreateBook();
   const [bookIsbn, setBookIsbn] = useState<string>("");
   const [totalCopies, setTotalCopies] = useState<number>(0);
 
@@ -68,8 +68,9 @@ export const AddBooksAdminPage = () => {
           )}
         />
         <p className="text-sm text-teal-600 flex">
-          <FaInfoCircle size={20} className="mr-2"/>
-          The ISBN number of the book is located above the bar-code in the back of the book.
+          <FaInfoCircle size={20} className="mr-2" />
+          The ISBN number of the book is located above the bar-code in the back
+          of the book.
         </p>
 
         <h2>Number of copies</h2>
@@ -86,9 +87,9 @@ export const AddBooksAdminPage = () => {
           )}
         />
         <p className="text-sm text-teal-600 flex">
-          <FaInfoCircle size={20} className="mr-2"/>
-          The number of copies can be edited later.
-          This tells you how many copies of the book exist in the entire school.
+          <FaInfoCircle size={20} className="mr-2" />
+          The number of copies can be edited later. This tells you how many
+          copies of the book exist in the entire school.
         </p>
 
         <Button 
