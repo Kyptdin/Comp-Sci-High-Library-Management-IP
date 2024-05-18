@@ -107,7 +107,7 @@ export const createStatsForBooksBorrowed = (
   const currentDate = new Date();
 
   let missing = 0;
-  let borrowed = borrowsArr.length;
+  const borrowed = borrowsArr.length;
   let returned = 0;
 
   for (const record of borrowsArr) {

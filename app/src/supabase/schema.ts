@@ -12,14 +12,17 @@ export type Database = {
       books: {
         Row: {
           id: string
+          title: string | null
           total_copies: number
         }
         Insert: {
           id: string
+          title?: string | null
           total_copies: number
         }
         Update: {
           id?: string
+          title?: string | null
           total_copies?: number
         }
         Relationships: []
