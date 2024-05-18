@@ -5,8 +5,8 @@ import {
 } from "@/services/userService";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetUserBorrowDataByUserEmail = async (email: string) => {
-  useQuery({
+export const useGetUserBorrowDataByUserEmail = (email: string) => {
+  const query = useQuery({
     queryKey: ["useBorrowDataAndMetaDataForSearchedEmail"],
     queryFn: async () => {
       // Search the user's meta data using their email
@@ -19,4 +19,5 @@ export const useGetUserBorrowDataByUserEmail = async (email: string) => {
       return { userMetaData, borrrows, borrowStats };
     },
   });
+  return query;
 };
