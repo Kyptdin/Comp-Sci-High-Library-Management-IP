@@ -41,7 +41,7 @@ export const getBookByTitle = async (title: string) => {
   return books;
 };
 
-// Uses a search engine provided by supabase
+// Uses a search engine provided by supabase. The books returned doesn't always have to exactly match the search string just has to be similar to the search string
 export const searchBookBySimilarTitle = async (searchString: string) => {
   // Gets all the books that match the search string
   const { data, error } = await supabase
@@ -99,8 +99,5 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
   const bookDataPairedWithImage = successfulQuriesFlatten.map((data, index) => {
     return { ...data, image: imagesOfBooks[index] };
   });
-
-  console.log(bookDataPairedWithImage);
-
   return bookDataPairedWithImage;
 };
