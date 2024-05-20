@@ -4,11 +4,11 @@ import { Error } from "@/components/Error";
 import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
 
 import { useParams } from "react-router-dom";
-// @ts-expect-error comment
-import { fetcher } from "@/hooks/fetcher";
-import useSWR from "swr";
+// import { fetcher } from "@/hooks/fetcher";
+// import useSWR from "swr";
+import { useSearchBookBySimilarTitle } from "@/hooks/book/useSearchBookBySimilarTitle";
 
-const openLibraryUrl = "https://openlibrary.org/search.json?title=";
+// const openLibraryUrl = "https://openlibrary.org/search.json?title=";
 
 export const SearchPage = () => {
   const { searchQuery } = useParams();
@@ -16,12 +16,23 @@ export const SearchPage = () => {
     ?.split(" ")
     .join("+")
     .toLocaleLowerCase();
-  const fetchingUrl = openLibraryUrl + filteredSearchParams;
-  const { error, isLoading, data } = useSWR(fetchingUrl, fetcher);
-
+  // const fetchingUrl = openLibraryUrl + filteredSearchParams;
+  // const { error, isLoading, data } = useSWR(fetchingUrl, fetcher);
+  const {
+    data: booksForSearchedQuery,
+    isLoading,
+    isError,
+  } = useSearchBookBySimilarTitle(filteredSearchParams);
+  // const numberOfBooks = isLoading
+  //   ? "loading"
+  //   : !data?.numFound
+  //   ? "No"
+  //   : data?.numFound;
   const numberOfBooks = isLoading
-    ? "loading" : !data?.numFound
-    ? "No" : data?.numFound;
+    ? "loading"
+    : !booksForSearchedQuery || booksForSearchedQuery.length < 1
+    ? "No"
+    : booksForSearchedQuery.length;
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
@@ -31,24 +42,24 @@ export const SearchPage = () => {
         {numberOfBooks} results found for "{searchQuery}"
       </p>
 
-      {error && <Error />}
+      {isError && <Error />}
       {isLoading && <BookDisplaySkeleton />}
 
       <div className="grid grid-cols-5 gap-1 p-5">
-        {data &&
-          data.docs.map((bookData: any, key: number) => {
-            let { title, author_name, isbn } = bookData;
-
-            author_name = author_name ? author_name[0] : "Unknown";
-            const imageLoaded = isbn
-              ? `https://covers.openlibrary.org/b/isbn/${isbn[0]}-L.jpg`
-              : "/blank_book.jpg";
+        {booksForSearchedQuery &&
+          booksForSearchedQuery.map((bookData, key: number) => {
+            const {
+              title,
+              googleBooksApiData: { authors, image },
+            } = bookData;
+            const finalAuthorName =
+              authors.length > 0 && authors ? authors : "Unknown";
 
             return (
               <BookDisplay
-                author={author_name}
+                author={finalAuthorName}
                 isAvaliable={true}
-                image={imageLoaded}
+                image={image}
                 key={key}
               >
                 {title}

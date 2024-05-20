@@ -88,16 +88,22 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
       }
       return !failedQuery;
     }
+    // .items[0].volumeInfo.authors
   ) as PromiseFulfilledResult<BooksVolumesResponse>[];
-  const imagesOfBooks = successfulGoogleAPIQuries.flatMap((query) => {
+  console.log(successfulGoogleAPIQuries);
+  const googleAPIDAta = successfulGoogleAPIQuries.flatMap((query) => {
     const data = query.value;
     const firstBookItem = data?.items[0];
     const info = firstBookItem?.volumeInfo;
     const image = info?.imageLinks?.smallThumbnail;
-    return image;
+    const authors = query.value.items[0].volumeInfo.authors.join(" ");
+    return {
+      image,
+      authors,
+    };
   });
   const bookDataPairedWithImage = successfulQuriesFlatten.map((data, index) => {
-    return { ...data, image: imagesOfBooks[index] };
+    return { ...data, googleBooksApiData: googleAPIDAta[index] };
   });
   return bookDataPairedWithImage;
 };
