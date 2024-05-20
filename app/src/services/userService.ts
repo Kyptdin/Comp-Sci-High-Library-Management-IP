@@ -74,22 +74,21 @@ export const readUserByEmail = async (email: string) => {
 
 export const getLoggedInUser = async () => {
   const {
-    data: { user },
+    data: { user: generalUserData },
     error,
   } = await supabase.auth.getUser();
   if (error) {
     throw new Error(error.message);
   }
-  if (!user) {
+  if (!generalUserData) {
     throw new Error("Failed to get user data");
   }
   const id = uuidv4();
-  const username: string = user.user_metadata.name;
+  const username: string = generalUserData.user_metadata.name;
   const password = null;
-  const email: string = user.user_metadata.email;
+  const email: string = generalUserData.user_metadata.email;
   const userMetaData = await readUserByEmail(email);
-  console.log(userMetaData);
-  // If no user exists then create the metadata
+
   if (userMetaData.length === 0) {
     await createUser({
       user_id: id,
@@ -99,7 +98,8 @@ export const getLoggedInUser = async () => {
       email,
     });
   }
-  return user;
+
+  return { generalUserData, userMetaData };
 };
 
 export const createStatsForBooksBorrowed = (

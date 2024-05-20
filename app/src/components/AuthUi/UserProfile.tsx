@@ -10,6 +10,8 @@ import { BiSolidBookAdd } from "react-icons/bi";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLogout } from "@/hooks/auth/useLogout";
 import { cn } from "@/lib/utils";
+import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   profileImageUrl: string | null;
@@ -17,6 +19,9 @@ interface Props {
 
 export const UserProfile = ({ profileImageUrl }: Props) => {
   const { mutateAsync } = useLogout();
+  const navigate = useNavigate();
+  const { data } = useGetLoggedInUser();
+  const isAdmin = data?.userMetaData[0].admin_status === "admin";
 
   if (!profileImageUrl) {
     return <Skeleton className="w-[60px] h-[60px] rounded-2xl" />;
@@ -46,7 +51,7 @@ export const UserProfile = ({ profileImageUrl }: Props) => {
 
       <DropdownMenuContent className="w-56 mr-[50px]">
         <DropdownMenuItem
-          className="text-red-800"
+          className="text-red-800 cursor-pointer"
           onClick={() => {
             logout();
           }}
@@ -55,10 +60,17 @@ export const UserProfile = ({ profileImageUrl }: Props) => {
           <p className="font-bold font-lg ml-1">Log out</p>
         </DropdownMenuItem>
 
-        <DropdownMenuItem>
-          <BiSolidBookAdd size={28} />
-          <p className="font-bold font-lg ml-1">Add book</p>
-        </DropdownMenuItem>
+        {isAdmin && (
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => {
+              navigate("admin/addBooks");
+            }}
+          >
+            <BiSolidBookAdd size={28} />
+            <p className="font-bold font-lg ml-1">Add book</p>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

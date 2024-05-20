@@ -10,8 +10,8 @@ interface Props {
 }
 
 export const Navbar = ({ showNavbar = true }: Props) => {
-  const { data: loggedInUserData } = useGetLoggedInUser();
-  const imageUrl = loggedInUserData?.user_metadata?.avatar_url;
+  const { data } = useGetLoggedInUser();
+  const imageUrl = data?.generalUserData?.user_metadata?.avatar_url;
 
   return (
     <div className="px-5 py-[30px] mx-[25px] flex justify-between items-center font-outfit">
