@@ -88,6 +88,7 @@ export const getLoggedInUser = async () => {
   const password = null;
   const email: string = user.user_metadata.email;
   const userMetaData = await readUserByEmail(email);
+  console.log(userMetaData);
   // If no user exists then create the metadata
   if (userMetaData.length === 0) {
     await createUser({

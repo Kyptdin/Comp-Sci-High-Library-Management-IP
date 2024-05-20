@@ -28,8 +28,21 @@ export const getBookById = async (id: string) => {
   return books;
 };
 
+export const getBookByTitle = async (title: string) => {
+  const { data: books, error } = await supabase
+    .from("books")
+    .select("*")
+    // Filters
+    .eq("title", title);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return books;
+};
+
 // Uses a search engine provided by supabase
 export const searchBookBySimilarTitle = async (searchString: string) => {
+  // Gets all the books that match the search string
   const { data, error } = await supabase
     .from("books")
     .select("title")
@@ -41,6 +54,15 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
     console.log(error.message);
     return new Error(error.message);
   }
+  // There's no search results so null is returned
+  if (!data || data.length === 0) {
+    return null;
+  }
   console.log(data);
+  // Get the data for the books with their associated title
+  const requestArrOfBooks = data.map((titleObj) => {
+    return getBookByTitle(titleObj.title);
+  });
+
   return data;
 };
