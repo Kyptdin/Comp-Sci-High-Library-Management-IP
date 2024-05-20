@@ -50,6 +50,7 @@ const router = createBrowserRouter([
     element: <AdminPage />,
     children: [
       {
+        index: true,
         path: "searchStudent",
         element: <SearchStudentAdminPage />,
       },
