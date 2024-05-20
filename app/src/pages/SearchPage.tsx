@@ -23,13 +23,15 @@ export const SearchPage = () => {
     ? "No"
     : booksForSearchedQuery.length;
   const arrayLength = 8;
+  // This string is created because if the search result only has 1 book, then the website should say "result" instead of "results".
+  const resultString = numberOfBooks === 1 ? "result" : "results";
   const emptyArr = Array.from({ length: arrayLength }, (_, index) => index);
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
       <Navbar />
       <p className="text-3xl text-white font-outfit my-3 ml-[40px]">
-        {numberOfBooks} results found for "{searchQuery}"
+        {numberOfBooks} {resultString} found for "{searchQuery}"
       </p>
 
       {isError && <Error />}
