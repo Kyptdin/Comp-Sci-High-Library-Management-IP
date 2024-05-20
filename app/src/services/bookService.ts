@@ -52,7 +52,7 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
       config: "english",
     });
   if (error) {
-    return new Error(error.message);
+    throw new Error(error.message);
   }
   // There's no books that have a title that matches the search string so null is returned
   if (!data || data.length === 0) {
