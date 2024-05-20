@@ -4,11 +4,7 @@ import { Error } from "@/components/Error";
 import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
 
 import { useParams } from "react-router-dom";
-// import { fetcher } from "@/hooks/fetcher";
-// import useSWR from "swr";
 import { useSearchBookBySimilarTitle } from "@/hooks/book/useSearchBookBySimilarTitle";
-
-// const openLibraryUrl = "https://openlibrary.org/search.json?title=";
 
 export const SearchPage = () => {
   const { searchQuery } = useParams();
@@ -16,18 +12,11 @@ export const SearchPage = () => {
     ?.split(" ")
     .join("+")
     .toLocaleLowerCase();
-  // const fetchingUrl = openLibraryUrl + filteredSearchParams;
-  // const { error, isLoading, data } = useSWR(fetchingUrl, fetcher);
   const {
     data: booksForSearchedQuery,
     isLoading,
     isError,
   } = useSearchBookBySimilarTitle(filteredSearchParams);
-  // const numberOfBooks = isLoading
-  //   ? "loading"
-  //   : !data?.numFound
-  //   ? "No"
-  //   : data?.numFound;
   const numberOfBooks = isLoading
     ? "loading"
     : !booksForSearchedQuery || booksForSearchedQuery.length < 1
@@ -37,7 +26,6 @@ export const SearchPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
       <Navbar />
-
       <p className="text-3xl text-white font-outfit my-3 ml-[40px]">
         {numberOfBooks} results found for "{searchQuery}"
       </p>
