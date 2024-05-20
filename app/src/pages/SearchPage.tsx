@@ -22,6 +22,8 @@ export const SearchPage = () => {
     : !booksForSearchedQuery || booksForSearchedQuery.length < 1
     ? "No"
     : booksForSearchedQuery.length;
+  const arrayLength = 8;
+  const emptyArr = Array.from({ length: arrayLength }, (_, index) => index);
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
@@ -31,9 +33,15 @@ export const SearchPage = () => {
       </p>
 
       {isError && <Error />}
-      {isLoading && <BookDisplaySkeleton />}
+      {isLoading && (
+        <div className="grid grid-cols-4 ">
+          {emptyArr.map(() => {
+            return <BookDisplaySkeleton />;
+          })}
+        </div>
+      )}
 
-      <div className="grid grid-cols-5 gap-1 p-5">
+      <div className="grid grid-cols-4 gap-1 p-5">
         {booksForSearchedQuery &&
           booksForSearchedQuery.map((bookData, key: number) => {
             const {
