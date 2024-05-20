@@ -37,8 +37,8 @@ export const SearchPage = () => {
       {isError && <Error />}
       {isLoading && (
         <div className="grid grid-cols-4 ">
-          {emptyArr.map(() => {
-            return <BookDisplaySkeleton />;
+          {emptyArr.map((_, index) => {
+            return <BookDisplaySkeleton key={index} />;
           })}
         </div>
       )}

@@ -41,14 +41,21 @@ export const getBookByTitle = async (title: string) => {
   return books;
 };
 
+export function convertToTsQuery(input: string): string {
+  // Split the input string into individual words
+  const words = input.split(" ");
+  // Enclose each word in single quotes and join them with ' & '
+  const tsQuery = words.map((word) => `'${word}'`).join(" & ");
+  return tsQuery;
+}
 // Uses a search engine provided by supabase. The books returned doesn't always have to exactly match the search string just has to be similar to the search string
 export const searchBookBySimilarTitle = async (searchString: string) => {
   // Gets all the books that match the search string
   const { data, error } = await supabase
     .from("books")
     .select("title")
-    .textSearch("title", searchString, {
-      type: "websearch",
+    .textSearch("title", convertToTsQuery(searchString), {
+      type: "plain",
       config: "english",
     });
   if (error) {
@@ -90,8 +97,7 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
     }
     // .items[0].volumeInfo.authors
   ) as PromiseFulfilledResult<BooksVolumesResponse>[];
-  console.log(successfulGoogleAPIQuries);
-  const googleAPIDAta = successfulGoogleAPIQuries.flatMap((query) => {
+  const googleAPIDAtaFlat = successfulGoogleAPIQuries.flatMap((query) => {
     const data = query.value;
     const firstBookItem = data?.items[0];
     const info = firstBookItem?.volumeInfo;
@@ -103,7 +109,7 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
     };
   });
   const bookDataPairedWithImage = successfulQuriesFlatten.map((data, index) => {
-    return { ...data, googleBooksApiData: googleAPIDAta[index] };
+    return { ...data, googleBooksApiData: googleAPIDAtaFlat[index] };
   });
   return bookDataPairedWithImage;
 };
