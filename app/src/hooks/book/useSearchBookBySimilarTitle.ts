@@ -7,7 +7,7 @@ export const useSearchBookBySimilarTitle = (
   const query = useQuery({
     queryKey: ["searchBookBySimilarTitle", queryString],
     queryFn: async () => {
-      if (!queryString) return null;
+      if (queryString === undefined) return null;
       return await searchBookBySimilarTitle(queryString);
     },
   });

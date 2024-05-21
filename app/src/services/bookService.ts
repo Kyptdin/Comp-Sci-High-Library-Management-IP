@@ -66,8 +66,8 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
     return null;
   }
   // Fetches the data for the assocaited title in parrellel
-  const requestArrOfBooks = data.map((titleObj) => {
-    return getBookByTitle(titleObj.title);
+  const requestArrOfBooks = data.map(async (titleObj) => {
+    return await getBookByTitle(titleObj.title);
   });
   const bookDataForSearchQuery = await Promise.allSettled(requestArrOfBooks);
   const successfulQuries = bookDataForSearchQuery.filter(
@@ -97,12 +97,12 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
     }
     // .items[0].volumeInfo.authors
   ) as PromiseFulfilledResult<BooksVolumesResponse>[];
-  const googleAPIDAtaFlat = successfulGoogleAPIQuries.flatMap((query) => {
+  const googleAPIDAtaFlat = successfulGoogleAPIQuries.map((query) => {
     const data = query.value;
     const firstBookItem = data?.items[0];
     const info = firstBookItem?.volumeInfo;
     const image = info?.imageLinks?.smallThumbnail;
-    const authors = query.value.items[0].volumeInfo.authors.join(" ");
+    const authors = data?.items[0]?.volumeInfo?.authors?.join(" ");
     return {
       image,
       authors,

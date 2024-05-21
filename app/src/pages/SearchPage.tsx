@@ -8,10 +8,7 @@ import { useSearchBookBySimilarTitle } from "@/hooks/book/useSearchBookBySimilar
 
 export const SearchPage = () => {
   const { searchQuery } = useParams();
-  const filteredSearchParams = searchQuery
-    ?.split(" ")
-    .join("+")
-    .toLocaleLowerCase();
+  const filteredSearchParams = searchQuery;
   const {
     data: booksForSearchedQuery,
     isLoading,
@@ -26,6 +23,7 @@ export const SearchPage = () => {
   // This string is created because if the search result only has 1 book, then the website should say "result" instead of "results".
   const resultString = numberOfBooks === 1 ? "result" : "results";
   const emptyArr = Array.from({ length: arrayLength }, (_, index) => index);
+  console.log(booksForSearchedQuery);
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
@@ -51,7 +49,7 @@ export const SearchPage = () => {
               googleBooksApiData: { authors, image },
             } = bookData;
             const finalAuthorName =
-              authors.length > 0 && authors ? authors : "Unknown";
+              authors && authors?.length > 0 ? authors : "Unknown";
 
             return (
               <BookDisplay
