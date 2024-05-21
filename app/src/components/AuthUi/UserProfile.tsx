@@ -64,7 +64,7 @@ export const UserProfile = ({ profileImageUrl }: Props) => {
           <DropdownMenuItem
             className="cursor-pointer"
             onClick={() => {
-              navigate("admin/addBooks");
+              navigate("/admin/addBooks");
             }}
           >
             <BiSolidBookAdd size={28} />
