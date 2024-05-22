@@ -24,7 +24,7 @@ export const BorrowBookDisplay = ({ bookData }: { bookData: Borrow }) => {
       ) : (
         <BookDisplayImage
           // IMPORTANT:Here's how the images are rendered
-          src={info?.imageLinks?.smallThumbnail}
+          src={info?.imageLinks?.smallThumbnail || "/blank_book.jpg"}
           className="p-0 mr-5 h-[220px] w-[150px] rounded-md"
         />
       )}

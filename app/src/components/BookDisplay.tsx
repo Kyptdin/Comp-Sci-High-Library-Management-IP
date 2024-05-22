@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { cn } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
 
 import { Warning } from "./Warning";
 
@@ -27,17 +26,19 @@ export const BookDisplay = ({
     isAvaliable = true, 
     author
 } : bookData) => {
-
-    const navigate = useNavigate(); 
+    let displayedImage = image ? image : "/blank_book.jpg";
 
     return <div className={cn(
         "w-[325px] h-[500px] m-4 relative",
         "bg-black overflow-clip rounded-3xl font-outfit shadow-lg shadow-gray-900",
         "flex flex-col justify-end items-center"
     )}>
-        <img src={image} className="w-full h-full absolute fill-gray-400"/>
+        <img src={displayedImage} className="w-full h-full absolute fill-gray-400"/>
 
         <div className="w-full h-full bg-gradient-to-t from-blue-950 absolute">
+            <p className="text-white font-bold text-5xl text-center mt-[125px] opacity-50">
+                Book cover not found
+            </p>
         </div>
 
         <div className="p-5 absolute w-full">
