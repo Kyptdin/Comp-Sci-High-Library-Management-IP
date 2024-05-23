@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useCreateReport } from "@/hooks/report/useCreateReport";
+import { useReportBook } from "@/hooks/report/useReportBook";
 import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { v4 as uuidv4 } from "uuid";
 
@@ -68,7 +68,7 @@ const reducer = (state: DialogState, action: Action): DialogState => {
 export const useBookReportDialog = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { data: loggedInUserData } = useGetLoggedInUser();
-  const { mutateAsync: createReport } = useCreateReport();
+  const { mutateAsync: createReport } = useReportBook();
 
   const openDialog = () => {
     dispatch({ type: "OPEN_REPORT" });

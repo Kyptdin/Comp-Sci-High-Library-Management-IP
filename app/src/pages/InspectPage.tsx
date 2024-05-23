@@ -11,7 +11,9 @@ import useSWR from "swr";
 import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useReturnBook } from "@/hooks/borrow/useReturnBook";
 import { useBookReportDialog } from "@/hooks/book/useBookReportDialog";
-import { useReportBook } from "@/hooks/report/useReportBook";
+import { useBorrowBook } from "@/hooks/borrow/useBorrowBook";
+
+import { v4 as uuidv4 } from "uuid";
 
 // type any because it is google api request
 function checkDataResults(data: any) {
@@ -46,11 +48,7 @@ export const InspectPage = () => {
   const userId = loggedInUserData?.userMetaData[0].user_id;
   const { DialogComponent, openDialog } = useBookReportDialog(); //Used for reporting
   const { mutateAsync: returnBook } = useReturnBook();
-  /*BORROW RULES
-  User should not borrow the book if one of these are true
-  1. All the copies are already borrowed
-  3. User has already reached the weekly borrow limit
-  */
+  const { mutateAsync: borrowBook } = useBorrowBook();
 
   if (!checkDataResults(data) || error) {
     return null;
@@ -84,7 +82,46 @@ export const InspectPage = () => {
           </p>
 
           <div className="flex items-center justify-left">
-            <Button variant="secondary" className="text-lg w-1/4 mr-3 py-6">
+            <Button
+              variant="secondary"
+              className="text-lg w-1/4 mr-3 py-6"
+              onClick={() => {
+                if (!isbnSearch || !userId) return;
+                // Create a new Date object for the current date
+                const currentDate = new Date();
+
+                // Get the year, month, and day components for the current date
+                const currentYear = currentDate.getFullYear();
+                // Adding 1 to getMonth because it returns zero-based month (0 for January)
+                const currentMonth = currentDate.getMonth() + 1;
+                const currentDay = currentDate.getDate();
+
+                // Format the current date as "year, month, day"
+                const formattedCurrentDate = `${currentYear}-${currentMonth}-${currentDay}`;
+
+                // Calculate the date for 7 days in the future
+                currentDate.setDate(currentDate.getDate() + 7);
+
+                // Get the year, month, and day components for the future date
+                const futureYear = currentDate.getFullYear();
+                // Adding 1 to getMonth because it returns zero-based month (0 for January)
+                const futureMonth = currentDate.getMonth() + 1;
+                const futureDay = currentDate.getDate();
+
+                // Format the future date as "year, month, day"
+                const formattedFutureDate = `${futureYear}-${futureMonth}-${futureDay}`;
+
+                borrowBook({
+                  borrow_id: uuidv4(),
+                  damaged: false,
+                  returned: false,
+                  isbn: isbnSearch,
+                  user: userId,
+                  return_due_date: formattedFutureDate,
+                  date_borrowed: formattedCurrentDate,
+                });
+              }}
+            >
               Borrow
             </Button>
 

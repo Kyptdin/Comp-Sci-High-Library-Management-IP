@@ -81,6 +81,21 @@ export const getBorrowsByUserId = async (userId: string) => {
   return borrows;
 };
 
+export const getAllBorrowsNotReturnedByIsbn = async (isbn: string) => {
+  const { data: borrows, error } = await supabase
+    .from("borrows")
+    .select("*")
+    // Filters
+    .eq("isbn", isbn)
+    .eq("returned", true);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return borrows;
+};
+
 // Doesn't return only 1 borrow. If the user borrowed 10 books in the past week then 10 books will be returned
 export async function getBorrowsWithinLastWeekFromUser(userId: string) {
   const currentDate = new Date();

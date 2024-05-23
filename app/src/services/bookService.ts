@@ -3,6 +3,7 @@ import { supabase } from "../supabase/supabaseClient";
 import { fetchBookFromIsbn, isbnApiLink } from "@/utils/isbnApi";
 import {
   createBorrow,
+  getAllBorrowsNotReturnedByIsbn,
   getBorrowsByUserId,
   getBorrowsWithinLastWeekFromUser,
 } from "./borrowService";
@@ -23,22 +24,29 @@ export const createBook = async (bookData: Book) => {
 
 // Unlike the "createBook" function, this function takes care of the bussines logic when borrowing the book. Use this function when the user is trying to borrow not the function above.
 export const borrowBook = async (borrowInput: Borrow) => {
-  //Step #1 Checks if the book has any aviable copies left for the user
+  //Step #1 Checks if the book has any aviable copies within the school
   const bookSearchByIsbn = await getBookById(borrowInput.isbn);
-  const allBorrowsForBooksWithAssociatedIsbn = await getBorrowsByUserId(
-    borrowInput.user
-  );
-  const totalCopiesInSchool = bookSearchByIsbn[0].total_copies;
-  const totalAmountOfCopiesTaken = allBorrowsForBooksWithAssociatedIsbn.length;
-  if (totalAmountOfCopiesTaken === totalCopiesInSchool) {
-    throw new Error("Failed to borrow book. Not enough copies available.");
+  const maxAmountOfCopiesWithinTheSchool = bookSearchByIsbn[0].total_copies;
+  const copiesDataFromBookThatHaveTheBook =
+    await getAllBorrowsNotReturnedByIsbn(borrowInput.isbn);
+  const totalNumberOfCopiesPeopleHave =
+    copiesDataFromBookThatHaveTheBook.length;
+
+  if (
+    maxAmountOfCopiesWithinTheSchool === 0 ||
+    totalNumberOfCopiesPeopleHave === maxAmountOfCopiesWithinTheSchool
+  ) {
+    throw new Error("Failed to borrow book. No aviable copies.");
   }
 
-  // Step #2: Checks if the user has exceeded their limit on the number of books they can borrow per week
+  // Step #2: Checks if the user has exceeded their limit on the number of books they can borrow per week. Doesn't matter if the user has returned the book or not.
   const totalBooksBorrowedThisWeek = await getBorrowsWithinLastWeekFromUser(
     borrowInput.user
   );
-  if (totalBooksBorrowedThisWeek.length > 10) {
+  const totalNumberOfBooksUserHasBorrowedThisWeek =
+    totalBooksBorrowedThisWeek.length;
+
+  if (totalNumberOfBooksUserHasBorrowedThisWeek > 10) {
     throw new Error("Failed to borrow book. Reached weekly borrow limit.");
   }
 
