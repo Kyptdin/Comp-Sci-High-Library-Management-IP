@@ -4,7 +4,6 @@ import { fetchBookFromIsbn, isbnApiLink } from "@/utils/isbnApi";
 import {
   createBorrow,
   getAllBorrowsNotReturnedByIsbn,
-  getBorrowsByUserId,
   getBorrowsWithinLastWeekFromUser,
 } from "./borrowService";
 /*
@@ -52,7 +51,6 @@ export const borrowBook = async (borrowInput: Borrow) => {
 
   // Step #3: If the user hasn't exceeded their limit and there's still copies that can be borrowed then allow the user to borrow
   const borrowData = await createBorrow(borrowInput);
-
   return borrowData;
 };
 

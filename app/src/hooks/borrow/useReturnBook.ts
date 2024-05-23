@@ -1,8 +1,9 @@
 import { useToast } from "@/components/ui/use-toast";
-import { getBorrowsByUserIdAndIsbn } from "@/services/borrowService";
+import { returnBorrowedBook } from "@/services/borrowService";
+
 import { useMutation } from "@tanstack/react-query";
 
-interface MutationProps {
+export interface ReturnBookProps {
   userId: string | undefined;
   isbn: string | undefined;
 }
@@ -11,20 +12,7 @@ export const useReturnBook = () => {
   const { toast } = useToast();
 
   const mutation = useMutation({
-    mutationFn: async ({ userId, isbn }: MutationProps) => {
-      if (!userId || !isbn) return null;
-
-      const borrowData = await getBorrowsByUserIdAndIsbn(userId, isbn);
-
-      // Can't return the book if the user isn't borrowing the booking
-      if (borrowData.length === 0) {
-        throw new Error(
-          "Failed to borrow book. You are not currently borrowing the book"
-        );
-      }
-
-      // TODO:Look for all the borrows with the user id of the user and the isbn of the book and set "returned" column to true
-    },
+    mutationFn: returnBorrowedBook,
     onSuccess: () => {
       toast({
         variant: "default",

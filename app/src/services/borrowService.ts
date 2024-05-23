@@ -1,3 +1,4 @@
+import { ReturnBookProps } from "@/hooks/borrow/useReturnBook";
 import { supabase } from "../supabase/supabaseClient";
 import { Borrow } from "../types/supabaseTypes";
 /*
@@ -118,3 +119,49 @@ export async function getBorrowsWithinLastWeekFromUser(userId: string) {
 
   return data;
 }
+
+/****** EDIT ROUTES ******/
+export const editBorrowByUserIdAndIsbn = async (
+  userId: string,
+  isbn: string,
+  newBorrowData: Borrow
+) => {
+  const { data, error } = await supabase
+    .from("borrows")
+    .update(newBorrowData)
+    .eq("user", userId)
+    .eq("isbn", isbn)
+    .select();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const returnBorrowedBook = async ({ userId, isbn }: ReturnBookProps) => {
+  if (!userId || !isbn) return null;
+
+  const borrowData = await getBorrowsByUserIdAndIsbn(userId, isbn);
+
+  // Can't return the book if the user isn't currently borrowing the booking
+  if (borrowData.length === 0) {
+    throw new Error(
+      "Failed to borrow book. You are not currently borrowing the book"
+    );
+  }
+
+  //Look for all the borrows with the user id of the user and the isbn of the book and set "returned" column to true
+  const editingBorrowsPromisesArr = borrowData.map((borrow) => {
+    return editBorrowByUserIdAndIsbn(userId, isbn, {
+      ...borrow,
+      returned: true,
+    });
+  });
+  const settingBorrowsToReturnedData = await Promise.all(
+    editingBorrowsPromisesArr
+  );
+
+  return settingBorrowsToReturnedData;
+};
