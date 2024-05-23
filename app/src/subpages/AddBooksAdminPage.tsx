@@ -25,7 +25,6 @@ export const AddBooksAdminPage = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const resultData = await trigger(bookIsbn);
-    console.log(resultData);
 
     if (resultData?.totalItems <= 0) {
       toast({
@@ -45,6 +44,7 @@ export const AddBooksAdminPage = () => {
         id: bookIsbn,
         total_copies: totalCopies,
         title,
+        is_missing: false,
       });
     } catch (error) {
       const errorObj = error as Error;

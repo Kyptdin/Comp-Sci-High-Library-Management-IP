@@ -97,6 +97,7 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
     }
     // .items[0].volumeInfo.authors
   ) as PromiseFulfilledResult<BooksVolumesResponse>[];
+  console.log(successfulGoogleAPIQuries);
   const googleAPIDAtaFlat = successfulGoogleAPIQuries.map((query) => {
     const data = query.value;
     const firstBookItem = data?.items[0];

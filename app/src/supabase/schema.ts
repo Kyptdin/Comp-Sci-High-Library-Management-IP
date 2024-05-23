@@ -12,16 +12,19 @@ export type Database = {
       books: {
         Row: {
           id: string
+          is_missing: boolean
           title: string
           total_copies: number
         }
         Insert: {
           id: string
+          is_missing: boolean
           title: string
           total_copies: number
         }
         Update: {
           id?: string
+          is_missing?: boolean
           title?: string
           total_copies?: number
         }
