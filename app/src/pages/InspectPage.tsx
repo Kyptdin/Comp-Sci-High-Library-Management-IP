@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import useSWR from "swr";
 import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useReturnBook } from "@/hooks/borrow/useReturnBook";
+import { useCreateReport } from "@/hooks/report/useCreateReport";
 
 // type any because it is google api request
 function checkDataResults(data: any) {
@@ -45,12 +46,10 @@ export const InspectPage = () => {
   const { data, isLoading, error } = useSWR(getIsbnLink(isbnSearch), fetcher);
   const userId = loggedInUserData?.userMetaData[0].user_id;
 
-  // const { data: borrowDataForUserIdAndIsbn } = useGetBorrowbyUserIdAndIsbn(
-  //   userId,
-  //   isbnSearch
-  // );
-  // const userDoesNotOwnBook =
-  //   !borrowDataForUserIdAndIsbn || borrowDataForUserIdAndIsbn.length === 0;
+  /*REPORT MISSING (DONE)
+  No rules exist for report missing
+  */
+  const { mutateAsync: createReport } = useCreateReport();
 
   /*RETURN RULES 
   User should not return the book if one of these are true
@@ -67,10 +66,6 @@ export const InspectPage = () => {
   1. User already borrowed the book
   2. All the copies are already borrowed
   3. User has already reached the weekly borrow limit
-  */
-
-  /*REPORT MISSING (DONE)
-  No rules exist for report missing
   */
 
   const { title, imageLinks, authors, description } =
@@ -122,6 +117,9 @@ export const InspectPage = () => {
                 "bg-red-900 hover:text-black"
               )}
               variant="secondary"
+              onClick={() => {
+                alert("Currently reporting");
+              }}
             >
               Report Missing
             </Button>

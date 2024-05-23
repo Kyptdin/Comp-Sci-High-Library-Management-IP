@@ -161,7 +161,8 @@ export const BookDisplay = ({
             </DropdownMenuItem>
           </BookHamburger>
 
-          <Dialog
+          {/* TODO: Abstract the entire dialog component and state related to the dialog component into another file which will be a  custom hook. The custom hook will return the state of the component and the component itself. Make sure that the custom hook uses the useReducer to make the state for the dialog component. */}
+          {/* <Dialog
             open={state.reportOpen}
             onOpenChange={(open) => {
               if (!open) {
@@ -228,7 +229,7 @@ export const BookDisplay = ({
                 <Button onClick={onSubmit}>Report</Button>
               </DialogFooter>
             </DialogContent>
-          </Dialog>
+          </Dialog> */}
         </div>
       </div>
     </div>
