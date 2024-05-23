@@ -68,6 +68,35 @@ export type Database = {
           },
         ]
       }
+      reports: {
+        Row: {
+          created_at: string
+          id: number
+          reasons: string
+          user: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          reasons: string
+          user: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          reasons?: string
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reasons_user_fkey"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       users: {
         Row: {
           admin_status: string
