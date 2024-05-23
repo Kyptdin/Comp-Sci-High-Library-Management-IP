@@ -1,6 +1,11 @@
-import { Book } from "@/types/supabaseTypes";
+import { Book, Borrow } from "@/types/supabaseTypes";
 import { supabase } from "../supabase/supabaseClient";
 import { fetchBookFromIsbn, isbnApiLink } from "@/utils/isbnApi";
+import {
+  createBorrow,
+  getBorrowsByUserId,
+  getBorrowsWithinLastWeekFromUser,
+} from "./borrowService";
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
 */
@@ -14,6 +19,33 @@ export const createBook = async (bookData: Book) => {
     throw new Error(error.message);
   }
   return data;
+};
+
+// Unlike the "createBook" function, this function takes care of the bussines logic when borrowing the book. Use this function when the user is trying to borrow not the function above.
+export const borrowBook = async (borrowInput: Borrow) => {
+  //Step #1 Checks if the book has any aviable copies left for the user
+  const bookSearchByIsbn = await getBookById(borrowInput.isbn);
+  const allBorrowsForBooksWithAssociatedIsbn = await getBorrowsByUserId(
+    borrowInput.user
+  );
+  const totalCopiesInSchool = bookSearchByIsbn[0].total_copies;
+  const totalAmountOfCopiesTaken = allBorrowsForBooksWithAssociatedIsbn.length;
+  if (totalAmountOfCopiesTaken === totalCopiesInSchool) {
+    throw new Error("Failed to borrow book. Not enough copies available.");
+  }
+
+  // Step #2: Checks if the user has exceeded their limit on the number of books they can borrow per week
+  const totalBooksBorrowedThisWeek = await getBorrowsWithinLastWeekFromUser(
+    borrowInput.user
+  );
+  if (totalBooksBorrowedThisWeek.length > 10) {
+    throw new Error("Failed to borrow book. Reached weekly borrow limit.");
+  }
+
+  // Step #3: If the user hasn't exceeded their limit and there's still copies that can be borrowed then allow the user to borrow
+  const borrowData = await createBorrow(borrowInput);
+
+  return borrowData;
 };
 
 /****** GET ROUTES ******/

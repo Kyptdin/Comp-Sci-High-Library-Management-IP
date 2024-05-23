@@ -7,10 +7,6 @@ interface MutationProps {
   isbn: string | undefined;
 }
 
-/*RETURN RULES 
-  User should not return the book if one of these are true
-  1. The user is not currently borrowing the book
-  */
 export const useReturnBook = () => {
   const { toast } = useToast();
 
@@ -20,6 +16,7 @@ export const useReturnBook = () => {
 
       const borrowData = await getBorrowsByUserIdAndIsbn(userId, isbn);
 
+      // Can't return the book if the user isn't borrowing the booking
       if (borrowData.length === 0) {
         throw new Error(
           "Failed to borrow book. You are not currently borrowing the book"
