@@ -8,8 +8,11 @@ import { Borrow } from "@/types/supabaseTypes";
 
 export const SearchStudentAdminPage = () => {
   const [emailQuery, setEmailQuery] = useState<string>("");
-  const { data: userDataFromSearch, isLoading } =
-    useGetUserBorrowDataByUserEmail(emailQuery);
+  const {
+    data: userDataFromSearch,
+    isLoading,
+    isError,
+  } = useGetUserBorrowDataByUserEmail(emailQuery);
   const username = userDataFromSearch?.userMetaData[0].user_name;
   const borrows = userDataFromSearch?.borrrows;
   const userStatistics = userDataFromSearch?.borrowStats;
@@ -25,6 +28,7 @@ export const SearchStudentAdminPage = () => {
           placeholder="Search user by their email"
           className="w-full px-4 py-2 mb-4 rounded "
         />
+        <p className="text-xl">{isError}</p>
         {showSearchResults && (
           <div className="text-white">
             <div className="my-[40px] p-2">
