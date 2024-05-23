@@ -10,7 +10,7 @@ import { getIsbnLink } from "@/utils/isbnApi";
 import { useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import useSWR from "swr";
-import { useGetBookById } from "@/hooks/book/useGetBookById";
+import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useReturnBook } from "@/hooks/borrow/useReturnBook";
 
 // type any because it is google api request
@@ -39,9 +39,23 @@ The admin page should only allow admins to vist the page (ISAAC)
 Add the borrowing (ISAAC)(teacher does not have to approved) (there's a limit to the amount of books you can borrow) (if the user has more than 1 book missing the user can't buy)
 */
 export const InspectPage = () => {
+  const { data: loggedInUserData } = useGetLoggedInUser();
   const { bookInspectIsbn } = useParams();
   const isbnSearch = bookInspectIsbn?.split("-").join("");
   const { data, isLoading, error } = useSWR(getIsbnLink(isbnSearch), fetcher);
+  const userId = loggedInUserData?.userMetaData[0].user_id;
+
+  // const { data: borrowDataForUserIdAndIsbn } = useGetBorrowbyUserIdAndIsbn(
+  //   userId,
+  //   isbnSearch
+  // );
+  // const userDoesNotOwnBook =
+  //   !borrowDataForUserIdAndIsbn || borrowDataForUserIdAndIsbn.length === 0;
+
+  /*RETURN RULES 
+  User should not return the book if one of these are true
+  1. The user is not currently borrowing the book
+  */
   const { mutateAsync: returnBook } = useReturnBook();
 
   if (!checkDataResults(data) || error) {
@@ -53,11 +67,6 @@ export const InspectPage = () => {
   1. User already borrowed the book
   2. All the copies are already borrowed
   3. User has already reached the weekly borrow limit
-  */
-
-  /*RETURN RULES 
-  User should not return the book if one of these are true
-  1. The user is not currently borrowing the book
   */
 
   /*REPORT MISSING (DONE)
@@ -95,9 +104,17 @@ export const InspectPage = () => {
             <Button variant="secondary" className="text-lg w-1/4 mr-3 py-6">
               Borrow
             </Button>
-            <Button variant="secondary" className="text-lg w-1/4 mr-3 py-6">
+
+            <Button
+              variant="secondary"
+              className="text-lg w-1/4 mr-3 py-6"
+              onClick={() => {
+                returnBook({ userId, isbn: isbnSearch });
+              }}
+            >
               Return
             </Button>
+
             <Button
               className={cn(
                 "text-white text-lg",

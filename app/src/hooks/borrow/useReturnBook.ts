@@ -3,8 +3,8 @@ import { getBorrowsByUserIdAndIsbn } from "@/services/borrowService";
 import { useMutation } from "@tanstack/react-query";
 
 interface MutationProps {
-  userId: string;
-  isbn: string;
+  userId: string | undefined;
+  isbn: string | undefined;
 }
 
 export const useReturnBook = () => {
@@ -12,7 +12,10 @@ export const useReturnBook = () => {
 
   const mutation = useMutation({
     mutationFn: async ({ userId, isbn }: MutationProps) => {
+      if (!userId || !isbn) return null;
+
       const borrowData = await getBorrowsByUserIdAndIsbn(userId, isbn);
+
       if (borrowData.length === 0) {
         throw new Error(
           "Failed to borrow book. You are not currently borrowing the book"
@@ -23,13 +26,13 @@ export const useReturnBook = () => {
       toast({
         variant: "default",
         title: "Successful Returned Book",
-        description: "Your book has been returned",
+        description: "Your book has been returned.",
       });
     },
     onError: (error) => {
       toast({
         variant: "destructive",
-        title: "Failed to Return Book",
+        title: "Failed to Return Book.",
         description: error.message,
       });
     },
