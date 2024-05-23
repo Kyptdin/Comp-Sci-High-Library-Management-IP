@@ -2,8 +2,6 @@ import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
 import { BookDisplayImage } from "@/components/BookDisplayImage";
-
-// import { useParams } from "react-router-dom";
 // @ts-ignore comment
 import { fetcher } from "@/hooks/fetcher";
 import { getIsbnLink } from "@/utils/isbnApi";
@@ -12,8 +10,8 @@ import { cn } from "@/lib/utils";
 import useSWR from "swr";
 import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useReturnBook } from "@/hooks/borrow/useReturnBook";
-import { useCreateReport } from "@/hooks/report/useCreateReport";
 import { useBookReportDialog } from "@/hooks/book/useBookReportDialog";
+import { useReportBook } from "@/hooks/report/useReportBook";
 
 // type any because it is google api request
 function checkDataResults(data: any) {
@@ -23,7 +21,7 @@ function checkDataResults(data: any) {
 }
 
 /*
-TODO List:
+TODO::
 The toast that appears when you add a book should link to the book or/and state the name of the book (SAFI)
 
 Have an image of the book towards the right of the add book form (SAFI)
@@ -46,29 +44,17 @@ export const InspectPage = () => {
   const isbnSearch = bookInspectIsbn?.split("-").join("");
   const { data, isLoading, error } = useSWR(getIsbnLink(isbnSearch), fetcher);
   const userId = loggedInUserData?.userMetaData[0].user_id;
-  const { DialogComponent, openDialog } = useBookReportDialog();
-
-  /*REPORT MISSING (DONE)
-  No rules exist for report missing
-  */
-  const { mutateAsync: createReport } = useCreateReport();
-
-  /*RETURN RULES 
-  User should not return the book if one of these are true
-  1. The user is not currently borrowing the book
-  */
+  const { DialogComponent, openDialog } = useBookReportDialog(); //Used for reporting
   const { mutateAsync: returnBook } = useReturnBook();
+  /*BORROW RULES
+  User should not borrow the book if one of these are true
+  1. All the copies are already borrowed
+  3. User has already reached the weekly borrow limit
+  */
 
   if (!checkDataResults(data) || error) {
     return null;
   }
-
-  /*BORROW RULES
-  User should not borrow the book if one of these are true
-  1. User already borrowed the book
-  2. All the copies are already borrowed
-  3. User has already reached the weekly borrow limit
-  */
 
   const { title, imageLinks, authors, description } =
     data?.items[0]?.volumeInfo;

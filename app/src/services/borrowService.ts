@@ -66,3 +66,40 @@ export const getBorrowsByUserIdAndIsbn = async (
   }
   return borrows;
 };
+
+export const getBorrowsByUserId = async (userId: string) => {
+  const { data: borrows, error } = await supabase
+    .from("borrows")
+    .select("*")
+    // Filters
+    .eq("user", userId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return borrows;
+};
+
+// Doesn't return only 1 borrow. If the user borrowed 10 books in the past week then 10 books will be returned
+export async function getBorrowsWithinLastWeekFromUser(userId: string) {
+  const currentDate = new Date();
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(currentDate.getDate() - 7);
+
+  const formattedCurrentDate = currentDate.toISOString().split("T")[0];
+  const formattedOneWeekAgo = oneWeekAgo.toISOString().split("T")[0];
+
+  const { data, error } = await supabase
+    .from("borrows")
+    .select("*")
+    .gte("date_borrowed", formattedOneWeekAgo)
+    .lte("date_borrowed", formattedCurrentDate)
+    .eq("user", userId);
+
+  if (error) {
+    throw new Error(`Error fetching borrows: ${error.message}`);
+  }
+
+  return data;
+}

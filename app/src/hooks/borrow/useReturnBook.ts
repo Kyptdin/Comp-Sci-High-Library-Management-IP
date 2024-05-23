@@ -7,6 +7,10 @@ interface MutationProps {
   isbn: string | undefined;
 }
 
+/*RETURN RULES 
+  User should not return the book if one of these are true
+  1. The user is not currently borrowing the book
+  */
 export const useReturnBook = () => {
   const { toast } = useToast();
 

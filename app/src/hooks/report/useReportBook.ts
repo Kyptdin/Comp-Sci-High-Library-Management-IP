@@ -2,7 +2,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { createReport } from "@/services/reportService";
 import { useMutation } from "@tanstack/react-query";
 
-export const useCreateReport = () => {
+/*REPORT MISSING (DONE)
+  No rules exist for report missing
+  */
+export const useReportBook = () => {
   const { toast } = useToast();
 
   const mutation = useMutation({
