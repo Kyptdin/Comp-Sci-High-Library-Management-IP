@@ -27,19 +27,21 @@ import { FaBug } from "react-icons/fa";
 import { useCreateReport } from "@/hooks/report/useCreateReport";
 import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 
-interface bookData {
+import { v4 as uuidv4 } from "uuid";
+
+type bookData = {
   children: string;
   author?: string;
   image?: string;
   isAvaliable?: boolean;
-}
+};
 
-interface State {
+type State = {
   reportOpen: boolean;
   reason: string;
   explanation: string;
   isError: boolean;
-}
+};
 
 type Action =
   | { type: "OPEN_REPORT" }
@@ -90,13 +92,20 @@ export const BookDisplay = ({
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const onSubmit = async () => {
-    const id = loggedInUserData?.userMetaData[0]?.user_id;
-    if (!id) return;
+    const userId = loggedInUserData?.userMetaData[0].user_id;
+    if (!userId) return;
     if (!state.reason || state.reason.length < 1) {
       dispatch({ type: "SET_ERROR", payload: true });
       return;
     }
-    // await createReport({});
+    await createReport({
+      id: uuidv4(),
+      user: userId,
+      explanation: state.explanation,
+      reason: state.reason,
+      created_at: new Date().toUTCString(),
+    });
+    dispatch({ type: "RESET" });
   };
 
   return (

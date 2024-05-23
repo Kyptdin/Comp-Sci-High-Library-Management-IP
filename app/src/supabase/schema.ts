@@ -70,21 +70,24 @@ export type Database = {
       }
       reports: {
         Row: {
-          created_at: string | null
+          created_at: string
           explanation: string
-          id: number
+          id: string
+          reason: string
           user: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           explanation: string
-          id?: number
+          id?: string
+          reason: string
           user: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           explanation?: string
-          id?: number
+          id?: string
+          reason?: string
           user?: string
         }
         Relationships: [

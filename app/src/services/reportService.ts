@@ -7,7 +7,7 @@ Supabse does not provide routes. Instead, Supabase provides a SDK to allow progr
 export const createReport = async (reportData: Report) => {
   const { data, error } = await supabase
     .from("reports")
-    .insert([{ ...reportData, created_at: null }])
+    .insert([reportData])
     .select();
 
   if (error) {

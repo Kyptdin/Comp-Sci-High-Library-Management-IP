@@ -10,10 +10,11 @@ export const useCreateReport = () => {
     onSuccess: (data) => {
       toast({
         title: "Successfully Created Report",
-        content: `Created report for the reason ${data[0].reasons}`,
+        content: `Created report for the reason ${data[0].reason}`,
       });
     },
     onError(error) {
+      console.log(error.message);
       toast({
         title: "Failed to Create Report",
         content: error.message,
