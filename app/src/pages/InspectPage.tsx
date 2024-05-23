@@ -20,21 +20,21 @@ function checkDataResults(data: any) {
 
 /*
 TODO List:
-The toast that appears when you add a book should link to the book or/and state the name of the book
+The toast that appears when you add a book should link to the book or/and state the name of the book (SAFI)
 
-Have an image of the book towards the right of the add book form
+Have an image of the book towards the right of the add book form (SAFI)
 
-Add the edit book book
+Add the edit book book (SAFI)
 
-Add the return book works
+Add the return book works (SAFI)
 
-Add reports
+Add reports (SAFI)
 
 When the user is adding a isbn the user shouldn't have to wait to see that the isbn does not exist or is already being used
 
-The admin page should only allow admins to vist the page
+The admin page should only allow admins to vist the page (ISAAC)
 
-Add the borrowing (teacher does not have to approved) (there's a limit to the amount of books you can borrow) (if the user has more than 1 book missing the user can't buy)
+Add the borrowing (ISAAC)(teacher does not have to approved) (there's a limit to the amount of books you can borrow) (if the user has more than 1 book missing the user can't buy)
 */
 
 export const InspectPage = () => {
