@@ -1,12 +1,22 @@
 import { Navbar } from "@/components/Navbar";
 import { SearchBar } from "@/components/SearchBar";
-import { searchBookBySimilarTitle } from "@/services/bookService";
+import { deleteBookByISBN, editBookByISBN } from "@/services/bookService";
 import { useEffect } from "react";
 
 export const HomePage = () => {
+  // useEffect(() => {
+  //   editBookByISBN("9780439358064", {
+  //     id: "9780439358064",
+  //     total_copies: 800,
+  //     title: "Eclipse",
+  //     is_missing: false,
+  //   });
+  // }, []);
+
   useEffect(() => {
-    searchBookBySimilarTitle("harry potter");
+    deleteBookByISBN("9780439358064");
   }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
       <Navbar showNavbar={false} />

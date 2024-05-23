@@ -114,3 +114,24 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
   });
   return bookDataPairedWithImage;
 };
+
+/****** EDIT ROUTES ******/
+export const editBookByISBN = async (id: string, bookData: Book) => {
+  const { data, error } = await supabase
+    .from("books")
+    .update(bookData)
+    .eq("id", id)
+    .select();
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+};
+
+/****** DELETE ROUTES ******/
+export const deleteBookByISBN = async (id: string) => {
+  const { error } = await supabase.from("books").delete().eq("id", id);
+  if (error) {
+    throw new Error(error.message);
+  }
+};

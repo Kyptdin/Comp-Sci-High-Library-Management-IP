@@ -24,6 +24,8 @@ import { Warning } from "./Warning";
 import { BookHamburger } from "./Display/BookHamburger";
 
 import { FaBug } from "react-icons/fa";
+import { useCreateReport } from "@/hooks/report/useCreateReport";
+import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 
 interface bookData {
   children: string;
@@ -83,14 +85,18 @@ export const BookDisplay = ({
   image,
   children,
 }: bookData) => {
-  //   const { mutateAsync: createBook } = useCreateReport();
+  const { data: loggedInUserData } = useGetLoggedInUser();
+  const { mutateAsync: createReport } = useCreateReport();
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    const id = loggedInUserData?.userMetaData[0]?.user_id;
+    if (!id) return;
     if (!state.reason || state.reason.length < 1) {
       dispatch({ type: "SET_ERROR", payload: true });
       return;
     }
+    // await createReport({});
   };
 
   return (
