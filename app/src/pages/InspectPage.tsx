@@ -10,6 +10,7 @@ import { getIsbnLink } from "@/utils/isbnApi";
 import { useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import useSWR from "swr";
+import { useGetBookById } from "@/hooks/book/useGetBookById";
 
 // type any because it is google api request
 function checkDataResults(data: any) {
@@ -30,21 +31,19 @@ Add the return book works (SAFI)
 
 Add reports (SAFI)
 
-When the user is adding a isbn the user shouldn't have to wait to see that the isbn does not exist or is already being used
+When the user is adding a isbn the user shouldn't have to wait to see that the isbn does not exist or is already being used 
 
 The admin page should only allow admins to vist the page (ISAAC)
 
 Add the borrowing (ISAAC)(teacher does not have to approved) (there's a limit to the amount of books you can borrow) (if the user has more than 1 book missing the user can't buy)
 */
-
 export const InspectPage = () => {
   const { bookInspectIsbn } = useParams();
   const isbnSearch = bookInspectIsbn?.split("-").join("");
-
   const { data, isLoading, error } = useSWR(getIsbnLink(isbnSearch), fetcher);
 
   if (!checkDataResults(data) || error) {
-    return;
+    return null;
   }
 
   const { title, imageLinks, authors, description } =
