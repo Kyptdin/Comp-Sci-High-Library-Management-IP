@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import useSWR from "swr";
 import { useGetBookById } from "@/hooks/book/useGetBookById";
+import { useReturnBook } from "@/hooks/borrow/useReturnBook";
 
 // type any because it is google api request
 function checkDataResults(data: any) {
@@ -41,6 +42,7 @@ export const InspectPage = () => {
   const { bookInspectIsbn } = useParams();
   const isbnSearch = bookInspectIsbn?.split("-").join("");
   const { data, isLoading, error } = useSWR(getIsbnLink(isbnSearch), fetcher);
+  const { mutateAsync: returnBook } = useReturnBook();
 
   if (!checkDataResults(data) || error) {
     return null;
