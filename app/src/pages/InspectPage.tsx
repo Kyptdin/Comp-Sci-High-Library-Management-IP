@@ -46,6 +46,22 @@ export const InspectPage = () => {
     return null;
   }
 
+  /*BORROW RULES
+  User should not borrow the book if one of these are true
+  1. User already borrowed the book
+  2. All the copies are already borrowed
+  3. User has already reached the weekly borrow limit
+  */
+
+  /*RETURN RULES 
+  User should not return the book if one of these are true
+  1. The user is not currently borrowing the book
+  */
+
+  /*REPORT MISSING (DONE)
+  No rules exist for report missing
+  */
+
   const { title, imageLinks, authors, description } =
     data?.items[0]?.volumeInfo;
 

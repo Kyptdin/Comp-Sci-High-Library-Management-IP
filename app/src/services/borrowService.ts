@@ -58,12 +58,11 @@ export const getBorrowsByUserIdAndIsbn = async (
     .from("borrows")
     .select("*")
     // Filters
-    .eq("isbn", isbn)
-    .eq("user", userId);
+    .eq("user", userId)
+    .eq("isbn", isbn);
 
   if (error) {
     throw new Error(error.message);
   }
-
   return borrows;
 };
