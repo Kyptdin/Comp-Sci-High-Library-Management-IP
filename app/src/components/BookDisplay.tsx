@@ -1,16 +1,28 @@
-import { Button } from "@/components/ui/button"
-import { 
-    DropdownMenu,
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuItem
-} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+    DialogDescription,
+} from "@/components/ui/dialog"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Textarea } from "@/components/ui/textarea"
 
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 import { Warning } from "./Warning";
+import { BookHamburger } from "./Display/BookHamburger";
 
-import { MdOutlineMoreHoriz } from "react-icons/md";
 import { FaBug } from "react-icons/fa";
 
 type bookData = {
@@ -20,25 +32,23 @@ type bookData = {
     isAvaliable?: boolean,
 };
 
-export const BookDisplay = ({
-    children, 
-    image, 
-    isAvaliable = true, 
-    author
-} : bookData) => {
-    let displayedImage = image ? image : "/blank_book.jpg";
+export const BookDisplay = ({isAvaliable = true, author, image, children} : bookData) => {
+    let [reportOpen, setReportOpen] = useState<boolean>(false);
 
     return <div className={cn(
         "w-[325px] h-[500px] m-4 relative",
         "bg-black overflow-clip rounded-3xl font-outfit shadow-lg shadow-gray-900",
         "flex flex-col justify-end items-center"
     )}>
-        <img src={displayedImage} className="w-full h-full absolute fill-gray-400"/>
+        <img src={image} className="w-full h-full absolute fill-gray-400"/>
 
-        <div className="w-full h-full bg-gradient-to-t from-blue-950 absolute">
-            <p className="text-white font-bold text-5xl text-center mt-[125px] opacity-50">
+        <div className={cn(
+            "w-full h-full bg-gradient-to-t from-blue-950 absolute",
+            image ? "to-transparent" : "to-teal-800"
+        )}>
+            {!image ? <p className="text-white font-bold text-5xl text-center mt-[75px] opacity-50">
                 Book cover not found
-            </p>
+            </p> : <></>}
         </div>
 
         <div className="p-5 absolute w-full">
@@ -56,20 +66,44 @@ export const BookDisplay = ({
             >BORROW</Button>}
 
             <div className="flex justify-end items-center">
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button className="mt-3" variant="link">
-                            <MdOutlineMoreHoriz size={35} color="white"/>
-                        </Button>
-                    </DropdownMenuTrigger>
+                <BookHamburger>
+                    <DropdownMenuItem 
+                        className="text-red-800" 
+                        onClick={() => setReportOpen(true)}
+                    >
+                        <FaBug size={20}/>
+                        <p className="font-bold font-lg ml-1">Report</p>
+                    </DropdownMenuItem>
+                </BookHamburger>
 
-                    <DropdownMenuContent className="w-56">
-                        <DropdownMenuItem className="text-red-800">
-                            <FaBug size={20}/>
-                            <p className="font-bold font-lg ml-1">Report</p>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <Dialog open={reportOpen} onOpenChange={setReportOpen}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Report Book</DialogTitle>
+                            <DialogDescription className="pb-2">{children}</DialogDescription>
+
+                            <Select>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Pick a reason" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="lostBook">I lost the book</SelectItem>
+                                    <SelectItem value="damagedBook">The book is damaged</SelectItem>
+                                    <SelectItem value="bookMissing">The book is missing</SelectItem>
+                                </SelectContent>
+                            </Select>
+
+                            <Textarea placeholder="Explain here."/>
+                        </DialogHeader>
+                        <DialogFooter>
+                            <Button onClick={() => setReportOpen(false)} variant="secondary">
+                                Close
+                            </Button>
+
+                            <Button>Confirm</Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </div>
         </div>
   </div>
