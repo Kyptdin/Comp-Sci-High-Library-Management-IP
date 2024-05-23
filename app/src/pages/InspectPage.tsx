@@ -13,6 +13,7 @@ import useSWR from "swr";
 import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useReturnBook } from "@/hooks/borrow/useReturnBook";
 import { useCreateReport } from "@/hooks/report/useCreateReport";
+import { useBookReportDialog } from "@/hooks/book/useBookReportDialog";
 
 // type any because it is google api request
 function checkDataResults(data: any) {
@@ -45,6 +46,7 @@ export const InspectPage = () => {
   const isbnSearch = bookInspectIsbn?.split("-").join("");
   const { data, isLoading, error } = useSWR(getIsbnLink(isbnSearch), fetcher);
   const userId = loggedInUserData?.userMetaData[0].user_id;
+  const { DialogComponent, openDialog } = useBookReportDialog();
 
   /*REPORT MISSING (DONE)
   No rules exist for report missing
@@ -117,15 +119,14 @@ export const InspectPage = () => {
                 "bg-red-900 hover:text-black"
               )}
               variant="secondary"
-              onClick={() => {
-                alert("Currently reporting");
-              }}
+              onClick={openDialog}
             >
               Report Missing
             </Button>
           </div>
         </div>
       </div>
+      {DialogComponent}
     </div>
   );
 };
