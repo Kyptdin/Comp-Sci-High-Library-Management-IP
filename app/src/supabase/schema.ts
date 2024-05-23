@@ -70,19 +70,19 @@ export type Database = {
       }
       reports: {
         Row: {
-          created_at: string
+          created_at: string | null
           id: number
           reasons: string
           user: string
         }
         Insert: {
-          created_at?: string
+          created_at?: string | null
           id?: number
           reasons: string
           user: string
         }
         Update: {
-          created_at?: string
+          created_at?: string | null
           id?: number
           reasons?: string
           user?: string
