@@ -1,112 +1,45 @@
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogHeader,
+//   DialogTitle,
+//   DialogFooter,
+//   DialogDescription,
+// } from "@/components/ui/dialog";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 
 import { cn } from "@/lib/utils";
-import { useReducer } from "react";
+// import { useReducer } from "react";
 
 import { Warning } from "./Warning";
 import { BookHamburger } from "./Display/BookHamburger";
 
 import { FaBug } from "react-icons/fa";
-import { useCreateReport } from "@/hooks/report/useCreateReport";
-import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
+import { useBookReportDialog } from "@/hooks/book/useBookReportDialog";
 
-import { v4 as uuidv4 } from "uuid";
-
-type bookData = {
+interface BookData {
   children: string;
   author?: string;
   image?: string;
   isAvaliable?: boolean;
-};
-
-type State = {
-  reportOpen: boolean;
-  reason: string;
-  explanation: string;
-  isError: boolean;
-};
-
-type Action =
-  | { type: "OPEN_REPORT" }
-  | { type: "CLOSE_REPORT" }
-  | { type: "SET_REASON"; payload: string }
-  | { type: "SET_EXPLANATION"; payload: string }
-  | { type: "SET_ERROR"; payload: boolean }
-  | { type: "RESET" };
-
-const initialState: State = {
-  reportOpen: false,
-  reason: "",
-  explanation: "",
-  isError: false,
-};
-
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case "OPEN_REPORT":
-      return { ...state, reportOpen: true };
-    case "CLOSE_REPORT":
-      return { ...state, reportOpen: false };
-    case "SET_REASON":
-      return {
-        ...state,
-        reason: action.payload,
-        isError: action.payload.length < 1,
-      };
-    case "SET_EXPLANATION":
-      return { ...state, explanation: action.payload };
-    case "SET_ERROR":
-      return { ...state, isError: action.payload };
-    case "RESET":
-      return initialState;
-    default:
-      return state;
-  }
-};
+}
 
 export const BookDisplay = ({
   isAvaliable = true,
   author,
   image,
   children,
-}: bookData) => {
-  const { data: loggedInUserData } = useGetLoggedInUser();
-  const { mutateAsync: createReport } = useCreateReport();
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  const onSubmit = async () => {
-    const userId = loggedInUserData?.userMetaData[0].user_id;
-    if (!userId) return;
-    if (!state.reason || state.reason.length < 1) {
-      dispatch({ type: "SET_ERROR", payload: true });
-      return;
-    }
-    await createReport({
-      id: uuidv4(),
-      user: userId,
-      explanation: state.explanation,
-      reason: state.reason,
-      created_at: new Date().toUTCString(),
-    });
-    dispatch({ type: "RESET" });
-  };
+}: BookData) => {
+  const { openDialog, DialogComponent } = useBookReportDialog();
 
   return (
     <div
@@ -154,82 +87,13 @@ export const BookDisplay = ({
           <BookHamburger>
             <DropdownMenuItem
               className="text-red-800"
-              onClick={() => dispatch({ type: "OPEN_REPORT" })}
+              onClick={() => openDialog()}
             >
               <FaBug size={20} />
               <p className="font-bold font-lg ml-1">Report</p>
             </DropdownMenuItem>
           </BookHamburger>
-
-          {/* TODO: Abstract the entire dialog component and state related to the dialog component into another file which will be a  custom hook. The custom hook will return the state of the component and the component itself. Make sure that the custom hook uses the useReducer to make the state for the dialog component. */}
-          {/* <Dialog
-            open={state.reportOpen}
-            onOpenChange={(open) => {
-              if (!open) {
-                dispatch({ type: "RESET" });
-              } else {
-                dispatch({ type: "OPEN_REPORT" });
-              }
-            }}
-          >
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Report Book</DialogTitle>
-                <DialogDescription className="pb-2">
-                  {children}
-                </DialogDescription>
-
-                <Select
-                  onValueChange={(newReason) => {
-                    dispatch({ type: "SET_REASON", payload: newReason });
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pick a reason" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="I lost the book">
-                      I lost the book
-                    </SelectItem>
-                    <SelectItem value="The book is damaged">
-                      The book is damaged
-                    </SelectItem>
-                    <SelectItem value="The book is missing">
-                      The book is missing
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                {state.isError && (
-                  <p className="text-sm text-red-500 font-semibold">
-                    Please include a reason
-                  </p>
-                )}
-
-                <Textarea
-                  placeholder="Explain here."
-                  onChange={(e) =>
-                    dispatch({
-                      type: "SET_EXPLANATION",
-                      payload: e.target.value,
-                    })
-                  }
-                />
-              </DialogHeader>
-              <DialogFooter>
-                <Button
-                  onClick={() => {
-                    dispatch({ type: "RESET" });
-                    dispatch({ type: "CLOSE_REPORT" });
-                  }}
-                  variant="secondary"
-                >
-                  Close
-                </Button>
-
-                <Button onClick={onSubmit}>Report</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog> */}
+          {DialogComponent}
         </div>
       </div>
     </div>
