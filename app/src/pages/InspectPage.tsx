@@ -43,7 +43,12 @@ export const InspectPage = () => {
   const { data: loggedInUserData } = useGetLoggedInUser();
   const { bookInspectIsbn } = useParams();
   const isbnSearch = bookInspectIsbn?.split("-").join("");
-  const { data, isLoading, error } = useSWR(getIsbnLink(isbnSearch), fetcher);
+  const {
+    data: googleBooksData,
+    isLoading,
+    error,
+  } = useSWR(getIsbnLink(isbnSearch), fetcher);
+  const googleBooksDataAPI: BooksVolumesResponse = googleBooksData;
   const isbnExistInTheWorld: boolean = error;
   const userId = loggedInUserData?.userMetaData[0].user_id;
   const { DialogComponent, openDialog, isReportingBook } =
@@ -57,16 +62,10 @@ export const InspectPage = () => {
     !bookDataFoundByIsbn ||
     bookDataFoundByIsbn.length === 0 ||
     isbnExistInTheWorld ||
-    !checkDataResults(data);
+    !checkDataResults(bookDataFoundByIsbn);
 
-  // Right here is the error
   const { title, imageLinks, authors, description } =
-    data?.items[0]?.volumeInfo;
-
-  const title = "Among us";
-  const imageLinks = "Sussy";
-  const authors = "Ohio";
-  const description = "Eating food";
+    googleBooksDataAPI.items[0].volumeInfo;
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">

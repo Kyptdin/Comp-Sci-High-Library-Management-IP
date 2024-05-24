@@ -7,6 +7,6 @@ export const getIsbnLink = (isbn: string | number | undefined): string => {
 export const fetchBookFromIsbn = async (
   url = isbnApiLink,
   { arg }: { arg: string }
-) => {
+): Promise<BooksVolumesResponse> => {
   return fetch(`${url}${arg}`).then((res) => res.json());
 };
