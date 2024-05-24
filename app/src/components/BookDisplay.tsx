@@ -6,13 +6,15 @@ interface BookData {
   image?: string;
 }
 
-export const BookDisplay = ({author, image, children}: BookData) => {
+export const BookDisplay = ({ author, image, children }: BookData) => {
   return (
-    <div className={cn(
-      "w-[250px] h-[375px] m-4 relative",
-      "bg-black overflow-clip rounded-3xl font-outfit shadow-lg shadow-gray-900",
-      "flex flex-col justify-end items-center"
-    )}>
+    <div
+      className={cn(
+        "w-[250px] h-[375px] m-4 relative",
+        "bg-black overflow-clip rounded-3xl font-outfit shadow-lg shadow-gray-900",
+        "flex flex-col justify-end items-center"
+      )}
+    >
       <img src={image} className="w-full h-full absolute fill-gray-400" />
 
       <div
@@ -21,9 +23,13 @@ export const BookDisplay = ({author, image, children}: BookData) => {
           image ? "to-transparent" : "to-teal-800"
         )}
       >
-        {!image ? <p 
-          className="text-white font-bold text-3xl text-center mt-[75px] opacity-50"
-        >Book cover not found</p> : <></>}
+        {!image ? (
+          <p className="text-white font-bold text-3xl text-center mt-[75px] opacity-50">
+            Book cover not found
+          </p>
+        ) : (
+          <></>
+        )}
       </div>
 
       <div className="p-5 absolute w-full">

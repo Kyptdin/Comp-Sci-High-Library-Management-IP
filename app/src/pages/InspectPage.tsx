@@ -62,6 +62,7 @@ export const InspectPage = () => {
     isLoading: isCurrnetlyGettingIsbnInSupabase,
     isError: isErrrorFindingIsbnInSupabase,
   } = useGetBookById(isbnSearch);
+
   const pageIsCurrentlyLoading =
     isCurrnetlyGettingIsbnInSupabase || isCurrentlyFetchingGoogleBooksAPI;
 
@@ -78,6 +79,8 @@ export const InspectPage = () => {
   const imageLinks = volumeInfo?.imageLinks;
   const authors = volumeInfo?.authors;
   const description = volumeInfo?.description;
+  console.log(imageLinks?.thumbnail);
+  console.log(pageIsCurrentlyLoading);
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
@@ -93,7 +96,7 @@ export const InspectPage = () => {
             {pageIsCurrentlyLoading ? (
               <BookDisplaySkeleton />
             ) : (
-              <BookDisplayImage src={imageLinks.thumbnail} />
+              <BookDisplayImage src={imageLinks?.thumbnail} />
             )}
           </div>
 
