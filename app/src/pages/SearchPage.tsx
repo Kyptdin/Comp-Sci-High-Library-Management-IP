@@ -1,10 +1,11 @@
+import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
 import { BookDisplay } from "@/components/BookDisplay";
 import { Navbar } from "@/components/Navbar";
 import { Error } from "@/components/Error";
-import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
 
 import { useParams } from "react-router-dom";
 import { useSearchBookBySimilarTitle } from "@/hooks/book/useSearchBookBySimilarTitle";
+import { Link } from "react-router-dom";
 
 export const SearchPage = () => {
   const { searchQuery } = useParams();
@@ -41,26 +42,27 @@ export const SearchPage = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-4 gap-1 p-5">
+      <div className="grid grid-cols-5 p-5">
         {booksForSearchedQuery &&
           booksForSearchedQuery.map((bookData, key: number) => {
             const {
               title,
               googleBooksApiData: { authors, image },
             } = bookData;
+
             const finalAuthorName =
               authors && authors?.length > 0 ? authors : "Unknown";
+            const inspectPageLink = `/inspect/${bookData.id}`
 
-            return (
+            return (<Link to={inspectPageLink}>
               <BookDisplay
                 author={finalAuthorName}
-                isAvaliable={true}
                 image={image}
                 key={key}
               >
                 {title}
               </BookDisplay>
-            );
+            </Link>);
           })}
       </div>
     </div>

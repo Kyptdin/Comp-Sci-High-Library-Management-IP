@@ -48,7 +48,7 @@ export const AddBooksAdminPage = () => {
     try {
       await createBook({
         id: bookIsbn,
-        total_copies: totalCopies,
+        total_copies_within_school: totalCopies,
         title,
         is_missing: false,
       });
