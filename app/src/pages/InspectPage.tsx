@@ -1,22 +1,29 @@
 import { Navbar } from "@/components/Navbar";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
-import { BookDisplayImage } from "@/components/BookDisplayImage";
 // @ts-ignore comment
 import { fetcher } from "@/hooks/fetcher";
 import { getIsbnLink } from "@/utils/isbnApi";
 import { useParams } from "react-router-dom";
-import { cn } from "@/lib/utils";
 import useSWR from "swr";
-import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useReturnBook } from "@/hooks/borrow/useReturnBook";
+import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useBookReportDialog } from "@/hooks/book/useBookReportDialog";
 import { useBorrowBook } from "@/hooks/borrow/useBorrowBook";
-
-import { v4 as uuidv4 } from "uuid";
 import { useGetBookById } from "@/hooks/book/useGetBookById";
+import { VolumeList } from "@/types/googleBooksAPI";
+import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
+import { BookDisplayImage } from "@/components/BookDisplayImage";
 import { Error } from "@/components/Error";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { v4 as uuidv4 } from "uuid";
+
+// type any because it is google api request
+function checkDataResults(data: VolumeList) {
+  if (data == undefined) return false;
+  if (!data?.items || data?.items?.length <= 0) return false;
+  return true;
+}
 
 /*
 TODO::
@@ -33,25 +40,16 @@ The admin page should only allow admins to vist the page (ISAAC)
 Add the borrowing (ISAAC)(teacher does not have to approved) (there's a limit to the amount of books you can borrow) (if the user has more than 1 book missing the user can't buy)
 */
 
-// type any because it is google api request
-function checkDataResults(data: any) {
-  if (data == undefined) 
-    return false;
-  if (data.items.length <= 0) 
-    return false;
-  return true;
-}
-
 export const InspectPage = () => {
   const { data: loggedInUserData } = useGetLoggedInUser();
   const { bookInspectIsbn } = useParams();
   const isbnSearch = bookInspectIsbn?.split("-").join("");
   const {
     data: googleBooksData,
-    isLoading,
+    isLoading: isCurrentlyFetchingGoogleBooksAPI,
     error,
   } = useSWR(getIsbnLink(isbnSearch), fetcher);
-  const googleBooksDataAPI: BooksVolumesResponse = googleBooksData;
+  const googleBooksDataAPI: VolumeList = googleBooksData;
   const isbnExistInTheWorld: boolean = error;
   const userId = loggedInUserData?.userMetaData[0].user_id;
   const { DialogComponent, openDialog, isReportingBook } =
@@ -60,15 +58,30 @@ export const InspectPage = () => {
     useReturnBook();
   const { mutateAsync: borrowBook, isPending: isBorrowingBook } =
     useBorrowBook();
-  const { data: bookDataFoundByIsbn } = useGetBookById(isbnSearch);
-  const doNotDisplayBook =
-    !bookDataFoundByIsbn ||
-    bookDataFoundByIsbn.length === 0 ||
-    isbnExistInTheWorld ||
-    !checkDataResults(bookDataFoundByIsbn);
+  const {
+    data: bookDataFoundByIsbn,
+    isLoading: isCurrnetlyGettingIsbnInSupabase,
+    isError: isErrrorFindingIsbnInSupabase,
+  } = useGetBookById(isbnSearch);
 
-  const { title, imageLinks, authors, description } =
-    googleBooksDataAPI.items[0].volumeInfo;
+  const pageIsCurrentlyLoading =
+    isCurrnetlyGettingIsbnInSupabase || isCurrentlyFetchingGoogleBooksAPI;
+
+  const doNotDisplayBook =
+    !pageIsCurrentlyLoading &&
+    (isErrrorFindingIsbnInSupabase ||
+      !bookDataFoundByIsbn ||
+      bookDataFoundByIsbn.length === 0 ||
+      isbnExistInTheWorld ||
+      !checkDataResults(googleBooksDataAPI));
+
+  const volumeInfo = googleBooksDataAPI?.items[0].volumeInfo;
+  const title = volumeInfo?.title;
+  const imageLinks = volumeInfo?.imageLinks;
+  const authors = volumeInfo?.authors;
+  const description = volumeInfo?.description;
+  console.log(imageLinks?.thumbnail);
+  console.log(pageIsCurrentlyLoading);
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
@@ -79,11 +92,13 @@ export const InspectPage = () => {
       ) : (
         <div className="full-center p-5">
           <div className="w-1/4 full-center flex-col">
-            {isLoading || error || !imageLinks.thumbnail ? (
+            {/* // TODO: Make sure to take into consideration that some books don't
+            ahve images */}
+            {pageIsCurrentlyLoading ? (
               <BookDisplaySkeleton />
             ) : (
-              <BookDisplayImage src={imageLinks.thumbnail} />
-            )};
+              <BookDisplayImage src={imageLinks?.thumbnail} />
+            )}
           </div>
 
           <div className="text-white w-1/2 p-3">
