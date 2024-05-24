@@ -62,9 +62,13 @@ export const getBookById = async (id: string) => {
     .select("*")
     // Filters
     .eq("id", id);
+
   if (error) {
     throw new Error(error.message);
   }
+
+  console.log(books);
+
   return books;
 };
 
