@@ -25,7 +25,8 @@ export const createBook = async (bookData: Book) => {
 export const borrowBook = async (borrowInput: Borrow) => {
   //Step #1 Checks if the book has any aviable copies within the school
   const bookSearchByIsbn = await getBookById(borrowInput.isbn);
-  const maxAmountOfCopiesWithinTheSchool = bookSearchByIsbn[0].total_copies;
+  const maxAmountOfCopiesWithinTheSchool =
+    bookSearchByIsbn[0].total_copies_within_school;
   const copiesDataFromBookThatHaveTheBook =
     await getAllBorrowsNotReturnedByIsbn(borrowInput.isbn);
   const totalNumberOfCopiesPeopleHave =

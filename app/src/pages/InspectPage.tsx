@@ -14,6 +14,7 @@ import { useBookReportDialog } from "@/hooks/book/useBookReportDialog";
 import { useBorrowBook } from "@/hooks/borrow/useBorrowBook";
 
 import { v4 as uuidv4 } from "uuid";
+import { useGetBookById } from "@/hooks/book/useGetBookById";
 
 // type any because it is google api request
 function checkDataResults(data: any) {
@@ -46,11 +47,16 @@ export const InspectPage = () => {
   const isbnSearch = bookInspectIsbn?.split("-").join("");
   const { data, isLoading, error } = useSWR(getIsbnLink(isbnSearch), fetcher);
   const userId = loggedInUserData?.userMetaData[0].user_id;
-  const { DialogComponent, openDialog } = useBookReportDialog(); //Used for reporting
-  const { mutateAsync: returnBook } = useReturnBook();
-  const { mutateAsync: borrowBook } = useBorrowBook();
+  const { DialogComponent, openDialog, isReportingBook } =
+    useBookReportDialog(); //Used for reporting
+  const { mutateAsync: returnBook, isPending: isReturningBook } =
+    useReturnBook();
+  const { mutateAsync: borrowBook, isPending: isBorrowingBook } =
+    useBorrowBook();
+  const { isError: isbnDoesNotExistWithinSupabase } =
+    useGetBookById(isbnSearch);
 
-  if (!checkDataResults(data) || error) {
+  if (!checkDataResults(data) || error || isbnDoesNotExistWithinSupabase) {
     return null;
   }
 
@@ -85,6 +91,7 @@ export const InspectPage = () => {
             <Button
               variant="secondary"
               className="text-lg w-1/4 mr-3 py-6"
+              disabled={isBorrowingBook}
               onClick={() => {
                 if (!isbnSearch || !userId) return;
                 // Create a new Date object for the current date
@@ -128,6 +135,7 @@ export const InspectPage = () => {
             <Button
               variant="secondary"
               className="text-lg w-1/4 mr-3 py-6"
+              disabled={isReturningBook}
               onClick={() => {
                 returnBook({ userId, isbn: isbnSearch });
               }}
@@ -142,6 +150,7 @@ export const InspectPage = () => {
                 "bg-red-900 hover:text-black"
               )}
               variant="secondary"
+              disabled={isReportingBook}
               onClick={openDialog}
             >
               Report Missing

@@ -68,7 +68,8 @@ const reducer = (state: DialogState, action: Action): DialogState => {
 export const useBookReportDialog = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { data: loggedInUserData } = useGetLoggedInUser();
-  const { mutateAsync: createReport } = useReportBook();
+  const { mutateAsync: createReport, isPending: isReportingBook } =
+    useReportBook();
 
   const openDialog = () => {
     dispatch({ type: "OPEN_REPORT" });
@@ -183,5 +184,6 @@ export const useBookReportDialog = () => {
     setExplanation,
     setError,
     handleSubmit,
+    isReportingBook,
   };
 };

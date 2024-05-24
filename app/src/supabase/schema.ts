@@ -14,19 +14,19 @@ export type Database = {
           id: string
           is_missing: boolean
           title: string
-          total_copies: number
+          total_copies_within_school: number
         }
         Insert: {
           id: string
           is_missing: boolean
           title: string
-          total_copies: number
+          total_copies_within_school: number
         }
         Update: {
           id?: string
           is_missing?: boolean
           title?: string
-          total_copies?: number
+          total_copies_within_school?: number
         }
         Relationships: []
       }

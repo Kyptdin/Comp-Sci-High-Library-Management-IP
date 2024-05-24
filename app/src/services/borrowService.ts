@@ -126,6 +126,7 @@ export const editBorrowByUserIdAndIsbn = async (
   isbn: string,
   newBorrowData: Borrow
 ) => {
+  // TODO: Fix the error in the function. Unable to edit the borrows due to some duplicate key error
   const { data, error } = await supabase
     .from("borrows")
     .update(newBorrowData)
@@ -140,6 +141,7 @@ export const editBorrowByUserIdAndIsbn = async (
   return data;
 };
 
+// TODO: Take into consideration that the user may have to return multiple copies of the same book
 export const returnBorrowedBook = async ({ userId, isbn }: ReturnBookProps) => {
   if (!userId || !isbn) return null;
 
@@ -151,7 +153,8 @@ export const returnBorrowedBook = async ({ userId, isbn }: ReturnBookProps) => {
       "Failed to borrow book. You are not currently borrowing the book"
     );
   }
-
+  console.log(borrowData);
+  alert("Reached this part of the website");
   //Look for all the borrows with the user id of the user and the isbn of the book and set "returned" column to true
   const editingBorrowsPromisesArr = borrowData.map((borrow) => {
     return editBorrowByUserIdAndIsbn(userId, isbn, {
@@ -162,6 +165,8 @@ export const returnBorrowedBook = async ({ userId, isbn }: ReturnBookProps) => {
   const settingBorrowsToReturnedData = await Promise.all(
     editingBorrowsPromisesArr
   );
+
+  alert("Reached the end");
 
   return settingBorrowsToReturnedData;
 };
