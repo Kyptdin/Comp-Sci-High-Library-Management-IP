@@ -48,7 +48,7 @@ export const AddBooksAdminPage = () => {
     try {
       await createBook({
         id: bookIsbn,
-        total_copies: totalCopies,
+        total_copies_within_school: totalCopies,
         title,
         is_missing: false,
       });
@@ -88,9 +88,11 @@ export const AddBooksAdminPage = () => {
               "duration-50 transition ease-out"
             )}
           />
-          {bookValidated ? 
-            <FaSquareCheck size={28} className="text-green-600"/> : 
-            <FaSquareXmark size={28} className="text-red-600"/>}
+          {bookValidated ? (
+            <FaSquareCheck size={28} className="text-green-600" />
+          ) : (
+            <FaSquareXmark size={28} className="text-red-600" />
+          )}
         </div>
         <p className="text-sm text-teal-600 flex">
           <FaInfoCircle size={20} className="mr-2" />

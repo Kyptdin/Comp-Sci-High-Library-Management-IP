@@ -8,7 +8,7 @@ export const ErrorPage = () => {
       <Navbar showNavbar={true} />
 
       <div className="flex flex-col justify-center items-center p-5 h-[80vh]">
-        <Error/>
+        <Error />
       </div>
     </div>
   );
