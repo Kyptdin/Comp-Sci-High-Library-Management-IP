@@ -18,13 +18,6 @@ import { v4 as uuidv4 } from "uuid";
 import { useGetBookById } from "@/hooks/book/useGetBookById";
 import { Error } from "@/components/Error";
 
-// type any because it is google api request
-function checkDataResults(data: any) {
-  if (data == undefined) return false;
-  if (data.items.length <= 0) return false;
-  return true;
-}
-
 /*
 TODO::
 The toast that appears when you add a book should link to the book or/and state the name of the book (SAFI)
@@ -39,6 +32,16 @@ The admin page should only allow admins to vist the page (ISAAC)
 
 Add the borrowing (ISAAC)(teacher does not have to approved) (there's a limit to the amount of books you can borrow) (if the user has more than 1 book missing the user can't buy)
 */
+
+// type any because it is google api request
+function checkDataResults(data: any) {
+  if (data == undefined) 
+    return false;
+  if (data.items.length <= 0) 
+    return false;
+  return true;
+}
+
 export const InspectPage = () => {
   const { data: loggedInUserData } = useGetLoggedInUser();
   const { bookInspectIsbn } = useParams();
@@ -80,8 +83,7 @@ export const InspectPage = () => {
               <BookDisplaySkeleton />
             ) : (
               <BookDisplayImage src={imageLinks.thumbnail} />
-            )}
-            ;
+            )};
           </div>
 
           <div className="text-white w-1/2 p-3">
