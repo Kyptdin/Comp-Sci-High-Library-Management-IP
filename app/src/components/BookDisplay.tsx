@@ -1,54 +1,18 @@
-import { Button } from "@/components/ui/button";
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogFooter,
-//   DialogDescription,
-// } from "@/components/ui/dialog";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-// import { Textarea } from "@/components/ui/textarea";
-
 import { cn } from "@/lib/utils";
-// import { useReducer } from "react";
-
-import { Warning } from "./Warning";
-import { BookHamburger } from "./Display/BookHamburger";
-
-import { FaBug } from "react-icons/fa";
-import { useBookReportDialog } from "@/hooks/book/useBookReportDialog";
 
 interface BookData {
   children: string;
   author?: string;
   image?: string;
-  isAvaliable?: boolean;
 }
 
-export const BookDisplay = ({
-  isAvaliable = true,
-  author,
-  image,
-  children,
-}: BookData) => {
-  const { openDialog, DialogComponent } = useBookReportDialog();
-
+export const BookDisplay = ({author, image, children}: BookData) => {
   return (
-    <div
-      className={cn(
-        "w-[325px] h-[500px] m-4 relative",
-        "bg-black overflow-clip rounded-3xl font-outfit shadow-lg shadow-gray-900",
-        "flex flex-col justify-end items-center"
-      )}
-    >
+    <div className={cn(
+      "w-[250px] h-[375px] m-4 relative",
+      "bg-black overflow-clip rounded-3xl font-outfit shadow-lg shadow-gray-900",
+      "flex flex-col justify-end items-center"
+    )}>
       <img src={image} className="w-full h-full absolute fill-gray-400" />
 
       <div
@@ -57,44 +21,14 @@ export const BookDisplay = ({
           image ? "to-transparent" : "to-teal-800"
         )}
       >
-        {!image ? (
-          <p className="text-white font-bold text-5xl text-center mt-[75px] opacity-50">
-            Book cover not found
-          </p>
-        ) : (
-          <></>
-        )}
+        {!image ? <p 
+          className="text-white font-bold text-3xl text-center mt-[75px] opacity-50"
+        >Book cover not found</p> : <></>}
       </div>
 
       <div className="p-5 absolute w-full">
-        <h1 className="text-2xl font-bold mt-2 text-white">{children}</h1>
-        <p className="text-lg mb-3 italic text-white">By: {author}</p>
-
-        {!isAvaliable ? (
-          <Warning>NOT AVAILABLE</Warning>
-        ) : (
-          <Button
-            className="w-full font-bold shadow-md text-md"
-            variant="outline"
-            onClick={() => {}}
-            size="lg"
-          >
-            BORROW
-          </Button>
-        )}
-
-        <div className="flex justify-end items-center">
-          <BookHamburger>
-            <DropdownMenuItem
-              className="text-red-800"
-              onClick={() => openDialog()}
-            >
-              <FaBug size={20} />
-              <p className="font-bold font-lg ml-1">Report</p>
-            </DropdownMenuItem>
-          </BookHamburger>
-          {DialogComponent}
-        </div>
+        <h1 className="text-xl font-bold mt-2 text-white">{children}</h1>
+        <p className="text-lg mb-1 italic text-white">By: {author}</p>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
 import { BookDisplayImage } from "@/components/BookDisplayImage";
 // @ts-ignore comment
@@ -33,10 +34,6 @@ Have an image of the book towards the right of the add book form (SAFI)
 Add the edit book book (SAFI)
 
 Add the return book works (SAFI)
-
-Add reports (SAFI)
-
-When the user is adding a isbn the user shouldn't have to wait to see that the isbn does not exist or is already being used 
 
 The admin page should only allow admins to vist the page (ISAAC)
 
@@ -88,15 +85,20 @@ export const InspectPage = () => {
             ;
           </div>
 
-          <div className="text-white w-1/2">
+          <div className="text-white w-1/2 p-3">
             <h1 className="font-bold text-4xl">{title}</h1>
-            <h3 className="italic text-2xl">
+            <h3 className="text-2xl text-gray-300">
               By: {authors ? authors[0] : "Unknown"}
             </h3>
 
-            <p className="text-md text-gray-500 my-[50px]">
+            <ScrollArea
+              className={cn(
+                "text-md text-gray-500",
+                "my-[25px] pr-[20px] w-full h-[200px]"
+              )}
+            >
               {description || "No description"}
-            </p>
+            </ScrollArea>
 
             <div className="flex items-center justify-left">
               <Button
