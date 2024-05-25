@@ -50,7 +50,6 @@ export const AddBooksAdminPage = () => {
         id: bookIsbn,
         total_copies_within_school: totalCopies,
         title,
-        is_missing: false,
       });
     } catch (error) {
       const errorObj = error as Error;
