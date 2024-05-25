@@ -31,7 +31,6 @@ export const borrowBook = async (borrowInput: Borrow) => {
   // Could be improved
   const copiesDataFromBookThatHaveTheBook =
     await getAllBorrowsNotReturnedByIsbn(borrowInput.isbn);
-  alert(copiesDataFromBookThatHaveTheBook.length);
   const totalNumberOfCopiesPeopleHave =
     copiesDataFromBookThatHaveTheBook.length;
 
@@ -69,8 +68,6 @@ export const getBookById = async (id: string) => {
   if (error) {
     throw new Error(error.message);
   }
-
-  console.log(books);
 
   return books;
 };
@@ -143,7 +140,6 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
     }
     // .items[0].volumeInfo.authors
   ) as PromiseFulfilledResult<VolumeList>[];
-  console.log(successfulGoogleAPIQuries);
   const googleAPIDAtaFlat = successfulGoogleAPIQuries.map((query) => {
     const data = query.value;
     const firstBookItem = data?.items[0];

@@ -169,16 +169,12 @@ export const returnBorrowedBook = async ({ userId, isbn }: ReturnBookProps) => {
     userId
   );
 
-  console.log(borrowData);
-
   // Can't return the book if the user isn't currently borrowing the booking
   if (borrowData.length === 0) {
     throw new Error(
       "Failed to borrow book. You are not currently borrowing the book"
     );
   }
-
-  console.log(borrowData);
 
   //Look for all the borrows with the user id of the user and the isbn of the book and set "returned" column to true
   const editingBorrowsPromisesArr = borrowData.map((borrow) => {
