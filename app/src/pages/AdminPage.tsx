@@ -4,16 +4,19 @@ import { Button } from "@/components/ui/button";
 import { NavLink, Outlet } from "react-router-dom";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { useEffect, useRef } from "react";
+import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 
 export const AdminPage = () => {
   const defaultRouteButtonRef = useRef<HTMLButtonElement>(null);
   const notOnTheNestedRoutes = window.location.href.endsWith("/admin");
+  const { data: loggedIUserData } = useGetLoggedInUser();
+  const userIsAdmin = loggedIUserData?.userMetaData[0].admin_status === "admin";
 
   useEffect(() => {
     const searchButton = defaultRouteButtonRef.current;
-    if (!searchButton || !notOnTheNestedRoutes) return;
+    if (!searchButton || !notOnTheNestedRoutes || !userIsAdmin) return;
     searchButton.click();
-  }, [notOnTheNestedRoutes]);
+  }, [notOnTheNestedRoutes, userIsAdmin]);
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950 flex flex-col">
