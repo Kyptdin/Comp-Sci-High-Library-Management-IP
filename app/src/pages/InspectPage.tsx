@@ -33,11 +33,11 @@ Have an image of the book towards the right of the add book form (SAFI)
 
 Add the edit book book (SAFI)
 
-Add the return book works (SAFI)
+Add the return book works (SAFI) (DONE)
 
-The admin page should only allow admins to vist the page (ISAAC)
+The admin page should only allow admins to vist the page (ISAAC) (DONE)
 
-Add the borrowing (ISAAC)(teacher does not have to approved) (there's a limit to the amount of books you can borrow) (if the user has more than 1 book missing the user can't buy)
+Add the borrowing (ISAAC)(teacher does not have to approved) (there's a limit to the amount of books you can borrow) (if the user has more than 1 book missing the user can't buy) (DONE)
 */
 
 export const InspectPage = () => {
