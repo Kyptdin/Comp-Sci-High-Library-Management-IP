@@ -26,17 +26,16 @@ function checkDataResults(data: VolumeList) {
 }
 
 /*
-TODO::
-The toast that appears when you add a book should link to the book or/and state the name of the book (SAFI)
-
-Have an image of the book towards the right of the add book form (SAFI)
-
-Add the edit book book (SAFI)
-
+TODO:
+The toast that appears when you add a book should link to the book or/and state the name of the book (SAFI) (DONE)
+Have an image of the book towards the right of the add book form (SAFI) (DONE)
+Some books don't have images on Inspect page (SAFI) (DONE)
 Add the return book works (SAFI) (DONE)
+Add the edit book book (SAFI) (DONE)
+
+Fix the issue with the search page grid (SAFI)
 
 The admin page should only allow admins to vist the page (ISAAC) (DONE)
-
 Add the borrowing (ISAAC)(teacher does not have to approved) (there's a limit to the amount of books you can borrow) (if the user has more than 1 book missing the user can't buy) (DONE)
 */
 
@@ -90,9 +89,7 @@ export const InspectPage = () => {
       ) : (
         <div className="full-center p-5">
           <div className="w-1/4 full-center flex-col">
-            {/* // TODO: Make sure to take into consideration that some books don't
-            ahve images */}
-            {pageIsCurrentlyLoading ? (
+            {(pageIsCurrentlyLoading || !imageLinks) ? (
               <BookDisplaySkeleton />
             ) : (
               <BookDisplayImage src={imageLinks?.thumbnail} />
