@@ -1,4 +1,4 @@
-import { Book, BooksUpdate, Borrow } from "@/types/supabaseTypes";
+import { Book, Borrow } from "@/types/supabaseTypes";
 import { supabase } from "../supabase/supabaseClient";
 import { fetchBookFromIsbn, isbnApiLink } from "@/utils/isbnApi";
 import {

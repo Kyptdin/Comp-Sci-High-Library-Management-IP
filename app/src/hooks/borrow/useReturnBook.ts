@@ -16,7 +16,7 @@ export const useReturnBook = () => {
     onSuccess: () => {
       toast({
         variant: "default",
-        title: "Successful Returned Book",
+        title: "Successfully Returned Book",
         description: "Your book has been returned.",
       });
     },

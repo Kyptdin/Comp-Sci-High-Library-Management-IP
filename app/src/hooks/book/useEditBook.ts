@@ -14,8 +14,8 @@ export const useEditBook = () => {
     onSuccess: (data) => {
       toast({
         variant: "default",
-        title: "Successful Edited Book",
-        description: "Your book has been edited.",
+        title: "Successfully Edited Book",
+        description: `${data[0].title} has been edited`,
       });
     },
     onError: (error) => {

@@ -11,16 +11,17 @@ export const useCreateBook = () => {
     mutationFn: createBook,
     mutationKey: ["createBook"],
     onSuccess: (data) => {
-      const viewPage = () => navigate(
-        `/inspect/${data[0].id}`);
+      const viewPage = () => navigate(`/inspect/${data[0].id}`);
 
       toast({
         variant: "default",
-        title: "Successful Created Book",
+        title: "Successfully Created Book",
         description: "Your b</ToastActionElement>ook has been created",
-        action: (<ToastAction altText="View page" onClick={viewPage}>
-          View page
-        </ToastAction>),
+        action: (
+          <ToastAction altText="View page" onClick={viewPage}>
+            View page
+          </ToastAction>
+        ),
       });
     },
     onError: (error) => {
