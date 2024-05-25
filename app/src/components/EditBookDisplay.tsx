@@ -20,12 +20,22 @@ import { Link } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
+import { useState } from "react";
+import { useEditBook } from "@/hooks/book/useEditBook";
 
 export const EditBookDisplay = ({ isbn }: { isbn: string }) => {
   const { data, error, isLoading } = useSWR(getIsbnLink(isbn), fetcher);
+  const { mutateAsync: editBook, isPending: isEditingBook } = useEditBook();
+  const [amountOfCopiesInBook, setAmountOfCopiesInBook] = useState<number>();
+
   const firstBookItem = data?.items[0];
   const info = firstBookItem?.volumeInfo;
   const inspectPage = `/inspect/${isbn}`;
+
+  const onSubmit = () => {
+    // editBook({isbn: });
+    alert(amountOfCopiesInBook);
+  };
 
   return (
     <div className="justify-start flex mb-2">
@@ -66,11 +76,19 @@ export const EditBookDisplay = ({ isbn }: { isbn: string }) => {
 
                     <div className="flex items-center pt-5">
                       <h1 className="text-black mr-3">Amount</h1>
-                      <Input type="number" />
+                      <Input
+                        value={amountOfCopiesInBook}
+                        type="number"
+                        onChange={(e) =>
+                          setAmountOfCopiesInBook(parseInt(e.target.value))
+                        }
+                      />
                     </div>
                   </DialogHeader>
                   <DialogFooter>
-                    <Button>Confirm</Button>
+                    <Button onClick={onSubmit} disabled={isEditingBook}>
+                      Confirm
+                    </Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
