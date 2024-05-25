@@ -24,7 +24,6 @@ export const SearchPage = () => {
   // This string is created because if the search result only has 1 book, then the website should say "result" instead of "results".
   const resultString = numberOfBooks === 1 ? "result" : "results";
   const emptyArr = Array.from({ length: arrayLength }, (_, index) => index);
-  console.log(booksForSearchedQuery);
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
@@ -52,17 +51,15 @@ export const SearchPage = () => {
 
             const finalAuthorName =
               authors && authors?.length > 0 ? authors : "Unknown";
-            const inspectPageLink = `/inspect/${bookData.id}`
+            const inspectPageLink = `/inspect/${bookData.id}`;
 
-            return (<Link to={inspectPageLink}>
-              <BookDisplay
-                author={finalAuthorName}
-                image={image}
-                key={key}
-              >
-                {title}
-              </BookDisplay>
-            </Link>);
+            return (
+              <Link to={inspectPageLink}>
+                <BookDisplay author={finalAuthorName} image={image} key={key}>
+                  {title}
+                </BookDisplay>
+              </Link>
+            );
           })}
       </div>
     </div>

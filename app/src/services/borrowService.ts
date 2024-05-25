@@ -1,6 +1,6 @@
 import { ReturnBookProps } from "@/hooks/borrow/useReturnBook";
 import { supabase } from "../supabase/supabaseClient";
-import { Borrow } from "../types/supabaseTypes";
+import { Borrow, BorrowsUpdate } from "../types/supabaseTypes";
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
 */
@@ -88,7 +88,26 @@ export const getAllBorrowsNotReturnedByIsbn = async (isbn: string) => {
     .select("*")
     // Filters
     .eq("isbn", isbn)
-    .eq("returned", true);
+    .eq("returned", false);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return borrows;
+};
+
+export const getAllBorrowsNotReturnedByIsbnAndUserId = async (
+  isbn: string,
+  userId: string
+) => {
+  const { data: borrows, error } = await supabase
+    .from("borrows")
+    .select("*")
+    // Filters
+    .eq("isbn", isbn)
+    .eq("user", userId)
+    .eq("returned", false);
 
   if (error) {
     throw new Error(error.message);
@@ -124,7 +143,7 @@ export async function getBorrowsWithinLastWeekFromUser(userId: string) {
 export const editBorrowByUserIdAndIsbn = async (
   userId: string,
   isbn: string,
-  newBorrowData: Borrow
+  newBorrowData: BorrowsUpdate
 ) => {
   // TODO: Fix the error in the function. Unable to edit the borrows due to some duplicate key error
   const { data, error } = await supabase
@@ -145,7 +164,10 @@ export const editBorrowByUserIdAndIsbn = async (
 export const returnBorrowedBook = async ({ userId, isbn }: ReturnBookProps) => {
   if (!userId || !isbn) return null;
 
-  const borrowData = await getBorrowsByUserIdAndIsbn(userId, isbn);
+  const borrowData = await getAllBorrowsNotReturnedByIsbnAndUserId(
+    isbn,
+    userId
+  );
 
   // Can't return the book if the user isn't currently borrowing the booking
   if (borrowData.length === 0) {
@@ -153,20 +175,16 @@ export const returnBorrowedBook = async ({ userId, isbn }: ReturnBookProps) => {
       "Failed to borrow book. You are not currently borrowing the book"
     );
   }
-  console.log(borrowData);
-  alert("Reached this part of the website");
+
   //Look for all the borrows with the user id of the user and the isbn of the book and set "returned" column to true
   const editingBorrowsPromisesArr = borrowData.map((borrow) => {
     return editBorrowByUserIdAndIsbn(userId, isbn, {
-      ...borrow,
       returned: true,
     });
   });
   const settingBorrowsToReturnedData = await Promise.all(
     editingBorrowsPromisesArr
   );
-
-  alert("Reached the end");
 
   return settingBorrowsToReturnedData;
 };

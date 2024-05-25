@@ -17,7 +17,6 @@ export const useReportBook = () => {
       });
     },
     onError(error) {
-      console.log(error.message);
       toast({
         title: "Failed to Create Report",
         content: error.message,
