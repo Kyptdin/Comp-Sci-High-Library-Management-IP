@@ -7,12 +7,15 @@ import useSWR from "swr";
 import { getIsbnLink } from "@/utils/isbnApi";
 // @ts-ignore comment
 import { fetcher } from "@/hooks/fetcher";
+import { isPastDueDate } from "@/utils/isPastDueDate";
 
 export const BorrowBookDisplay = ({ bookData }: { bookData: Borrow }) => {
   const { data, error, isLoading } = useSWR(
     getIsbnLink(bookData.isbn),
     fetcher
   );
+  const bookIsMissing =
+    !bookData.returned && isPastDueDate(bookData.return_due_date);
 
   const firstBookItem = data?.items[0];
   const info = firstBookItem?.volumeInfo;
@@ -41,7 +44,11 @@ export const BorrowBookDisplay = ({ bookData }: { bookData: Borrow }) => {
             <p className="mb-2">Current status:</p>
             <div className="text-xs inline-flex flex-wrap gap-2">
               {/* TODO: Add the missing tag by comparing current date with due date */}
-              <p className="px-4 py-1 bg-red-800 rounded-full h-fit">MISSING</p>
+              {bookIsMissing && (
+                <p className="px-4 py-1 bg-red-800 rounded-full h-fit">
+                  MISSING
+                </p>
+              )}
 
               {bookData.returned ? (
                 <p className="px-4 py-1 bg-green-800 rounded-full h-fit">

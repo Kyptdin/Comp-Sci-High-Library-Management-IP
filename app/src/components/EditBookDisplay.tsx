@@ -1,4 +1,3 @@
-import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
 import { BookDisplayImage } from "@/components/BookDisplayImage";
 import { Button } from "./ui/button";
 import {
@@ -8,11 +7,10 @@ import {
   DialogTitle,
   DialogFooter,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
-import useSWR from "swr";
-import { getIsbnLink } from "@/utils/isbnApi";
 // @ts-ignore comment
 import { fetcher } from "@/hooks/fetcher";
 import { Link } from "react-router-dom";
@@ -23,25 +21,36 @@ import { IoEyeSharp } from "react-icons/io5";
 import { useState } from "react";
 import { useEditBook } from "@/hooks/book/useEditBook";
 import { BooksUpdate } from "@/types/supabaseTypes";
+import { useDeleteBook } from "@/hooks/book/useDeleteBook";
 
 interface Props {
   title: string;
   isbn: string;
   bookImage?: string;
+  titleQuery: string;
 }
 
-export const EditBookDisplay = ({ isbn, title, bookImage }: Props) => {
-  const { mutateAsync: editBook, isPending: isEditingBook } = useEditBook();
-  const [amountOfCopiesInBook, setAmountOfCopiesInBook] = useState<number>();
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+export const EditBookDisplay = ({
+  isbn,
+  title,
+  bookImage,
+  titleQuery,
+}: Props) => {
+  const { mutateAsync: editBook } = useEditBook();
+  const [amountOfCopiesInBook, setAmountOfCopiesInBook] = useState<number>(0);
+  const { mutate: deleteBook } = useDeleteBook(titleQuery);
 
   const inspectPage = `/inspect/${isbn}`;
 
-  const onSubmit = async () => {
+  const onSubmitEditBook = () => {
     const udpateBookObj: BooksUpdate = {
       total_copies_within_school: amountOfCopiesInBook,
     };
-    await editBook({ isbn, newBookData: udpateBookObj });
+    editBook({ isbn, newBookData: udpateBookObj });
+  };
+
+  const onSubmitDeleteBook = () => {
+    deleteBook(isbn);
   };
 
   return (
@@ -53,7 +62,6 @@ export const EditBookDisplay = ({ isbn, title, bookImage }: Props) => {
         src={bookImage}
         className="p-0 mr-5 h-[220px] w-[150px] rounded-md"
       />
-      {/* )} */}
 
       <div className="py-7 flex flex-col justify-around">
         <div className="text-white mb-5">
@@ -68,19 +76,10 @@ export const EditBookDisplay = ({ isbn, title, bookImage }: Props) => {
               </Button>
             </Link>
 
-            <Dialog
-              open={isDialogOpen}
-              onOpenChange={() => {
-                setAmountOfCopiesInBook(0);
-              }}
-            >
+            {/* Dialog for editing a book */}
+            <Dialog>
               <DialogTrigger asChild>
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    setIsDialogOpen(true);
-                  }}
-                >
+                <Button variant="secondary">
                   <MdEdit className="mr-2" size={16} />
                   Edit
                 </Button>
@@ -103,17 +102,41 @@ export const EditBookDisplay = ({ isbn, title, bookImage }: Props) => {
                   </div>
                 </DialogHeader>
                 <DialogFooter>
-                  <Button onClick={onSubmit} disabled={isEditingBook}>
-                    Confirm
-                  </Button>
+                  <DialogClose asChild>
+                    <Button onClick={onSubmitEditBook}>Confirm</Button>
+                  </DialogClose>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
 
-            <Button variant="destructive" className="bg-red-700">
-              <FaTrash className="mr-2" size={16} />
-              Remove
-            </Button>
+            {/* Dialog for deleting a book */}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="destructive" className="bg-red-700">
+                  <FaTrash className="mr-2" size={16} />
+                  Remove
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="mb-2">Confirm Deletion</DialogTitle>
+                  <p className="">{`Are you sure you want to delete book "${title}" which has the isbn of ${isbn}`}</p>
+                </DialogHeader>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button>Cancel</Button>
+                  </DialogClose>
+                  <DialogClose asChild>
+                    <Button
+                      onClick={onSubmitDeleteBook}
+                      className="bg-red-700 hover:bg-red-800"
+                    >
+                      Confirm
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </div>
