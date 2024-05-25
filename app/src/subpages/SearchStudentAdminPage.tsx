@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 
 import { BorrowBookDisplay } from "@/components/BorrowBookDisplay";
 import { useState } from "react";
@@ -21,12 +22,14 @@ export const SearchStudentAdminPage = () => {
   return (
     <div className="w-[80%] p-4 font-outfit">
       <div className=" p-4 rounded-md">
+        <h1 className="text-4xl text-white">Search Student</h1>
+        <Separator className="w-full bg-gray-500 my-5" />
         <Input
           onChange={(e) => setEmailQuery(e.target.value)}
           value={emailQuery}
           type="text"
           placeholder="Search user by their email"
-          className="w-full px-4 py-2 mb-4 rounded-full text-lg"
+          className="w-full px-4 py-2 mb-4 rounded text-lg"
         />
         <p className="text-xl">{isError}</p>
         {showSearchResults && (
