@@ -1,4 +1,4 @@
-import { Book, Borrow } from "@/types/supabaseTypes";
+import { Book, BooksUpdate, Borrow } from "@/types/supabaseTypes";
 import { supabase } from "../supabase/supabaseClient";
 import { fetchBookFromIsbn, isbnApiLink } from "@/utils/isbnApi";
 import {
@@ -7,6 +7,7 @@ import {
   getBorrowsWithinLastWeekFromUser,
 } from "./borrowService";
 import { VolumeList } from "@/types/googleBooksAPI";
+import { EditBooksProp } from "@/hooks/book/useEditBook";
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
 */
@@ -158,11 +159,11 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
 };
 
 /****** EDIT ROUTES ******/
-export const editBookByISBN = async (id: string, bookData: Book) => {
+export const editBookByISBN = async ({ isbn, newBookData }: EditBooksProp) => {
   const { data, error } = await supabase
     .from("books")
-    .update(bookData)
-    .eq("id", id)
+    .update(newBookData)
+    .eq("id", isbn)
     .select();
   if (error) {
     throw new Error(error.message);
