@@ -6,6 +6,7 @@ import {
   getAllBorrowsNotReturnedByIsbn,
   getBorrowsWithinLastWeekFromUser,
 } from "./borrowService";
+import { VolumeList } from "@/types/googleBooksAPI";
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
 */
@@ -27,8 +28,10 @@ export const borrowBook = async (borrowInput: Borrow) => {
   const bookSearchByIsbn = await getBookById(borrowInput.isbn);
   const maxAmountOfCopiesWithinTheSchool =
     bookSearchByIsbn[0].total_copies_within_school;
+  // Could be improved
   const copiesDataFromBookThatHaveTheBook =
     await getAllBorrowsNotReturnedByIsbn(borrowInput.isbn);
+  alert(copiesDataFromBookThatHaveTheBook.length);
   const totalNumberOfCopiesPeopleHave =
     copiesDataFromBookThatHaveTheBook.length;
 
@@ -36,7 +39,7 @@ export const borrowBook = async (borrowInput: Borrow) => {
     maxAmountOfCopiesWithinTheSchool === 0 ||
     totalNumberOfCopiesPeopleHave === maxAmountOfCopiesWithinTheSchool
   ) {
-    throw new Error("Failed to borrow book. No aviable copies.");
+    throw new Error("Failed to borrow book. No available copies.");
   }
 
   // Step #2: Checks if the user has exceeded their limit on the number of books they can borrow per week. Doesn't matter if the user has returned the book or not.
@@ -120,7 +123,7 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
   const successfulQuriesFlatten = successfulQuries.flatMap(
     (book) => book.value
   );
-  const requestArrOfBooksGoogleAPI: Promise<BooksVolumesResponse>[] =
+  const requestArrOfBooksGoogleAPI: Promise<VolumeList>[] =
     successfulQuriesFlatten.map(async (successfulQurie) => {
       return fetchBookFromIsbn(isbnApiLink, {
         arg: successfulQurie.id,
@@ -139,7 +142,7 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
       return !failedQuery;
     }
     // .items[0].volumeInfo.authors
-  ) as PromiseFulfilledResult<BooksVolumesResponse>[];
+  ) as PromiseFulfilledResult<VolumeList>[];
   console.log(successfulGoogleAPIQuries);
   const googleAPIDAtaFlat = successfulGoogleAPIQuries.map((query) => {
     const data = query.value;

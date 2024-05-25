@@ -18,7 +18,7 @@ export const useBorrowBook = () => {
       toast({
         variant: "destructive",
         title: "Failed to Borrow Book",
-        description: error.message + ".",
+        description: error.message,
       });
     },
   });
