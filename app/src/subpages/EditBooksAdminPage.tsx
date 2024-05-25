@@ -32,6 +32,7 @@ export const EditBooksAdminPage = () => {
           bookDataSearchedByTitle.map((bookData) => {
             return (
               <EditBookDisplay
+                titleQuery={bookNameQuery}
                 isbn={bookData.id}
                 title={bookData.title}
                 bookImage={bookData.googleBooksApiData.image}

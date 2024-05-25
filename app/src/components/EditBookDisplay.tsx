@@ -27,12 +27,18 @@ interface Props {
   title: string;
   isbn: string;
   bookImage?: string;
+  titleQuery: string;
 }
 
-export const EditBookDisplay = ({ isbn, title, bookImage }: Props) => {
+export const EditBookDisplay = ({
+  isbn,
+  title,
+  bookImage,
+  titleQuery,
+}: Props) => {
   const { mutateAsync: editBook } = useEditBook();
   const [amountOfCopiesInBook, setAmountOfCopiesInBook] = useState<number>(0);
-  const { mutate: deleteBook } = useDeleteBook();
+  const { mutate: deleteBook } = useDeleteBook(titleQuery);
 
   const inspectPage = `/inspect/${isbn}`;
 
