@@ -18,10 +18,12 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { v4 as uuidv4 } from "uuid";
 
-// type any because it is google api request
-function checkDataResults(data: VolumeList) {
-  if (data == undefined) return false;
-  if (!data?.items || data?.items?.length <= 0) return false;
+function validateBookData(data: VolumeList) {
+  if (data == undefined) 
+    return false;
+  if (!data?.items || data?.items?.length <= 0) 
+    return false;
+
   return true;
 }
 
@@ -58,7 +60,7 @@ export const InspectPage = () => {
       !bookDataFoundByIsbn ||
       bookDataFoundByIsbn.length === 0 ||
       isbnExistInTheWorld ||
-      !checkDataResults(googleBooksDataAPI));
+      !validateBookData(googleBooksDataAPI));
 
   const volumeInfo = googleBooksDataAPI?.items[0].volumeInfo;
   const title = volumeInfo?.title;

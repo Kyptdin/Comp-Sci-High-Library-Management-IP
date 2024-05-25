@@ -7,11 +7,11 @@ Some books don't have images on Inspect page (SAFI) (DONE)
 Fix the issue with the search page grid (SAFI) (DONE)
 Add the return book works (SAFI) (DONE)
 Add the edit book book (SAFI) (DONE)
+Add search bar recommendations (SAFI) (DONE)
 
 Fix the images in edit book pills (SAFI)
 Add the dark theme to report pop-ups, and etc. (SAFI)
 Add report pills for the report menu (SAFI)
-Add search bar recommendations (SAFI)
 
 -----------------------------------------------------------------------------------------------
 

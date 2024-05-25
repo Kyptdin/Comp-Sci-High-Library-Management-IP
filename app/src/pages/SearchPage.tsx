@@ -61,8 +61,8 @@ export const SearchPage = () => {
             const inspectPageLink = `/inspect/${bookData.id}`;
 
             return (
-              <Link to={inspectPageLink}>
-                <BookDisplay author={finalAuthorName} image={image} key={key}>
+              <Link to={inspectPageLink} key={key}>
+                <BookDisplay author={finalAuthorName} image={image}>
                   {title}
                 </BookDisplay>
               </Link>
