@@ -3,9 +3,9 @@ import { BookDisplay } from "@/components/BookDisplay";
 import { Navbar } from "@/components/Navbar";
 import { Error } from "@/components/Error";
 
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useSearchBookBySimilarTitle } from "@/hooks/book/useSearchBookBySimilarTitle";
-import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 export const SearchPage = () => {
   const { searchQuery } = useParams();
@@ -41,7 +41,14 @@ export const SearchPage = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-5 p-5">
+      <div className={cn(
+        "grid p-5 grid-cols-1 gap-0",
+        "2xl:grid-cols-6 2xl:gap-7",
+        "xl:grid-cols-5 xl:gap-5",
+        "md:grid-cols-3 md:gap-2",
+        "sm:grid-cols-2 sm:gap-0",
+        "xs:grid-cols-1 xs:gap-0"
+      )}>
         {booksForSearchedQuery &&
           booksForSearchedQuery.map((bookData, key: number) => {
             const {

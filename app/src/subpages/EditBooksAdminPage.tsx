@@ -12,7 +12,7 @@ export const EditBooksAdminPage = () => {
 
             <Input
                 type="text"
-                placeholder="Enter ISBN number"
+                placeholder="Enter book title"
                 className="w-full px-4 py-2 mb-4 rounded text-lg text-black"
             />
         </div>

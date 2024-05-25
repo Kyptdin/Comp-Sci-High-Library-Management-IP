@@ -145,7 +145,7 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
     const data = query.value;
     const firstBookItem = data?.items[0];
     const info = firstBookItem?.volumeInfo;
-    const image = info?.imageLinks?.smallThumbnail;
+    const image = info?.imageLinks?.thumbnail;
     const authors = data?.items[0]?.volumeInfo?.authors?.join(" ");
     return {
       image,
