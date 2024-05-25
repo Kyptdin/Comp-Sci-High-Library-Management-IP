@@ -39,6 +39,7 @@ The admin page should only allow admins to vist the page (ISAAC)
 
 Add the borrowing (ISAAC)(teacher does not have to approved) (there's a limit to the amount of books you can borrow) (if the user has more than 1 book missing the user can't buy)
 */
+
 export const InspectPage = () => {
   const { data: loggedInUserData } = useGetLoggedInUser();
   const { bookInspectIsbn } = useParams();

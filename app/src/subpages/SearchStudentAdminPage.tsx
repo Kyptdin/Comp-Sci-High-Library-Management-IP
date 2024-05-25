@@ -26,7 +26,7 @@ export const SearchStudentAdminPage = () => {
           value={emailQuery}
           type="text"
           placeholder="Search user by their email"
-          className="w-full px-4 py-2 mb-4 rounded "
+          className="w-full px-4 py-2 mb-4 rounded-full text-lg"
         />
         <p className="text-xl">{isError}</p>
         {showSearchResults && (

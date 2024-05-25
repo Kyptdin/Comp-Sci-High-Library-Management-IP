@@ -1,11 +1,8 @@
 import { cn } from "@/lib/utils";
 
-export const BookDisplayImage = ({
-  src,
-  className,
-}: {
-  src?: string;
-  className?: string;
+export const BookDisplayImage = ({ src, className } : {
+    src?: string
+    className?: string
 }) => {
   return (
     <div
