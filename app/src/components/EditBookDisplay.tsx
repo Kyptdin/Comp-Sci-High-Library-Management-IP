@@ -1,4 +1,3 @@
-import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
 import { BookDisplayImage } from "@/components/BookDisplayImage";
 import { Button } from "./ui/button";
 import {
@@ -12,8 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
-import useSWR from "swr";
-import { getIsbnLink } from "@/utils/isbnApi";
 // @ts-ignore comment
 import { fetcher } from "@/hooks/fetcher";
 import { Link } from "react-router-dom";
@@ -24,6 +21,7 @@ import { IoEyeSharp } from "react-icons/io5";
 import { useState } from "react";
 import { useEditBook } from "@/hooks/book/useEditBook";
 import { BooksUpdate } from "@/types/supabaseTypes";
+import { useDeleteBook } from "@/hooks/book/useDeleteBook";
 
 interface Props {
   title: string;
@@ -34,16 +32,19 @@ interface Props {
 export const EditBookDisplay = ({ isbn, title, bookImage }: Props) => {
   const { mutateAsync: editBook } = useEditBook();
   const [amountOfCopiesInBook, setAmountOfCopiesInBook] = useState<number>(0);
-  const [isErrorWithNumberOfBooks, setIsErrorWithNumberOfBooks] =
-    useState<boolean>(true);
+  const { mutate: deleteBook } = useDeleteBook();
 
   const inspectPage = `/inspect/${isbn}`;
 
-  const onSubmit = () => {
+  const onSubmitEditBook = () => {
     const udpateBookObj: BooksUpdate = {
       total_copies_within_school: amountOfCopiesInBook,
     };
     editBook({ isbn, newBookData: udpateBookObj });
+  };
+
+  const onSubmitDeleteBook = () => {
+    deleteBook(isbn);
   };
 
   return (
@@ -69,6 +70,7 @@ export const EditBookDisplay = ({ isbn, title, bookImage }: Props) => {
               </Button>
             </Link>
 
+            {/* Dialog for editing a book */}
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="secondary">
@@ -95,16 +97,40 @@ export const EditBookDisplay = ({ isbn, title, bookImage }: Props) => {
                 </DialogHeader>
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button onClick={onSubmit}>Confirm</Button>
+                    <Button onClick={onSubmitEditBook}>Confirm</Button>
                   </DialogClose>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
 
-            <Button variant="destructive" className="bg-red-700">
-              <FaTrash className="mr-2" size={16} />
-              Remove
-            </Button>
+            {/* Dialog for deleting a book */}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="destructive" className="bg-red-700">
+                  <FaTrash className="mr-2" size={16} />
+                  Remove
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="mb-2">Confirm Deletion</DialogTitle>
+                  <p className="">{`Are you sure you want to delete book "${title}" which has the isbn of ${isbn}`}</p>
+                </DialogHeader>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button>Cancel</Button>
+                  </DialogClose>
+                  <DialogClose asChild>
+                    <Button
+                      onClick={onSubmitDeleteBook}
+                      className="bg-red-700 hover:bg-red-800"
+                    >
+                      Confirm
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </div>
