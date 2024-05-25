@@ -32,7 +32,7 @@ export const EditBooksAdminPage = () => {
           bookDataSearchedByTitle.map((bookData) => {
             return (
               <EditBookDisplay
-                isbn="1338596705"
+                isbn={bookData.id}
                 title={bookData.title}
                 bookImage={bookData.googleBooksApiData.image}
               />
