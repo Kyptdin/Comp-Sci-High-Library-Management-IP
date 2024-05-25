@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogFooter,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
@@ -31,17 +32,18 @@ interface Props {
 }
 
 export const EditBookDisplay = ({ isbn, title, bookImage }: Props) => {
-  const { mutateAsync: editBook, isPending: isEditingBook } = useEditBook();
-  const [amountOfCopiesInBook, setAmountOfCopiesInBook] = useState<number>();
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const { mutateAsync: editBook } = useEditBook();
+  const [amountOfCopiesInBook, setAmountOfCopiesInBook] = useState<number>(0);
+  const [isErrorWithNumberOfBooks, setIsErrorWithNumberOfBooks] =
+    useState<boolean>(true);
 
   const inspectPage = `/inspect/${isbn}`;
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     const udpateBookObj: BooksUpdate = {
       total_copies_within_school: amountOfCopiesInBook,
     };
-    await editBook({ isbn, newBookData: udpateBookObj });
+    editBook({ isbn, newBookData: udpateBookObj });
   };
 
   return (
@@ -53,7 +55,6 @@ export const EditBookDisplay = ({ isbn, title, bookImage }: Props) => {
         src={bookImage}
         className="p-0 mr-5 h-[220px] w-[150px] rounded-md"
       />
-      {/* )} */}
 
       <div className="py-7 flex flex-col justify-around">
         <div className="text-white mb-5">
@@ -68,19 +69,9 @@ export const EditBookDisplay = ({ isbn, title, bookImage }: Props) => {
               </Button>
             </Link>
 
-            <Dialog
-              open={isDialogOpen}
-              onOpenChange={() => {
-                setAmountOfCopiesInBook(0);
-              }}
-            >
+            <Dialog>
               <DialogTrigger asChild>
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    setIsDialogOpen(true);
-                  }}
-                >
+                <Button variant="secondary">
                   <MdEdit className="mr-2" size={16} />
                   Edit
                 </Button>
@@ -103,9 +94,9 @@ export const EditBookDisplay = ({ isbn, title, bookImage }: Props) => {
                   </div>
                 </DialogHeader>
                 <DialogFooter>
-                  <Button onClick={onSubmit} disabled={isEditingBook}>
-                    Confirm
-                  </Button>
+                  <DialogClose asChild>
+                    <Button onClick={onSubmit}>Confirm</Button>
+                  </DialogClose>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
