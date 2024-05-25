@@ -7,8 +7,10 @@ import { useState } from "react";
 
 export const EditBooksAdminPage = () => {
   const [bookNameQuery, setBookNameQuery] = useState<string>("");
-  const { data: bookDataSearchedByTitle } =
-    useSearchBookBySimilarTitle(bookNameQuery);
+  const {
+    data: bookDataSearchedByTitle,
+    isLoading: isCurrentlyQueryingByTitle,
+  } = useSearchBookBySimilarTitle(bookNameQuery);
 
   return (
     <div className="text-white w-[80%] p-4">
@@ -27,6 +29,7 @@ export const EditBooksAdminPage = () => {
         />
       </div>
 
+      {isCurrentlyQueryingByTitle && <h1>Currently title</h1>}
       <div className="px-4 grid grid-cols-2">
         {bookDataSearchedByTitle &&
           bookDataSearchedByTitle.map((bookData) => {

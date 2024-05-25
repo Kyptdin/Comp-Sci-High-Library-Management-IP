@@ -27,37 +27,29 @@ export const AdminPage = () => {
           <h2 className="text-white text-xl">Action menu</h2>
           <Separator className="bg-gray-500 my-1 py-[1px]" />
 
-          <NavLink to={"searchStudent"}>
-            {({ isActive }) => (
-              <Button
-                className="w-full py-4 text-lg"
-                variant="secondary"
-                ref={defaultRouteButtonRef}
-              >
-                Search Student
-              </Button>
-            )}
+          <NavLink to={"searchUser"}>
+            <Button
+              className="w-full py-4 text-lg"
+              variant="secondary"
+              ref={defaultRouteButtonRef}
+            >
+              Search User
+            </Button>
           </NavLink>
           <NavLink to={"addBooks"}>
-            {({ isActive }) => (
-              <Button className="w-full py-4 text-lg" variant="secondary">
-                Add Books
-              </Button>
-            )}
+            <Button className="w-full py-4 text-lg" variant="secondary">
+              Add Books
+            </Button>
           </NavLink>
           <NavLink to={"editBooks"}>
-            {({ isActive }) => (
-              <Button className="w-full py-4 text-lg" variant="secondary">
-                Edit Books
-              </Button>
-            )}
+            <Button className="w-full py-4 text-lg" variant="secondary">
+              Edit Books
+            </Button>
           </NavLink>
           <NavLink to={"reports"}>
-            {({ isActive }) => (
-              <Button className="w-full py-4 text-lg" variant="secondary">
-                Reports
-              </Button>
-            )}
+            <Button className="w-full py-4 text-lg" variant="secondary">
+              Reports
+            </Button>
           </NavLink>
 
           <Separator className="bg-gray-500 mt-2 py-[1px]" />

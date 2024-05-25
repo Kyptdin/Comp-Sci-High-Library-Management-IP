@@ -55,7 +55,7 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "searchStudent",
+        path: "searchUser",
         element: <SearchStudentAdminPage />,
       },
       { path: "addBooks", element: <AddBooksAdminPage /> },
