@@ -177,7 +177,7 @@ export const returnBorrowedBook = async ({ userId, isbn }: ReturnBookProps) => {
   }
 
   //Look for all the borrows with the user id of the user and the isbn of the book and set "returned" column to true
-  const editingBorrowsPromisesArr = borrowData.map((borrow) => {
+  const editingBorrowsPromisesArr = borrowData.map(() => {
     return editBorrowByUserIdAndIsbn(userId, isbn, {
       returned: true,
     });
