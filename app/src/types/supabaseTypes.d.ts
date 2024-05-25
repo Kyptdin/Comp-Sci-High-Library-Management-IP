@@ -12,3 +12,4 @@ export interface BorrowStats {
 }
 
 export type BorrowsUpdate = Database["public"]["Tables"]["borrows"]["Update"];
+export type BooksUpdate = Database["public"]["Tables"]["books"]["Update"];

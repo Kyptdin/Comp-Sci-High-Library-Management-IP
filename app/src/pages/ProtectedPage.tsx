@@ -5,18 +5,25 @@ import { LoadingPage } from "./LoadingPage";
 
 interface Props {
   children: ReactNode;
+  onlyForAdmin?: boolean;
 }
 
-export const ProtectedPage = ({ children }: Props) => {
+export const ProtectedPage = ({ children, onlyForAdmin }: Props) => {
   const navigate = useNavigate();
   const { data: userData, isLoading } = useGetLoggedInUser();
 
   useEffect(() => {
+    const userAdminStatus = userData?.userMetaData[0].admin_status;
     if (!userData && !isLoading) {
       navigate("/notAuthorized");
       return;
     }
-  }, [userData, navigate, isLoading]);
+
+    if (onlyForAdmin && userAdminStatus !== "admin" && !isLoading) {
+      navigate("/notAuthorized");
+      return;
+    }
+  }, [userData, navigate, isLoading, onlyForAdmin]);
 
   if (isLoading) return <LoadingPage />;
 

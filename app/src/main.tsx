@@ -14,7 +14,7 @@ import { NotAuthorizedPage } from "./pages/NotAuthorizedPage.tsx";
 import { AdminPage } from "./pages/AdminPage.tsx";
 import { SearchStudentAdminPage } from "./subpages/SearchStudentAdminPage.tsx";
 import { AddBooksAdminPage } from "./subpages/AddBooksAdminPage.tsx";
-import { EditBooksAdminPage  } from "./subpages/EditBooksAdminPage.tsx";
+import { EditBooksAdminPage } from "./subpages/EditBooksAdminPage.tsx";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -48,7 +48,11 @@ const router = createBrowserRouter([
   },
   {
     path: "admin",
-    element: <AdminPage />,
+    element: (
+      <ProtectedPage onlyForAdmin={true}>
+        <AdminPage />
+      </ProtectedPage>
+    ),
     children: [
       {
         index: true,
@@ -56,7 +60,7 @@ const router = createBrowserRouter([
         element: <SearchStudentAdminPage />,
       },
       { path: "addBooks", element: <AddBooksAdminPage /> },
-      { path: "editBooks", element: <EditBooksAdminPage/> },
+      { path: "editBooks", element: <EditBooksAdminPage /> },
       { path: "reports", element: <div>Reports</div> },
     ],
   },
