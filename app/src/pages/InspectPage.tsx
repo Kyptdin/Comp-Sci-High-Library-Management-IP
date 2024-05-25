@@ -31,8 +31,6 @@ The toast that appears when you add a book should link to the book or/and state 
 
 Have an image of the book towards the right of the add book form (SAFI)
 
-Add the edit book book (SAFI)
-
 Add the return book works (SAFI)
 
 The admin page should only allow admins to vist the page (ISAAC)
