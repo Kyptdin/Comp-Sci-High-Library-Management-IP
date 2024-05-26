@@ -12,6 +12,7 @@ Add search bar recommendations (SAFI) (DONE)
 Fix the images in edit book pills (SAFI)
 Add the dark theme to report pop-ups, and etc. (SAFI)
 Add report pills for the report menu (SAFI)
+Show borrow or return based on if the user owns the book (SAFI)
 
 -----------------------------------------------------------------------------------------------
 

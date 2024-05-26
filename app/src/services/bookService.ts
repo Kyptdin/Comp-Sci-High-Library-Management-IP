@@ -87,9 +87,12 @@ export const getBookByTitle = async (title: string) => {
 
 export function convertToTsQuery(input: string): string {
   // Split the input string into individual words
-  const words = input.split(" ");
+  const words = input.trim().split(" ");
   // Enclose each word in single quotes and join them with ' & '
-  const tsQuery = words.map((word) => `'${word}'`).join(" or ");
+  const tsQuery = words.map((word) => `'${word}'`).join(" & ");
+  // use the following only for websearch
+  // const tsQuery = `'${words.join(" or ")}'`;
+  console.log(tsQuery);
   return tsQuery;
 }
 // Uses a search engine provided by supabase. The books returned doesn't always have to exactly match the search string just has to be similar to the search string
@@ -99,7 +102,7 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
     .from("books")
     .select("title")
     .textSearch("title", convertToTsQuery(searchString), {
-      type: "websearch",
+      type: "phrase",
       config: "english",
     });
 

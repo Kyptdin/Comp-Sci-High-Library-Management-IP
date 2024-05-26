@@ -60,6 +60,7 @@ export const SearchBar = ({ className }: { className?: string }) => {
 
       <div className={cn(
         "absolute w-[500px] z-50 mt-5 bg-white rounded-xl px-2",
+        "shadow-lg shadow-gray-800",
         searchQueryVisible ? "opacity-100" : "opacity-0",
         "transition ease-out duration-200"
       )}>
