@@ -55,22 +55,10 @@ const router = createBrowserRouter([
       </ProtectedPage>
     ),
     children: [
-      {
-        path: "searchUser",
-        element: <SearchStudentAdminPage />,
-      },
-      { 
-        path: "addBooks", 
-        element: <AddBooksAdminPage /> 
-      },
-      { 
-        path: "editBooks", 
-        element: <EditBooksAdminPage /> 
-      },
-      { 
-        path: "reports", 
-        element: <ReportBooksPage/> 
-      },
+      { path: "searchUser", element: <SearchStudentAdminPage />},
+      { path: "addBooks", element: <AddBooksAdminPage /> },
+      { path: "editBooks", element: <EditBooksAdminPage /> },
+      { path: "reports", element: <ReportBooksPage/> },
     ],
   },
 ]);
