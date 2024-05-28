@@ -76,6 +76,7 @@ export const AddBooksAdminPage = () => {
         <h2>Enter book ISBN number</h2>
         <div className="flex justify-start items-center">
           <Input
+            min={1}
             value={bookIsbn}
             onChange={(e) => setBookIsbn(e.target.value)}
             type="text"
