@@ -1,5 +1,6 @@
 import { BookDisplayImage } from "@/components/BookDisplayImage";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   Dialog,
   DialogContent,
@@ -54,90 +55,90 @@ export const EditBookDisplay = ({
   };
 
   return (
-    <div className="justify-start flex mb-2">
+    <div className="flex justify-start items-center mb-2">
       {/* {isLoading | error ? (
         <BookDisplaySkeleton className="p-0 mr-5 h-[220px] w-[150px] rounded-md" />
       ) : ( */}
-      <BookDisplayImage
-        src={bookImage}
-        className="p-0 mr-5 h-[220px] w-[150px] rounded-md"
-      />
+      <div className="w-2/6">
+        <BookDisplayImage
+          src={bookImage}
+          className="p-0 mr-5 h-[220px] w-[150px] rounded-md"
+        />
+      </div>
 
-      <div className="py-7 flex flex-col justify-around">
-        <div className="text-white mb-5">
-          <h1 className="text-2xl">{title}</h1>
-          <h2 className="text-white mb-2">ISBN: {isbn}</h2>
+      <div className="py-7 flex flex-col justify-around text-white w-4/6">
+        <h1 className="text-xl">{title}</h1>
+        <h2 className="text-white mb-2">ISBN: {isbn}</h2>
 
-          <div className="full-center justify-start gap-2 mt-7">
-            <Link to={inspectPage}>
+        <div className="full-center justify-start gap-2 mt-7">
+          <Link to={inspectPage}>
+            <Button variant="secondary">
+              <IoEyeSharp className="mr-2" size={16} />
+              View
+            </Button>
+          </Link>
+
+          {/* Dialog for editing a book */}
+          <Dialog>
+            <DialogTrigger asChild>
               <Button variant="secondary">
-                <IoEyeSharp className="mr-2" size={16} />
-                View
+                <MdEdit className="mr-2" size={16} />
+                Edit
               </Button>
-            </Link>
+            </DialogTrigger>
 
-            {/* Dialog for editing a book */}
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="secondary">
-                  <MdEdit className="mr-2" size={16} />
-                  Edit
-                </Button>
-              </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Edit book</DialogTitle>
 
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Edit book</DialogTitle>
+                <div className="flex items-center pt-5">
+                  <h1 className="text-black mr-3">Amount</h1>
+                  <Input
+                    min={0}
+                    value={amountOfCopiesInBook}
+                    type="number"
+                    onChange={(e) =>
+                      setAmountOfCopiesInBook(parseInt(e.target.value))
+                    }
+                  />
+                </div>
+              </DialogHeader>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button onClick={onSubmitEditBook}>Confirm</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
 
-                  <div className="flex items-center pt-5">
-                    <h1 className="text-black mr-3">Amount</h1>
-                    <Input
-                      min={0}
-                      value={amountOfCopiesInBook}
-                      type="number"
-                      onChange={(e) =>
-                        setAmountOfCopiesInBook(parseInt(e.target.value))
-                      }
-                    />
-                  </div>
-                </DialogHeader>
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button onClick={onSubmitEditBook}>Confirm</Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-
-            {/* Dialog for deleting a book */}
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="destructive" className="bg-red-700">
-                  <FaTrash className="mr-2" size={16} />
-                  Remove
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle className="mb-2">Confirm Deletion</DialogTitle>
-                  <p className="">{`Are you sure you want to delete book "${title}" which has the isbn of ${isbn}`}</p>
-                </DialogHeader>
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button>Cancel</Button>
-                  </DialogClose>
-                  <DialogClose asChild>
-                    <Button
-                      onClick={onSubmitDeleteBook}
-                      className="bg-red-700 hover:bg-red-800"
-                    >
-                      Confirm
-                    </Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </div>
+          {/* Dialog for deleting a book */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="destructive" className="bg-red-700">
+                <FaTrash className="mr-2" size={16} />
+                Remove
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="mb-2">Confirm Deletion</DialogTitle>
+                <p className="">{`Are you sure you want to delete book "${title}" which has the isbn of ${isbn}`}</p>
+              </DialogHeader>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button>Cancel</Button>
+                </DialogClose>
+                <DialogClose asChild>
+                  <Button
+                    onClick={onSubmitDeleteBook}
+                    className="bg-red-700 hover:bg-red-800"
+                  >
+                    Confirm
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>
