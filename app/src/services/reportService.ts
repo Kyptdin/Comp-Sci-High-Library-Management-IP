@@ -1,5 +1,6 @@
 import { Report } from "@/types/supabaseTypes";
 import { supabase } from "../supabase/supabaseClient";
+import { readUserByUserId } from "./userService";
 
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
@@ -31,9 +32,16 @@ export const getAllReportsWithPagination = async (
     throw new Error(error.message);
   }
 
-  // const promiseOfUserData = reports.map(report => g);
+  const promiseOfUserData = reports.map((report) =>
+    readUserByUserId(report.user)
+  );
+  const userMetaData = await Promise.all(promiseOfUserData);
 
-  console.log(reports);
+  const reportsMappedTheSpecificUser = userMetaData.map(
+    (userMetaData, index) => {
+      return { userMetaData, report: reports[index] };
+    }
+  );
 
-  return reports;
+  return reportsMappedTheSpecificUser;
 };
