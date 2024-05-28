@@ -65,7 +65,7 @@ const reducer = (state: DialogState, action: Action): DialogState => {
   }
 };
 
-export const useBookReportDialog = () => {
+export const useBookReportDialog = (bookId: string | null | undefined) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { data: loggedInUserData } = useGetLoggedInUser();
   const { mutateAsync: createReport, isPending: isReportingBook } =
@@ -93,13 +93,14 @@ export const useBookReportDialog = () => {
 
   const onSubmit = async () => {
     const userId = loggedInUserData?.userMetaData[0].user_id;
-    if (!userId) return;
+    if (!userId || !bookId) return;
     await createReport({
       id: uuidv4(),
       user: userId,
       explanation: state.explanation,
       reason: state.reason,
       created_at: new Date().toUTCString(),
+      book_id: bookId,
     });
   };
 

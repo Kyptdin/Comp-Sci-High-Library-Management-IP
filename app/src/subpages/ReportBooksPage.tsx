@@ -15,15 +15,17 @@ export const ReportBooksPage = () => {
       </div>
 
       <div className="px-4 pb-4 grid grid-cols-2">
-        {/* {reportQueries?.map((report, key: number) => {
-                    return <ReportPill 
-                        key={key}
-                        reason={report.reason}
-                        explanation={report.explanation}
-                        email={report.user}
-                        bookTitle={report.id}
-                    />
-                })} */}
+        {reportQueries?.map((report, key: number) => {
+          return (
+            <ReportPill
+              key={key}
+              reason={report.report.reason}
+              explanation={report.report.explanation}
+              email={report.userMetaData[0].email}
+              bookTitle={report.bookData[0].title}
+            />
+          );
+        })}
       </div>
     </div>
   );

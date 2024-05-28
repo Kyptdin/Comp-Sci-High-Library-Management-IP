@@ -17,7 +17,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { v4 as uuidv4 } from "uuid";
-import { useGetBorrowbyUserIdAndIsbn } from "@/hooks/borrow/useGetBorrowByUserIdAndIsbn";
 import { useGetBorrowsNotReturnedByIsbnAndUserId } from "@/hooks/borrow/useGetBorrowsNotReturnedByUserIdAndIsbn";
 
 function validateBookData(data: VolumeList) {
@@ -36,11 +35,17 @@ export const InspectPage = () => {
     isLoading: isCurrentlyFetchingGoogleBooksAPI,
     error,
   } = useSWR(getIsbnLink(isbnSearch), fetcher);
+  const {
+    data: bookDataFoundByIsbn,
+    isLoading: isCurrnetlyGettingIsbnInSupabase,
+    isError: isErrrorFindingIsbnInSupabase,
+  } = useGetBookById(isbnSearch);
   const googleBooksDataAPI: VolumeList = googleBooksData;
   const isbnExistInTheWorld: boolean = error;
   const userId = loggedInUserData?.userMetaData[0].user_id;
+  const bookId = bookDataFoundByIsbn ? bookDataFoundByIsbn[0].id : null;
   const { DialogComponent, openDialog, isReportingBook } =
-    useBookReportDialog(); //Used for reporting
+    useBookReportDialog(bookId); //Used for reporting
   const { mutateAsync: returnBook, isPending: isReturningBook } = useReturnBook(
     isbnSearch,
     userId
@@ -49,11 +54,6 @@ export const InspectPage = () => {
     isbnSearch,
     userId
   );
-  const {
-    data: bookDataFoundByIsbn,
-    isLoading: isCurrnetlyGettingIsbnInSupabase,
-    isError: isErrrorFindingIsbnInSupabase,
-  } = useGetBookById(isbnSearch);
   const { data: borrowsOfBookCurrentlyDisplayed } =
     useGetBorrowsNotReturnedByIsbnAndUserId(isbnSearch, userId);
 

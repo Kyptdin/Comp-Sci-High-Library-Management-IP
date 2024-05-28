@@ -67,6 +67,7 @@ export type Database = {
       }
       reports: {
         Row: {
+          book_id: string
           created_at: string
           explanation: string
           id: string
@@ -74,6 +75,7 @@ export type Database = {
           user: string
         }
         Insert: {
+          book_id: string
           created_at?: string
           explanation: string
           id?: string
@@ -81,6 +83,7 @@ export type Database = {
           user: string
         }
         Update: {
+          book_id?: string
           created_at?: string
           explanation?: string
           id?: string
@@ -94,6 +97,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "reports_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
           },
         ]
       }
