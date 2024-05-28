@@ -17,12 +17,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { v4 as uuidv4 } from "uuid";
+import { useGetBorrowbyUserIdAndIsbn } from "@/hooks/borrow/useGetBorrowByUserIdAndIsbn";
+import { useGetBorrowsNotReturnedByIsbnAndUserId } from "@/hooks/borrow/useGetBorrowsNotReturnedByUserIdAndIsbn";
 
 function validateBookData(data: VolumeList) {
-  if (data == undefined) 
-    return false;
-  if (!data?.items || data?.items?.length <= 0) 
-    return false;
+  if (data == undefined) return false;
+  if (!data?.items || data?.items?.length <= 0) return false;
 
   return true;
 }
@@ -41,16 +41,26 @@ export const InspectPage = () => {
   const userId = loggedInUserData?.userMetaData[0].user_id;
   const { DialogComponent, openDialog, isReportingBook } =
     useBookReportDialog(); //Used for reporting
-  const { mutateAsync: returnBook, isPending: isReturningBook } =
-    useReturnBook();
-  const { mutateAsync: borrowBook, isPending: isBorrowingBook } =
-    useBorrowBook();
+  const { mutateAsync: returnBook, isPending: isReturningBook } = useReturnBook(
+    isbnSearch,
+    userId
+  );
+  const { mutateAsync: borrowBook, isPending: isBorrowingBook } = useBorrowBook(
+    isbnSearch,
+    userId
+  );
   const {
     data: bookDataFoundByIsbn,
     isLoading: isCurrnetlyGettingIsbnInSupabase,
     isError: isErrrorFindingIsbnInSupabase,
   } = useGetBookById(isbnSearch);
+  const { data: borrowsOfBookCurrentlyDisplayed } =
+    useGetBorrowsNotReturnedByIsbnAndUserId(isbnSearch, userId);
 
+  const userHasBookCurrentlyDisplayed =
+    borrowsOfBookCurrentlyDisplayed !== null &&
+    borrowsOfBookCurrentlyDisplayed !== undefined &&
+    borrowsOfBookCurrentlyDisplayed.length > 0;
   const pageIsCurrentlyLoading =
     isCurrnetlyGettingIsbnInSupabase || isCurrentlyFetchingGoogleBooksAPI;
 
@@ -77,7 +87,7 @@ export const InspectPage = () => {
       ) : (
         <div className="full-center p-5">
           <div className="w-1/4 full-center flex-col">
-            {(pageIsCurrentlyLoading || !imageLinks) ? (
+            {pageIsCurrentlyLoading || !imageLinks ? (
               <BookDisplaySkeleton />
             ) : (
               <BookDisplayImage src={imageLinks?.thumbnail} />
@@ -100,60 +110,64 @@ export const InspectPage = () => {
             </ScrollArea>
 
             <div className="flex items-center justify-left">
-              <Button
-                variant="secondary"
-                className="text-lg w-1/4 mr-3 py-6"
-                disabled={isBorrowingBook}
-                onClick={() => {
-                  if (!isbnSearch || !userId) return;
-                  // Create a new Date object for the current date
-                  const currentDate = new Date();
+              {!userHasBookCurrentlyDisplayed && (
+                <Button
+                  variant="secondary"
+                  className="text-lg w-1/4 mr-3 py-6"
+                  disabled={isBorrowingBook}
+                  onClick={() => {
+                    if (!isbnSearch || !userId) return;
+                    // Create a new Date object for the current date
+                    const currentDate = new Date();
 
-                  // Get the year, month, and day components for the current date
-                  const currentYear = currentDate.getFullYear();
-                  // Adding 1 to getMonth because it returns zero-based month (0 for January)
-                  const currentMonth = currentDate.getMonth() + 1;
-                  const currentDay = currentDate.getDate();
+                    // Get the year, month, and day components for the current date
+                    const currentYear = currentDate.getFullYear();
+                    // Adding 1 to getMonth because it returns zero-based month (0 for January)
+                    const currentMonth = currentDate.getMonth() + 1;
+                    const currentDay = currentDate.getDate();
 
-                  // Format the current date as "year, month, day"
-                  const formattedCurrentDate = `${currentYear}-${currentMonth}-${currentDay}`;
+                    // Format the current date as "year, month, day"
+                    const formattedCurrentDate = `${currentYear}-${currentMonth}-${currentDay}`;
 
-                  // Calculate the date for 7 days in the future
-                  currentDate.setDate(currentDate.getDate() + 7);
+                    // Calculate the date for 7 days in the future
+                    currentDate.setDate(currentDate.getDate() + 7);
 
-                  // Get the year, month, and day components for the future date
-                  const futureYear = currentDate.getFullYear();
-                  // Adding 1 to getMonth because it returns zero-based month (0 for January)
-                  const futureMonth = currentDate.getMonth() + 1;
-                  const futureDay = currentDate.getDate();
+                    // Get the year, month, and day components for the future date
+                    const futureYear = currentDate.getFullYear();
+                    // Adding 1 to getMonth because it returns zero-based month (0 for January)
+                    const futureMonth = currentDate.getMonth() + 1;
+                    const futureDay = currentDate.getDate();
 
-                  // Format the future date as "year, month, day"
-                  const formattedFutureDate = `${futureYear}-${futureMonth}-${futureDay}`;
+                    // Format the future date as "year, month, day"
+                    const formattedFutureDate = `${futureYear}-${futureMonth}-${futureDay}`;
 
-                  borrowBook({
-                    borrow_id: uuidv4(),
-                    damaged: false,
-                    returned: false,
-                    isbn: isbnSearch,
-                    user: userId,
-                    return_due_date: formattedFutureDate,
-                    date_borrowed: formattedCurrentDate,
-                  });
-                }}
-              >
-                Borrow
-              </Button>
+                    borrowBook({
+                      borrow_id: uuidv4(),
+                      damaged: false,
+                      returned: false,
+                      isbn: isbnSearch,
+                      user: userId,
+                      return_due_date: formattedFutureDate,
+                      date_borrowed: formattedCurrentDate,
+                    });
+                  }}
+                >
+                  Borrow
+                </Button>
+              )}
 
-              <Button
-                variant="secondary"
-                className="text-lg w-1/4 mr-3 py-6"
-                disabled={isReturningBook}
-                onClick={() => {
-                  returnBook({ userId, isbn: isbnSearch });
-                }}
-              >
-                Return
-              </Button>
+              {userHasBookCurrentlyDisplayed && (
+                <Button
+                  variant="secondary"
+                  className="text-lg w-1/4 mr-3 py-6"
+                  disabled={isReturningBook}
+                  onClick={() => {
+                    returnBook({ userId, isbn: isbnSearch });
+                  }}
+                >
+                  Return
+                </Button>
+              )}
 
               <Button
                 className={cn(

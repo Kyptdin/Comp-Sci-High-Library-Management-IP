@@ -8,6 +8,7 @@ import {
 } from "./borrowService";
 import { VolumeList } from "@/types/googleBooksAPI";
 import { EditBooksProp } from "@/hooks/book/useEditBook";
+import { convertToTsQuery } from "@/utils/convertToTsQuery";
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
 */
@@ -85,16 +86,6 @@ export const getBookByTitle = async (title: string) => {
   return books;
 };
 
-export function convertToTsQuery(input: string): string {
-  // Split the input string into individual words
-  const words = input.trim().split(" ");
-  // Enclose each word in single quotes and join them with ' & '
-  const tsQuery = words.map((word) => `'${word}'`).join(" & ");
-  // use the following only for websearch
-  // const tsQuery = `'${words.join(" or ")}'`;
-  console.log(tsQuery);
-  return tsQuery;
-}
 // Uses a search engine provided by supabase. The books returned doesn't always have to exactly match the search string just has to be similar to the search string
 export const searchBookBySimilarTitle = async (searchString: string) => {
   // Gets all the books that match the search string
