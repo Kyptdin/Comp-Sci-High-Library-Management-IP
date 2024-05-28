@@ -17,3 +17,17 @@ export const createReport = async (reportData: Report) => {
 };
 
 /****** GET ROUTES ******/
+export const getAllReportsWithPagination = async () => {
+  const { data: reports, error } = await supabase
+    .from("reports")
+    .select("*")
+    .range(0, 1);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  console.log(reports);
+
+  return reports;
+};
