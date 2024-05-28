@@ -139,6 +139,7 @@ export const EditBookDisplay = ({
               </DialogFooter>
             </DialogContent>
           </Dialog>
+          {/* Delete */}
         </div>
       </div>
     </div>

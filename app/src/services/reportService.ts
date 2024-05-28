@@ -53,3 +53,11 @@ export const getAllReportsWithPagination = async (
 
   return reportsMappedToUserAndBook;
 };
+
+/****** DELETE ROUTES ******/
+export const deleteReportById = async (reportId: string) => {
+  const { error } = await supabase.from("reports").delete().eq("id", reportId);
+  if (error) {
+    throw new Error(error.message);
+  }
+};

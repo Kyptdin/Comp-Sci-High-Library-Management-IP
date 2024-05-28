@@ -23,6 +23,7 @@ export const ReportBooksPage = () => {
               explanation={report.report.explanation}
               email={report.userMetaData[0].email}
               bookTitle={report.bookData[0].title}
+              reportId={report.report.id}
             />
           );
         })}
