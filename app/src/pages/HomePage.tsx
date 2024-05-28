@@ -1,11 +1,11 @@
 import { Navbar } from "@/components/Navbar";
 import { SearchBar } from "@/components/SearchBar";
-import { useGetAllReportsWithPagination } from "@/hooks/report/useGetAllReportsWithPagination";
+// import { useGetAllReportsWithPagination } from "@/hooks/report/useGetAllReportsWithPagination";
 // import { useEffect } from "react";
 // import { mailTest } from "../../mail/test";
 
 export const HomePage = () => {
-  useGetAllReportsWithPagination();
+  // useGetAllReportsWithPagination();
 
   // useEffect(() => {
   //   mailTest();
