@@ -1,9 +1,12 @@
 import { getAllReportsWithPagination } from "@/services/reportService";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetAllReportsWithPagination = () => {
+export const useGetAllReportsWithPagination = (
+  startIndex: number, 
+  endIndex:number
+) => {
   const query = useQuery({
-    queryFn: getAllReportsWithPagination,
+    queryFn: () => getAllReportsWithPagination(startIndex, endIndex),
     queryKey: ["getAllReportsWithPagination"],
   });
 
