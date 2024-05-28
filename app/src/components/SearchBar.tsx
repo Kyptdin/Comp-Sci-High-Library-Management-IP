@@ -64,7 +64,7 @@ export const SearchBar = ({ className }: { className?: string }) => {
         searchQueryVisible ? "opacity-100" : "opacity-0",
         "transition ease-out duration-200"
       )}>
-        {Object.values(bookResults).slice(-4).map((bookData : any, key: number) => {
+        {Object.values(bookResults).slice(-3).map((bookData : any, key: number) => {
             const bookLink = `/inspect/${bookData.id}`;
 
             return (<Link to={bookLink} key={key}>
