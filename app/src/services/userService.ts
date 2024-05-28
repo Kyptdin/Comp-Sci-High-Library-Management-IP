@@ -73,11 +73,12 @@ export const readUserByEmail = async (email: string) => {
 };
 
 export const readUserByUserId = async (userId: string) => {
+  console.log(userId);
   const { data: users, error } = await supabase
     .from("users")
     .select("*")
     // Filters
-    .eq("id", userId);
+    .eq("user_id", userId);
 
   if (error) {
     throw new Error(error.message);
