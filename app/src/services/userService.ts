@@ -72,6 +72,20 @@ export const readUserByEmail = async (email: string) => {
   return users;
 };
 
+export const readUserByUserId = async (userId: string) => {
+  const { data: users, error } = await supabase
+    .from("users")
+    .select("*")
+    // Filters
+    .eq("id", userId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return users;
+};
+
 export const getLoggedInUser = async () => {
   const {
     data: { user: generalUserData },

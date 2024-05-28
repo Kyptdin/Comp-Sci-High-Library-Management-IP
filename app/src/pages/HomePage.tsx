@@ -1,9 +1,16 @@
 import { Navbar } from "@/components/Navbar";
 import { SearchBar } from "@/components/SearchBar";
-import { useGetAllReportsWithPagination } from "@/hooks/report/useGetAllReportsWithPagination";
+// import { useGetAllReportsWithPagination } from "@/hooks/report/useGetAllReportsWithPagination";
+// import { useEffect } from "react";
+// import { mailTest } from "../../mail/test";
 
 export const HomePage = () => {
-  useGetAllReportsWithPagination();
+  // useGetAllReportsWithPagination();
+
+  // useEffect(() => {
+  //   mailTest();
+  // }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
       <Navbar showNavbar={false} />
