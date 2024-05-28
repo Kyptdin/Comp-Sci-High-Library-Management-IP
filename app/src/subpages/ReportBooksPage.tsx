@@ -1,12 +1,10 @@
-import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { ReportPill } from "@/components/ReportPill";
 
 import { useGetAllReportsWithPagination } from "@/hooks/report/useGetAllReportsWithPagination";
-import { report } from "process";
 
 export const ReportBooksPage = () => {
-  const { data: reportQueries } = useGetAllReportsWithPagination(0, 4);
+  const { data: reportQueries } = useGetAllReportsWithPagination(0, 3);
   console.log(reportQueries);
 
   return (
