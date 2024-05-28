@@ -16,13 +16,13 @@ export const ReportBooksPage = () => {
             </div>
 
             <div className='px-4 pb-4 grid grid-cols-2'>
-                {reportQueries?.map((report, key: number) => {
+                {reportQueries?.map((reportData, key: number) => {
                     return <ReportPill 
                         key={key}
-                        reason={report.reason}
-                        explanation={report.explanation}
-                        email={report.user}
-                        bookTitle={report.id}
+                        reason={reportData.report.reason}
+                        explanation={reportData.report.explanation}
+                        email={reportData.userMetaData[0].email}
+                        bookTitle={"hello"}
                     />
                 })}
             </div>
