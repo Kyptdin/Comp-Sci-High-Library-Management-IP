@@ -5,6 +5,7 @@ import { useGetAllReportsWithPagination } from "@/hooks/report/useGetAllReportsW
 
 export const ReportBooksPage = () => {
   const { data: reportQueries } = useGetAllReportsWithPagination(0, 3);
+  console.log(reportQueries);
 
   return (
     <div className="text-white w-[80%] p-4">
