@@ -14,11 +14,11 @@ export const SearchBar = ({ className }: { className?: string }) => {
   const initialSearch = searchQuery ? searchQuery : "";
   const [searchText, setSearchText] = useState(initialSearch);
 
-  const [ 
-    searchQueryVisible, 
-    setSearchQueryVisible 
-  ] = useState<boolean>(false);
-  const { bookResults } = useBookSearch(searchText);
+  // const [ 
+  //   searchQueryVisible, 
+  //   setSearchQueryVisible 
+  // ] = useState<boolean>(false);
+  // const { bookResults } = useBookSearch(searchText);
   
   const navigate = useNavigate();
   const { data } = useGetLoggedInUser();
@@ -48,8 +48,8 @@ export const SearchBar = ({ className }: { className?: string }) => {
         placeholder="Search book"
         onChange={(event) => setSearchText(event.target.value)}
         value={searchText}
-        onFocus={() => setSearchQueryVisible(true)}
-        onBlur={() => setSearchQueryVisible(false)}
+        // onFocus={() => setSearchQueryVisible(true)}
+        // onBlur={() => setSearchQueryVisible(false)}
         className={cn(
           "focus:outline-none",
           "rounded-full w-full py-2 px-5",
@@ -58,7 +58,7 @@ export const SearchBar = ({ className }: { className?: string }) => {
         )}
       />
 
-      <div className={cn(
+      {/* <div className={cn(
         "absolute w-[500px] z-50 mt-5 bg-white rounded-xl px-2",
         "shadow-lg shadow-gray-800",
         searchQueryVisible ? "opacity-100" : "opacity-0",
@@ -78,7 +78,7 @@ export const SearchBar = ({ className }: { className?: string }) => {
               </div>
             </Link>);
         })}
-      </div>
+      </div> */}
     </form>
   </div>);
 };

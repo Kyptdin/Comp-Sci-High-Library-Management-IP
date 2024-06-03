@@ -9,11 +9,13 @@ Add the return book works (SAFI) (DONE)
 Add the edit book book (SAFI) (DONE)
 Add search bar recommendations (SAFI) (DONE)
 Fix the images in edit book pills (SAFI) (DONE)
+Add report pills for the report menu (SAFI) (DONE)
+Show borrow or return based on if the user owns the book (SAFI) (DONE)
+The search user pills have skinnier image. (SAFI) (DONE)
 
-Add the dark theme to report pop-ups, and etc. (SAFI)
-Add report pills for the report menu (SAFI)
-Show borrow or return based on if the user owns the book (SAFI)
-The search user pills have skinnier image. (SAFI)
+Fix the load skeletons when searching up books (SAFI)
+Add a scroll bar to the report menu (SAFI)
+Add multi add books based on CVS (SAFI)
 
 -----------------------------------------------------------------------------------------------
 

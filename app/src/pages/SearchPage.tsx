@@ -33,13 +33,7 @@ export const SearchPage = () => {
       </p>
 
       {isError && <Error />}
-      {isLoading && (
-        <div className="grid grid-cols-4 ">
-          {emptyArr.map((_, index) => {
-            return <BookDisplaySkeleton key={index} />;
-          })}
-        </div>
-      )}
+
 
       <div className={cn(
         "grid p-5 grid-cols-1 gap-0",
@@ -49,6 +43,13 @@ export const SearchPage = () => {
         "sm:grid-cols-2 sm:gap-0",
         "xs:grid-cols-1 xs:gap-0"
       )}>
+        {isLoading && emptyArr.map((_, index) => {
+          return <BookDisplaySkeleton 
+            key={index} 
+            className="w-[250px] h-[375px] m-4 relative"
+          />;
+        })}
+
         {booksForSearchedQuery &&
           booksForSearchedQuery.map((bookData, key: number) => {
             const {
