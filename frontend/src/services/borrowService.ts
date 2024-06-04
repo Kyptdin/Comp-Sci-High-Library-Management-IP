@@ -5,6 +5,12 @@ import { Borrow, BorrowsUpdate } from "../types/supabaseTypes";
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
 */
 /****** POST ROUTES ******/
+/**
+ * Creates a new borrow entry in the database.
+ *
+ * @param borrowData - The data of the borrow to be created.
+ * @returns The newly created borrow data.
+ */
 export const createBorrow = async (borrowData: Borrow) => {
   const { data, error } = await supabase
     .from("borrows")
@@ -17,6 +23,11 @@ export const createBorrow = async (borrowData: Borrow) => {
 };
 
 /****** GET ROUTES ******/
+/**
+ * Retrieves all borrow entries from the database with pagination.
+ *
+ * @returns An array of borrow data.
+ */
 export const readAllBorrowsWithPagination = async () => {
   const { data: borrows, error } = await supabase
     .from("borrows")
@@ -27,6 +38,13 @@ export const readAllBorrowsWithPagination = async () => {
   }
   return borrows;
 };
+
+/**
+ * Retrieves borrow entries from the database based on the book's ISBN.
+ *
+ * @param isbn - The ISBN of the book.
+ * @returns An array of borrow data.
+ */
 export const readBorrowsByISBN = async (isbn: string) => {
   const { data: borrows, error } = await supabase
     .from("borrows")
@@ -39,6 +57,12 @@ export const readBorrowsByISBN = async (isbn: string) => {
   return borrows;
 };
 
+/**
+ * Retrieves borrow entries from the database based on the user's ID.
+ *
+ * @param id - The ID of the user.
+ * @returns An array of borrow data.
+ */
 export const readBorrowsByUserId = async (id: string) => {
   const { data: borrows, error } = await supabase
     .from("borrows")
@@ -51,6 +75,13 @@ export const readBorrowsByUserId = async (id: string) => {
   return borrows;
 };
 
+/**
+ * Retrieves borrow entries from the database based on the user's ID and the book's ISBN.
+ *
+ * @param userId - The ID of the user.
+ * @param isbn - The ISBN of the book.
+ * @returns An array of borrow data.
+ */
 export const getBorrowsByUserIdAndIsbn = async (
   userId: string,
   isbn: string
@@ -68,6 +99,13 @@ export const getBorrowsByUserIdAndIsbn = async (
   return borrows;
 };
 
+/**
+ * Retrieves borrow entries from the database based on the user's ID.
+ *
+ * @param userId - The ID of the user.
+ * @returns An array of borrow data.
+ */
+
 export const getBorrowsByUserId = async (userId: string) => {
   const { data: borrows, error } = await supabase
     .from("borrows")
@@ -82,6 +120,12 @@ export const getBorrowsByUserId = async (userId: string) => {
   return borrows;
 };
 
+/**
+ * Retrieves borrow entries from the database based on the book's ISBN that have not been returned.
+ *
+ * @param isbn - The ISBN of the book.
+ * @returns An array of borrow data.
+ */
 export const getAllBorrowsNotReturnedByIsbn = async (isbn: string) => {
   const { data: borrows, error } = await supabase
     .from("borrows")
@@ -97,6 +141,13 @@ export const getAllBorrowsNotReturnedByIsbn = async (isbn: string) => {
   return borrows;
 };
 
+/**
+ * Retrieves borrow entries from the database based on the book's ISBN and the user's ID that have not been returned.
+ *
+ * @param isbn - The ISBN of the book.
+ * @param userId - The ID of the user.
+ * @returns An array of borrow data.
+ */
 export const getAllBorrowsNotReturnedByIsbnAndUserId = async (
   isbn: string,
   userId: string
@@ -117,6 +168,12 @@ export const getAllBorrowsNotReturnedByIsbnAndUserId = async (
 };
 
 // Doesn't return only 1 borrow. If the user borrowed 10 books in the past week then 10 books will be returned
+/**
+ * Retrieves borrow entries from the database within the last week based on the user's ID.
+ *
+ * @param userId - The ID of the user.
+ * @returns An array of borrow data.
+ */
 export async function getBorrowsWithinLastWeekFromUser(userId: string) {
   const currentDate = new Date();
   const oneWeekAgo = new Date();
@@ -140,6 +197,14 @@ export async function getBorrowsWithinLastWeekFromUser(userId: string) {
 }
 
 /****** EDIT ROUTES ******/
+/**
+ * Edits a borrow entry in the database based on the user's ID and the book's ISBN.
+ *
+ * @param userId - The ID of the user.
+ * @param isbn - The ISBN of the book.
+ * @param newBorrowData - The new data for the borrow entry.
+ * @returns The updated borrow data.
+ */
 export const editBorrowByUserIdAndIsbn = async (
   userId: string,
   isbn: string,
@@ -160,7 +225,13 @@ export const editBorrowByUserIdAndIsbn = async (
   return data;
 };
 
-// TODO: Take into consideration that the user may have to return multiple copies of the same book
+/**
+ * Handles the process of returning a borrowed book.
+ *
+ * @param userId - The ID of the user returning the book.
+ * @param isbn - The ISBN of the book being returned.
+ * @returns The updated borrow data indicating the book has been returned.
+ */
 export const returnBorrowedBook = async ({ userId, isbn }: ReturnBookProps) => {
   if (!userId || !isbn) return null;
 
