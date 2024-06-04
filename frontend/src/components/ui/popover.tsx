@@ -1,12 +1,26 @@
-import * as React from "react"
-import * as PopoverPrimitive from "@radix-ui/react-popover"
+/**
+ * @fileoverview Popover components for creating pop-up overlays.
+ * @packageDocumentation
+ */
 
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 
-const Popover = PopoverPrimitive.Root
+import { cn } from "@/lib/utils";
 
-const PopoverTrigger = PopoverPrimitive.Trigger
+/**
+ * Root component for the popover.
+ */
+const Popover = PopoverPrimitive.Root;
 
+/**
+ * Trigger component for the popover.
+ */
+const PopoverTrigger = PopoverPrimitive.Trigger;
+
+/**
+ * Content component for the popover.
+ */
 const PopoverContent = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
@@ -23,7 +37,7 @@ const PopoverContent = React.forwardRef<
       {...props}
     />
   </PopoverPrimitive.Portal>
-))
-PopoverContent.displayName = PopoverPrimitive.Content.displayName
+));
+PopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
-export { Popover, PopoverTrigger, PopoverContent }
+export { Popover, PopoverTrigger, PopoverContent };

@@ -1,8 +1,14 @@
-import * as React from "react"
-import * as SeparatorPrimitive from "@radix-ui/react-separator"
+import * as React from "react";
+import * as SeparatorPrimitive from "@radix-ui/react-separator";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
+/**
+ * Separator component to create a visual divider.
+ * @param {string} [className] - Additional classes to apply to the separator.
+ * @param {string} [orientation='horizontal'] - The orientation of the separator ('horizontal' or 'vertical').
+ * @param {boolean} [decorative=true] - Whether the separator is decorative or functional.
+ */
 const Separator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root>
@@ -23,7 +29,7 @@ const Separator = React.forwardRef<
       {...props}
     />
   )
-)
-Separator.displayName = SeparatorPrimitive.Root.displayName
+);
+Separator.displayName = SeparatorPrimitive.Root.displayName;
 
-export { Separator }
+export { Separator };

@@ -1,11 +1,14 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+// Import necessary dependencies and utilities
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
-
+// Define button variants using class-variance-authority
 const buttonVariants = cva(
+  // Base styles for buttons
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  // Variants based on different states or types
   {
     variants: {
       variant: {
@@ -26,31 +29,34 @@ const buttonVariants = cva(
         icon: "h-10 w-10",
       },
     },
+    // Default variants for buttons
     defaultVariants: {
       variant: "default",
       size: "default",
     },
   }
-)
+);
 
+// Define the ButtonProps interface which extends React.ButtonHTMLAttributes<HTMLButtonElement> and VariantProps<typeof buttonVariants>
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+  asChild?: boolean; // Optional prop to render as a child using Slot component
 }
 
+// Define the Button component using React.forwardRef
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
+    const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       />
-    )
+    );
   }
-)
-Button.displayName = "Button"
+);
+Button.displayName = "Button"; // Set the display name for the Button component
 
-export { Button, buttonVariants }
+export { Button, buttonVariants }; // Export the Button component and buttonVariants for external use

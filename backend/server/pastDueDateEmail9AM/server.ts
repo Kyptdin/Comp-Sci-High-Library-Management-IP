@@ -1,5 +1,6 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
+// deployctl deploy --prod --project=helloworld main.ts
 const supabase = createClient<Database>(
   "https://vygjxzhtqazwuskkaxpz.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5Z2p4emh0cWF6d3Vza2theHB6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTUwMTg2MjgsImV4cCI6MjAzMDU5NDYyOH0.7c2_7Hv_fcJchjmJ1amzNgAJVgrobMMOYKAZjB0uhIU"
@@ -237,51 +238,50 @@ export type Enums<
   ? PublicSchema["Enums"][PublicEnumNameOrOptions]
   : never;
 
-const htmlForEmail = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html dir="ltr" lang="en">
+// const htmlForEmail = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+// <html dir="ltr" lang="en">
 
-  <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-    <meta name="x-apple-disable-message-reformatting" />
-  </head>
-  <div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0">Missing Book<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div>
-  </div>
+//   <head>
+//     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+//     <meta name="x-apple-disable-message-reformatting" />
+//   </head>
+//   <div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0">Missing Book<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div>
+//   </div>
 
-  <body style="background-color:rgb(255,255,255);font-family:ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;">
-    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:37.5em;margin-left:auto;margin-right:auto;padding:1.5rem;padding-bottom:3rem;background-repeat:no-repeat;background-position:bottom">
-      <tbody>
-        <tr style="width:100%">
-          <td>
-            <div style="display:flex;justify-content:center"><img alt="Comp Sci High Library Logo" src="https://vygjxzhtqazwuskkaxpz.supabase.co/storage/v1/object/public/logos/black.png" style="display:block;outline:none;border:none;text-decoration:none;height:1.25rem" /></div>
-            <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="margin-top:1.5rem;margin-bottom:1.5rem">
-              <tbody>
-                <tr>
-                  <td>
-                    <p style="font-size:1rem;line-height:1.75rem;margin:16px 0;margin-top:1rem">Dear <!-- -->{STUDENT&#x27;S NAME}<!-- -->,</p>
-                    <p style="font-size:1rem;line-height:1.75rem;margin:16px 0">We are writing to inform you that the book &quot;<!-- -->{BOOK NAME}<!-- -->&quot; was due on <!-- -->{DUE DATE}<!-- -->, and has not yet been returned. Please return the as soon as possible.</p>
-                    <p style="font-size:1rem;line-height:1.75rem;margin:16px 0;margin-top:1rem">If you have lost &quot;<!-- -->{BOOK NAME}<!-- -->,&quot; please contact your English teacher for further instructions.</p><a href="google.com" class="hover:bg-gray-800" style="color:rgb(255,255,255);text-decoration:none;background-color:rgb(0,0,0);font-weight:700;padding-top:0.75rem;padding-bottom:0.75rem;padding-left:1rem;padding-right:1rem;border-radius:0.25rem;margin-top:2rem;display:block;text-align:center" target="_blank">Return book</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <p style="font-size:1rem;line-height:1.75rem;margin:16px 0;margin-top:1rem">Best Regards,<br />CSH Library Team</p>
-            <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-top-width:1px;border-color:rgb(209,213,219);margin-top:3rem" />
-            <p style="font-size:0.75rem;line-height:1rem;margin:16px 0;color:rgb(75,85,99);margin-left:0.25rem">Urban Assembly Charter School for Computer Science</p>
-            <p style="font-size:0.75rem;line-height:1rem;margin:16px 0;color:rgb(75,85,99);margin-left:0.25rem">1300 Boynton Ave, Bronx, NY 10472</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </body>
-
-</html>`;
+//   <body style="background-color:rgb(255,255,255);font-family:ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;">
+//     <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:37.5em;margin-left:auto;margin-right:auto;padding:1.5rem;padding-bottom:3rem;background-repeat:no-repeat;background-position:bottom">
+//       <tbody>
+//         <tr style="width:100%">
+//           <td>
+//             <div style="display:flex;justify-content:center"><img alt="Comp Sci High Library Logo" src="https://vygjxzhtqazwuskkaxpz.supabase.co/storage/v1/object/public/logos/black.png" style="display:block;outline:none;border:none;text-decoration:none;height:1.25rem" /></div>
+//             <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="margin-top:1.5rem;margin-bottom:1.5rem">
+//               <tbody>
+//                 <tr>
+//                   <td>
+//                     <p style="font-size:1rem;line-height:1.75rem;margin:16px 0;margin-top:1rem">Dear <!-- -->{STUDENT&#x27;S NAME}<!-- -->,</p>
+//                     <p style="font-size:1rem;line-height:1.75rem;margin:16px 0">We are writing to inform you that the book &quot;<!-- -->{BOOK NAME}<!-- -->&quot; was due on <!-- -->{DUE DATE}<!-- -->, and has not yet been returned. Please return the as soon as possible.</p>
+//                     <p style="font-size:1rem;line-height:1.75rem;margin:16px 0;margin-top:1rem">If you have lost &quot;<!-- -->{BOOK NAME}<!-- -->,&quot; please contact your English teacher for further instructions.</p><a href="google.com" class="hover:bg-gray-800" style="color:rgb(255,255,255);text-decoration:none;background-color:rgb(0,0,0);font-weight:700;padding-top:0.75rem;padding-bottom:0.75rem;padding-left:1rem;padding-right:1rem;border-radius:0.25rem;margin-top:2rem;display:block;text-align:center" target="_blank">Return book</a>
+//                   </td>
+//                 </tr>
+//               </tbody>
+//             </table>
+//             <p style="font-size:1rem;line-height:1.75rem;margin:16px 0;margin-top:1rem">Best Regards,<br />CSH Library Team</p>
+//             <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-top-width:1px;border-color:rgb(209,213,219);margin-top:3rem" />
+//             <p style="font-size:0.75rem;line-height:1rem;margin:16px 0;color:rgb(75,85,99);margin-left:0.25rem">Urban Assembly Charter School for Computer Science</p>
+//             <p style="font-size:0.75rem;line-height:1rem;margin:16px 0;color:rgb(75,85,99);margin-left:0.25rem">1300 Boynton Ave, Bronx, NY 10472</p>
+//           </td>
+//         </tr>
+//       </tbody>
+//     </table>
+//   </body>
+// </html>`;
 
 const getStudentMetaDataById = async (userId: string) => {
   const { data: users, error } = await supabase
     .from("users")
     .select("*")
     // Filters
-    .eq("id", userId);
+    .eq("user_id", userId);
   if (error) {
     throw new Error(error.message);
   }
@@ -306,11 +306,45 @@ const sendMissingBookEmail = async (
   studentName: string,
   studentEmail: string,
   bookName: string,
-  html: string
+  dueDate: string
 ): Promise<void | Response> => {
-  const newHtml = html
-    .replace("{STUDENT&#x27;S NAME}", studentName)
-    .replace("{BOOK NAME}", bookName);
+  const newHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" lang="en">
+
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <meta name="x-apple-disable-message-reformatting" />
+  </head>
+  <div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0">Missing Book<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div>
+  </div>
+
+  <body style="background-color:rgb(255,255,255);font-family:ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;">
+    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:37.5em;margin-left:auto;margin-right:auto;padding:1.5rem;padding-bottom:3rem;background-repeat:no-repeat;background-position:bottom">
+      <tbody>
+        <tr style="width:100%">
+          <td>
+            <div style="display:flex;justify-content:center"><img alt="Comp Sci High Library Logo" src="https://vygjxzhtqazwuskkaxpz.supabase.co/storage/v1/object/public/logos/black.png" style="display:block;outline:none;border:none;text-decoration:none;height:1.25rem" /></div>
+            <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="margin-top:1.5rem;margin-bottom:1.5rem">
+              <tbody>
+                <tr>
+                  <td>
+                    <p style="font-size:1rem;line-height:1.75rem;margin:16px 0;margin-top:1rem">Dear <!-- -->${studentName}<!-- -->,</p>
+                    <p style="font-size:1rem;line-height:1.75rem;margin:16px 0">We are writing to inform you that the book &quot;<!-- -->${bookName}<!-- -->&quot; was due on <!-- -->${dueDate}<!-- -->, and has not yet been returned. Please return the book as soon as possible.</p>
+                    <p style="font-size:1rem;line-height:1.75rem;margin:16px 0;margin-top:1rem">If you have lost &quot;<!-- -->${bookName}<!-- -->,&quot; please contact your English teacher for further instructions.</p><a href="google.com" class="hover:bg-gray-800" style="color:rgb(255,255,255);text-decoration:none;background-color:rgb(0,0,0);font-weight:700;padding-top:0.75rem;padding-bottom:0.75rem;padding-left:1rem;padding-right:1rem;border-radius:0.25rem;margin-top:2rem;display:block;text-align:center" target="_blank">Return book</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p style="font-size:1rem;line-height:1.75rem;margin:16px 0;margin-top:1rem">Best Regards,<br />CSH Library Team</p>
+            <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-top-width:1px;border-color:rgb(209,213,219);margin-top:3rem" />
+            <p style="font-size:0.75rem;line-height:1rem;margin:16px 0;color:rgb(75,85,99);margin-left:0.25rem">Urban Assembly Charter School for Computer Science</p>
+            <p style="font-size:0.75rem;line-height:1rem;margin:16px 0;color:rgb(75,85,99);margin-left:0.25rem">1300 Boynton Ave, Bronx, NY 10472</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>`;
 
   const RESEND_API_KEY = "re_fC2bHA2D_Fnxw9HMKW2LhNJxcr8FBSW2Z";
   const res = await fetch("https://api.resend.com/emails", {
@@ -365,16 +399,25 @@ const handler = async (): Promise<Response> => {
   const bookData = await Promise.all(promiseArrGettingBookData);
 
   // Step #4: Send emails to about the book they are missing
-  const promiseArrEmails = allMissingBooks.map((_, index) => {
+  const promiseArrEmails = allMissingBooks.map((borrow, index) => {
     const studentEmail = studentMetaDataFlatted[index].email;
     const studentName = studentMetaDataFlatted[index].user_name;
     const bookName = bookData[index].title;
+    const dueDateNormalPerson = borrow.return_due_date;
+    const dueDateAmerican = new Date(dueDateNormalPerson).toLocaleDateString(
+      "en-US",
+      {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }
+    );
 
     return sendMissingBookEmail(
       studentName,
       studentEmail,
       bookName,
-      htmlForEmail
+      dueDateAmerican
     );
   });
   await Promise.all(promiseArrEmails);
@@ -388,6 +431,6 @@ const handler = async (): Promise<Response> => {
 };
 
 // Cron job that runs every minute
-Deno.cron("sample cron", "* * * * *", () => {
+Deno.cron("sample cron", "0 9 * * *", () => {
   handler();
 });

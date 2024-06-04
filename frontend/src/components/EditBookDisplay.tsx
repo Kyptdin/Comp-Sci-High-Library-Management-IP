@@ -1,3 +1,4 @@
+// Import necessary components and hooks
 import { BookDisplayImage } from "@/components/BookDisplayImage";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +11,6 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-
 // @ts-ignore comment
 import { fetcher } from "@/hooks/fetcher";
 import { Link } from "react-router-dom";
@@ -30,6 +30,34 @@ interface Props {
   titleQuery: string;
 }
 
+/**
+ * EditBookDisplay Component
+ *
+ * This component displays the details of a book along with options to view, edit, or delete the book.
+ * It provides dialogs for editing the number of copies and confirming the deletion of the book.
+ *
+ * @param {string} title - The title of the book.
+ * @param {string} isbn - The ISBN of the book.
+ * @param {string} [bookImage] - The URL of the book cover image (optional).
+ * @param {string} titleQuery - The query used for deleting the book.
+ *
+ * Usage:
+ *
+ * ```jsx
+ * import { EditBookDisplay } from 'path/to/EditBookDisplay';
+ *
+ * const App = () => (
+ *   <EditBookDisplay
+ *     title="Book Title"
+ *     isbn="1234567890"
+ *     bookImage="image_url.jpg"
+ *     titleQuery="book_title_query"
+ *   />
+ * );
+ * ```
+ *
+ * This will render the book details along with buttons to view, edit, and delete the book.
+ */
 export const EditBookDisplay = ({
   isbn,
   title,
@@ -43,10 +71,10 @@ export const EditBookDisplay = ({
   const inspectPage = `/inspect/${isbn}`;
 
   const onSubmitEditBook = () => {
-    const udpateBookObj: BooksUpdate = {
+    const updateBookObj: BooksUpdate = {
       total_copies_within_school: amountOfCopiesInBook,
     };
-    editBook({ isbn, newBookData: udpateBookObj });
+    editBook({ isbn, newBookData: updateBookObj });
   };
 
   const onSubmitDeleteBook = () => {
@@ -55,9 +83,6 @@ export const EditBookDisplay = ({
 
   return (
     <div className="flex justify-start items-center mb-2">
-      {/* {isLoading | error ? (
-        <BookDisplaySkeleton className="p-0 mr-5 h-[220px] w-[150px] rounded-md" />
-      ) : ( */}
       <div className="w-2/6">
         <BookDisplayImage
           src={bookImage}
@@ -121,7 +146,7 @@ export const EditBookDisplay = ({
             <DialogContent>
               <DialogHeader>
                 <DialogTitle className="mb-2">Confirm Deletion</DialogTitle>
-                <p className="">{`Are you sure you want to delete book "${title}" which has the isbn of ${isbn}`}</p>
+                <p className="">{`Are you sure you want to delete book "${title}" which has the ISBN of ${isbn}`}</p>
               </DialogHeader>
               <DialogFooter>
                 <DialogClose asChild>
@@ -138,7 +163,6 @@ export const EditBookDisplay = ({
               </DialogFooter>
             </DialogContent>
           </Dialog>
-          {/* Delete */}
         </div>
       </div>
     </div>

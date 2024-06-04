@@ -9,6 +9,7 @@ import {
 import { VolumeList } from "../types/googleBooksAPI.ts";
 import { EditBooksProp } from "../hooks/book/useEditBook.ts";
 import { convertToTsQuery } from "../utils/convertToTsQuery.ts";
+
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
 */
@@ -22,6 +23,24 @@ export const createBook = async (bookData: Book) => {
     throw new Error(error.message);
   }
   return data;
+};
+
+export const massCreateBooks = async (bookDataArr: Book[]) => {
+  const promiseBookArr = bookDataArr.map((book) => {
+    return createBook(book);
+  });
+  const bookDataFuillment = await Promise.allSettled(promiseBookArr);
+  //Set all the books that have failed to upload
+  const bookRespoonseData = bookDataFuillment.map((bookReponse) => {
+    if (bookReponse.status === "rejected") {
+      return null;
+    } else {
+      return bookReponse.value[0];
+    }
+  });
+
+  // If the book is data at a certain index is null, then you can assume that the upload for that book failed
+  return bookRespoonseData;
 };
 
 // Unlike the "createBook" function, this function takes care of the bussines logic when borrowing the book. Use this function when the user is trying to borrow not the function above.

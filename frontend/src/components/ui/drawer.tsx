@@ -1,8 +1,10 @@
-import * as React from "react"
-import { Drawer as DrawerPrimitive } from "vaul"
+// Import necessary dependencies and utilities
+import * as React from "react";
+import { Drawer as DrawerPrimitive } from "vaul";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
+// Define a custom Drawer component
 const Drawer = ({
   shouldScaleBackground = true,
   ...props
@@ -11,15 +13,15 @@ const Drawer = ({
     shouldScaleBackground={shouldScaleBackground}
     {...props}
   />
-)
-Drawer.displayName = "Drawer"
+);
+Drawer.displayName = "Drawer";
 
-const DrawerTrigger = DrawerPrimitive.Trigger
+// Extract components from DrawerPrimitive
+const DrawerTrigger = DrawerPrimitive.Trigger;
+const DrawerPortal = DrawerPrimitive.Portal;
+const DrawerClose = DrawerPrimitive.Close;
 
-const DrawerPortal = DrawerPrimitive.Portal
-
-const DrawerClose = DrawerPrimitive.Close
-
+// Define a custom DrawerOverlay component using React.forwardRef
 const DrawerOverlay = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
@@ -29,9 +31,10 @@ const DrawerOverlay = React.forwardRef<
     className={cn("fixed inset-0 z-50 bg-black/80", className)}
     {...props}
   />
-))
-DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
+));
+DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 
+// Define a custom DrawerContent component using React.forwardRef
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
@@ -50,9 +53,10 @@ const DrawerContent = React.forwardRef<
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>
-))
-DrawerContent.displayName = "DrawerContent"
+));
+DrawerContent.displayName = "DrawerContent";
 
+// Define a custom DrawerHeader component
 const DrawerHeader = ({
   className,
   ...props
@@ -61,9 +65,10 @@ const DrawerHeader = ({
     className={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
     {...props}
   />
-)
-DrawerHeader.displayName = "DrawerHeader"
+);
+DrawerHeader.displayName = "DrawerHeader";
 
+// Define a custom DrawerFooter component
 const DrawerFooter = ({
   className,
   ...props
@@ -72,9 +77,10 @@ const DrawerFooter = ({
     className={cn("mt-auto flex flex-col gap-2 p-4", className)}
     {...props}
   />
-)
-DrawerFooter.displayName = "DrawerFooter"
+);
+DrawerFooter.displayName = "DrawerFooter";
 
+// Define a custom DrawerTitle component using React.forwardRef
 const DrawerTitle = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Title>
@@ -87,9 +93,10 @@ const DrawerTitle = React.forwardRef<
     )}
     {...props}
   />
-))
-DrawerTitle.displayName = DrawerPrimitive.Title.displayName
+));
+DrawerTitle.displayName = DrawerPrimitive.Title.displayName;
 
+// Define a custom DrawerDescription component using React.forwardRef
 const DrawerDescription = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
@@ -99,9 +106,10 @@ const DrawerDescription = React.forwardRef<
     className={cn("text-sm text-muted-foreground", className)}
     {...props}
   />
-))
-DrawerDescription.displayName = DrawerPrimitive.Description.displayName
+));
+DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
 
+// Export the custom Drawer components for external use
 export {
   Drawer,
   DrawerPortal,
@@ -113,4 +121,4 @@ export {
   DrawerFooter,
   DrawerTitle,
   DrawerDescription,
-}
+};

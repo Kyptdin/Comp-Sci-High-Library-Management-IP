@@ -1,10 +1,25 @@
-import * as React from "react"
+/**
+ * @fileoverview Custom input component for forms.
+ * @packageDocumentation
+ */
 
-import { cn } from "@/lib/utils"
+import * as React from "react";
 
+import { cn } from "@/lib/utils";
+
+/**
+ * Props for the Input component, extending the standard HTML input element attributes.
+ */
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
 
+/**
+ * Custom input component for forms.
+ * @param className - Additional CSS classes for the input.
+ * @param type - Type of the input element (e.g., text, number, etc.).
+ * @param props - Additional props to pass to the input element.
+ * @returns The input element.
+ */
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
     return (
@@ -17,9 +32,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         {...props}
       />
-    )
+    );
   }
-)
-Input.displayName = "Input"
+);
+Input.displayName = "Input";
 
-export { Input }
+export { Input };

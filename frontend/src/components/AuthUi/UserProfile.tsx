@@ -1,32 +1,57 @@
+// Import necessary components and hooks
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"; // Custom dropdown menu components
 
-import { IoLogOut } from "react-icons/io5";
-import { BiSolidBookAdd } from "react-icons/bi";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useLogout } from "@/hooks/auth/useLogout";
-import { cn } from "@/lib/utils";
-import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
-import { useNavigate } from "react-router-dom";
+import { IoLogOut } from "react-icons/io5"; // Logout icon from react-icons/io5
+import { BiSolidBookAdd } from "react-icons/bi"; // Add book icon from react-icons/bi
+import { Skeleton } from "@/components/ui/skeleton"; // Custom Skeleton component for loading state
+import { useLogout } from "@/hooks/auth/useLogout"; // Custom hook to handle logout
+import { cn } from "@/lib/utils"; // Utility function for conditional class names
+import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser"; // Custom hook to get logged in user data
+import { useNavigate } from "react-router-dom"; // Hook to navigate programmatically
 
+// Define the Props interface
 interface Props {
   profileImageUrl: string | null;
 }
 
+/**
+ * UserProfile Component
+ *
+ * This component displays the user's profile image and provides a dropdown menu with options to log out
+ * and, if the user is an admin, to add a book. The component handles both displaying the user's profile
+ * image and the dropdown menu functionalities.
+ *
+ * @param {string | null} profileImageUrl - URL of the user's profile image. If null, a loading skeleton is displayed.
+ *
+ * Usage:
+ *
+ * ```jsx
+ * import { UserProfile } from 'path/to/UserProfile';
+ *
+ * const App = () => (
+ *   <UserProfile profileImageUrl={userProfileImageUrl} />
+ * );
+ * ```
+ *
+ * This will render the user's profile image with a dropdown menu for log out and admin options.
+ */
 export const UserProfile = ({ profileImageUrl }: Props) => {
-  const { mutateAsync } = useLogout();
-  const navigate = useNavigate();
-  const { data } = useGetLoggedInUser();
-  const isAdmin = data?.userMetaData[0].admin_status === "admin";
+  const { mutateAsync } = useLogout(); // Hook to handle logout
+  const navigate = useNavigate(); // Hook to navigate programmatically
+  const { data } = useGetLoggedInUser(); // Hook to get logged in user data
+  const isAdmin = data?.userMetaData[0].admin_status === "admin"; // Check if the user is an admin
 
+  // Display loading skeleton if profileImageUrl is null
   if (!profileImageUrl) {
     return <Skeleton className="w-[60px] h-[60px] rounded-2xl" />;
   }
 
+  // Function to handle logout
   async function logout() {
     await mutateAsync();
   }
@@ -52,20 +77,16 @@ export const UserProfile = ({ profileImageUrl }: Props) => {
       <DropdownMenuContent className="w-56 mr-[50px]">
         <DropdownMenuItem
           className="text-red-800 cursor-pointer"
-          onClick={() => {
-            logout();
-          }}
+          onClick={logout} // Handle logout on click
         >
           <IoLogOut size={32} />
           <p className="font-bold font-lg ml-1">Log out</p>
         </DropdownMenuItem>
 
-        {isAdmin && (
+        {isAdmin && ( // Display admin option if the user is an admin
           <DropdownMenuItem
             className="cursor-pointer"
-            onClick={() => {
-              navigate("/admin/addBooks");
-            }}
+            onClick={() => navigate("/admin/addBooks")} // Navigate to addBooks page on click
           >
             <BiSolidBookAdd size={28} />
             <p className="font-bold font-lg ml-1">Add book</p>
