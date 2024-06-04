@@ -15,6 +15,9 @@ import { useCreateBook } from "@/hooks/book/useCreateBook";
 import { isbnApiLink, fetchBookFromIsbn } from "@/utils/isbnApi";
 import { useBookValidator } from "@/hooks/book/useBookValidator";
 
+/**
+ * Component for the admin page to add books.
+ */
 export const AddBooksAdminPage = () => {
   const { mutateAsync: createBook } = useCreateBook();
 
