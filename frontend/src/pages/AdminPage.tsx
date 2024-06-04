@@ -1,3 +1,23 @@
+/**
+ * This file contains the `AdminPage` component, which serves as the main page for admin-related actions.
+ *
+ * Dependencies:
+ * - `Navbar` from `@/components/Navbar` for the navigation bar.
+ * - `Button` from `@/components/ui/button` for rendering buttons.
+ * - `NavLink` and `Outlet` from `react-router-dom` for managing routing.
+ * - `Separator` from `@radix-ui/react-dropdown-menu` for rendering a visual separator in the sidebar.
+ * - `useEffect` and `useRef` from `react` for handling side effects and refs, respectively.
+ * - `useGetLoggedInUser` from `@/hooks/user/useGetLoggedInUser` for fetching the currently logged-in user's data.
+ *
+ * Functionality:
+ * - The component fetches the logged-in user's data to determine if the user is an admin.
+ * - It conditionally renders a sidebar with admin action buttons based on the user's admin status.
+ * - It uses `NavLink` for routing to different admin actions like searching for users, adding books, editing books, and viewing reports.
+ * - When the component mounts and the user is an admin, it automatically clicks the "Search User" button to show the default content.
+ * - The main content area (`Outlet`) renders the appropriate component based on the selected admin action route.
+ *
+ * @returns JSX element representing the admin page with sidebar and main content area.
+ */
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 

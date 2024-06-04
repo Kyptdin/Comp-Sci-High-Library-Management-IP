@@ -1,3 +1,9 @@
+/**
+ * This component represents a loading page, typically displayed while content is being fetched or processed.
+ * It shows a loading animation with three bouncing dots to indicate that the page is loading.
+ *
+ * @returns JSX element representing the loading page with a loading animation.
+ */
 export const LoadingPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950 flex justify-center items-center h-screen ">

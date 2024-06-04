@@ -7,6 +7,13 @@ import { useParams, Link } from "react-router-dom";
 import { useSearchBookBySimilarTitle } from "@/hooks/book/useSearchBookBySimilarTitle";
 import { cn } from "@/lib/utils";
 
+/**
+ * This component displays search results based on a given search query.
+ * It fetches and displays books that match or are similar to the search query.
+ *
+ * @returns JSX element representing the search results page.
+ */
+
 export const SearchPage = () => {
   const { searchQuery } = useParams();
   const filteredSearchParams = searchQuery;
@@ -41,14 +48,16 @@ export const SearchPage = () => {
         </div>
       )}
 
-      <div className={cn(
-        "grid p-5 grid-cols-1 gap-0",
-        "2xl:grid-cols-6 2xl:gap-7",
-        "xl:grid-cols-5 xl:gap-5",
-        "md:grid-cols-3 md:gap-2",
-        "sm:grid-cols-2 sm:gap-0",
-        "xs:grid-cols-1 xs:gap-0"
-      )}>
+      <div
+        className={cn(
+          "grid p-5 grid-cols-1 gap-0",
+          "2xl:grid-cols-6 2xl:gap-7",
+          "xl:grid-cols-5 xl:gap-5",
+          "md:grid-cols-3 md:gap-2",
+          "sm:grid-cols-2 sm:gap-0",
+          "xs:grid-cols-1 xs:gap-0"
+        )}
+      >
         {booksForSearchedQuery &&
           booksForSearchedQuery.map((bookData, key: number) => {
             const {

@@ -25,6 +25,12 @@ function validateBookData(data: VolumeList) {
 
   return true;
 }
+/**
+ * This component is used to display detailed information about a book and provide interaction options like borrowing, returning, and reporting missing books.
+ * It fetches data from the Google Books API and the Supabase database based on the provided ISBN. Users can borrow books if available, return borrowed books, and report missing books.
+ *
+ * @returns JSX element representing the book inspection page with detailed book information and interaction options.
+ */
 
 export const InspectPage = () => {
   const { data: loggedInUserData } = useGetLoggedInUser();

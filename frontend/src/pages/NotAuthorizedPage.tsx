@@ -8,6 +8,13 @@ import {
 } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 
+/**
+ * This component represents a page displayed when a user is not authorized to access a certain page or resource.
+ * It displays a 403 error message with an option to go back to the home page.
+ *
+ * @returns JSX element representing the not authorized page.
+ */
+
 export const NotAuthorizedPage = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-gray-950 to-teal-950 px-4 sm:px-6 lg:px-8">
