@@ -37,9 +37,9 @@ export const LoginButton = () => {
       className="rounded-full" // Adds Tailwind CSS classes to make the button fully rounded
       onClick={() => loginWithGoogle()} // Sets the button's onClick event to trigger the loginWithGoogle function
     >
-      <BsGoogle size={20} className="mr-3" /> // Renders the Google icon with a
-      size of 20 and a right margin of 3 LOGIN WITH GOOGLE // Text displayed on
-      the button
-    </Button>
+      <BsGoogle size={20} className="mr-3" // Renders the Google icon with a size of 20 and a right margin of 3 
+      /> 
+        LOGIN WITH GOOGLE {/* Text displayed on the button */}
+      </Button>
   );
 };
