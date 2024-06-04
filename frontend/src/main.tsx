@@ -17,7 +17,10 @@ import { AddBooksAdminPage } from "./subpages/AddBooksAdminPage.tsx";
 import { EditBooksAdminPage } from "./subpages/EditBooksAdminPage.tsx";
 import { ReportBooksPage } from "./subpages/ReportBooksPage.tsx";
 
+// Create a new QueryClient instance
 const queryClient = new QueryClient();
+
+// Create a browser router with route configuration
 const router = createBrowserRouter([
   {
     path: "/",
@@ -55,14 +58,15 @@ const router = createBrowserRouter([
       </ProtectedPage>
     ),
     children: [
-      { path: "searchUser", element: <SearchStudentAdminPage />},
+      { path: "searchUser", element: <SearchStudentAdminPage /> },
       { path: "addBooks", element: <AddBooksAdminPage /> },
       { path: "editBooks", element: <EditBooksAdminPage /> },
-      { path: "reports", element: <ReportBooksPage/> },
+      { path: "reports", element: <ReportBooksPage /> },
     ],
   },
 ]);
 
+// Render the application root
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
