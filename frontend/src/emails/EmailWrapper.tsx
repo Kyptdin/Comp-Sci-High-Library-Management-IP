@@ -1,9 +1,16 @@
 import { Tailwind } from "@react-email/components";
 
+/**
+ * Props for the EmailWrapper component.
+ */
 interface Props {
   children: React.ReactNode;
 }
 
+/**
+ * Wrapper component for emails using Tailwind CSS.
+ * Provides a configured Tailwind component for styling.
+ */
 export const EmailWrapper = ({ children }: Props) => {
   return (
     <Tailwind

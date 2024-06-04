@@ -65,6 +65,11 @@ const reducer = (state: DialogState, action: Action): DialogState => {
   }
 };
 
+/**
+ * Custom hook for managing the book report dialog.
+ * @param {string | null | undefined} bookId - The ID of the book being reported.
+ * @returns Object containing state and functions for managing the dialog.
+ */
 export const useBookReportDialog = (bookId: string | null | undefined) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { data: loggedInUserData } = useGetLoggedInUser();

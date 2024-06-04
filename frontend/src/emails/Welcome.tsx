@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+
 import {
   Body,
   Container,
@@ -13,6 +14,9 @@ import {
 } from "@react-email/components";
 import { EmailWrapper } from "./EmailWrapper";
 
+/**
+ * Email component for notifying students about a missing book.
+ */
 export const MissingBookStudentEmail = () => (
   <EmailWrapper>
     <Html>

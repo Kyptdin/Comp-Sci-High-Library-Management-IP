@@ -3,11 +3,10 @@ import { editBookByISBN } from "@/services/bookService";
 import { BooksUpdate } from "@/types/supabaseTypes";
 import { useMutation } from "@tanstack/react-query";
 
-export interface EditBooksProp {
-  isbn: string;
-  newBookData: BooksUpdate;
-}
-
+/**
+ * Custom hook for editing a book by ISBN.
+ * @returns {Object} Object containing the book edit mutation.
+ */
 export const useEditBook = () => {
   const mutation = useMutation({
     mutationFn: editBookByISBN,
@@ -28,3 +27,11 @@ export const useEditBook = () => {
   });
   return mutation;
 };
+
+/**
+ * @type {EditBooksProp} - Interface for the props required to edit a book.
+ */
+export interface EditBooksProp {
+  isbn: string;
+  newBookData: BooksUpdate;
+}

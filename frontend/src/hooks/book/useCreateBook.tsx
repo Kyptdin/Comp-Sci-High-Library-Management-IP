@@ -1,10 +1,27 @@
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { createBook } from "@/services/bookService";
-import { useMutation } from "@tanstack/react-query";
+import { UseMutationResult, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-export const useCreateBook = () => {
+/**
+ * Custom hook for creating a new book.
+ * @returns  Object containing the book creation mutation.
+ */
+export const useCreateBook = (): UseMutationResult<
+  {
+    id: string;
+    title: string;
+    total_copies_within_school: number;
+  }[],
+  Error,
+  {
+    id: string;
+    title: string;
+    total_copies_within_school: number;
+  },
+  unknown
+> => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const mutation = useMutation({
@@ -16,7 +33,7 @@ export const useCreateBook = () => {
       toast({
         variant: "default",
         title: "Successfully Created Book",
-        description: "Your b</ToastActionElement>ook has been created",
+        description: "Your book has been created",
         action: (
           <ToastAction altText="View page" onClick={viewPage}>
             View page
