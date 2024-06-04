@@ -16,6 +16,7 @@ import { SearchStudentAdminPage } from "./subpages/SearchStudentAdminPage.tsx";
 import { AddBooksAdminPage } from "./subpages/AddBooksAdminPage.tsx";
 import { EditBooksAdminPage } from "./subpages/EditBooksAdminPage.tsx";
 import { ReportBooksPage } from "./subpages/ReportBooksPage.tsx";
+import { MultiAddBooksAdminPage } from "./subpages/MultiAddBooksAdminPage.tsx";
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
     children: [
       { path: "searchUser", element: <SearchStudentAdminPage />},
       { path: "addBooks", element: <AddBooksAdminPage /> },
+      { path: "multiAddBooks", element: <MultiAddBooksAdminPage/> },
       { path: "editBooks", element: <EditBooksAdminPage /> },
       { path: "reports", element: <ReportBooksPage/> },
     ],

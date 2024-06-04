@@ -41,6 +41,11 @@ export const AdminPage = () => {
               Add Books
             </Button>
           </NavLink>
+          <NavLink to={"multiAddBooks"}>
+            <Button className="w-full py-4 text-lg" variant="secondary">
+              Bulk Add Books
+            </Button>
+          </NavLink>
           <NavLink to={"editBooks"}>
             <Button className="w-full py-4 text-lg" variant="secondary">
               Edit Books
