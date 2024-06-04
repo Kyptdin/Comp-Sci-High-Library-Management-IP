@@ -22,9 +22,10 @@ The Comp Sci High Library Management project is a web application designed to he
 
 ## Setup
 1. Clone the repository.
-2. Install dependencies using `npm install`.
-3. Set up the environment variables for Supabase and React Emails.
-4. Run the development server using `npm run dev`.
+2. Cd into 'frontend'
+3. Install dependencies using `npm install`.
+4. Set up the environment variables for Supabase and React Emails.
+5. Run the development server using `npm run dev`.
 
 ## Usage
 1. Teachers can log in to the system using their credentials.
@@ -33,6 +34,5 @@ The Comp Sci High Library Management project is a web application designed to he
 ## Contributing
 Contributions are welcome. Please fork the repository and create a pull request with your changes.
 
-## License
-This project is licensed under the [MIT License](LICENSE).
+
 
