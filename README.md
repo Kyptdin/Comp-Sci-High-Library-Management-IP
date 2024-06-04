@@ -30,9 +30,3 @@ The Comp Sci High Library Management project is a web application designed to he
 ## Usage
 1. Teachers can log in to the system using their credentials.
 2. Once logged in, teachers can access the various features of the application to manage the library inventory.
-
-## Contributing
-Contributions are welcome. Please fork the repository and create a pull request with your changes.
-
-
-
