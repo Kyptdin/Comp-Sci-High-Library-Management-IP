@@ -5,7 +5,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
  * Creates a Supabase client for interacting with the Supabase database.
  * @param {string} url The URL of the Supabase project.
  * @param {string} key The Supabase project's API key.
- * @returns {SupabaseClient} A Supabase client instance.
+ * @returns A Supabase client instance.
  */
 const supabase = createClient<Database>(
   "https://vygjxzhtqazwuskkaxpz.supabase.co",
@@ -418,7 +418,7 @@ const handler = async (): Promise<Response> => {
   });
 };
 
-// Cron job that runs every minute
+// Cron job that runs every 9 am
 Deno.cron("sample cron", "0 13 * * *", () => {
   handler();
 });
