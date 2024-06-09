@@ -24,7 +24,7 @@ export const MissingBookStudentEmail = () => (
       <Preview>Missing Book</Preview>
       <Body className="bg-white font-sans">
         <Container className="mx-auto p-6 pb-12 bg-no-repeat bg-bottom">
-          <div className="flex justify-center">
+          <Container className="flex justify-center">
             <Img
               className="h-5"
               src={
@@ -32,7 +32,7 @@ export const MissingBookStudentEmail = () => (
               }
               alt="Comp Sci High Library Logo"
             />
-          </div>
+          </Container>
 
           <Section className="my-6">
             <Text className="text-base leading-7 mt-4">
