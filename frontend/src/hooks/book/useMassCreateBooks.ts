@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 
 /**
  * Custom hook to mass create books.
- * @returns  Object containing the mutation function.
+ * @returns Object containing the mutation function.
  */
 export const useMassCreateBooks = () => {
   const mutation = useMutation({
