@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { SearchBar } from "@/components/SearchBar";
+
 /**
  * This file contains the `HomePage` component, which is used as the landing page of the application.
  *
