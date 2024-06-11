@@ -1,10 +1,10 @@
-import type { Book, Borrow } from "../types/supabaseTypes.ts";
+import { Book, Borrow } from "../types/supabaseTypes.ts";
 import { supabase } from "../supabase/supabaseClient.ts";
 import { fetchBookFromIsbn, isbnApiLink } from "../utils/isbnApi.ts";
-import type { VolumeList } from "../types/googleBooksAPI.ts";
+import { VolumeList } from "../types/googleBooksAPI.ts";
 import { EditBooksProp } from "../hooks/book/useEditBook.ts";
 import { convertToTsQuery } from "../utils/convertToTsQuery.ts";
-import type { ErrorMessage } from "../types/denoTypes.ts";
+import { ErrorMessage } from "../types/denoTypes.ts";
 
 // deployctl deploy --prod --project=borrowed-book-studentmail server.ts --save-config
 /*
