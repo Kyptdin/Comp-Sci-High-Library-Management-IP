@@ -66,16 +66,26 @@ export const useCsvToBook = (bookDataContainer: dataInterface[] | undefined) => 
             updatingChunks.push(bookDataContainer.slice(i, i + chunkSize));
         }
 
+        let cleanup = [];
+
         // validate the books using timeout
         for (let i = 0; i < updatingChunks.length; i++) {
             let updatingChunk = updatingChunks[i];
             
-            setTimeout(() => {
+            cleanup.push(setTimeout(() => {
                 updatingChunk.forEach((bookData: dataInterface) => {
                     validateBook(bookData);
                 });
-            }, 2000 * i)
+            }, 2000 * i));
         }
+
+        return () => {
+            cleanup.forEach((timeoutCleanup) => {
+                if (!timeoutCleanup) return;
+
+                clearTimeout(timeoutCleanup);
+            })
+        };
     }, [bookDataContainer]);
 
     return { booksValidated };
