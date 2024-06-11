@@ -1,11 +1,12 @@
-export interface dataInterface {
+export interface DataInterface {
   ISBN: string;
   COPIES: number;
 }
 
 export interface ValidateBookEntry {
   Isbn: string;
-  Validated: boolean;
   Title: string;
   Copies: number;
+  Validated: boolean;
+  UploadedStatus: "pending" | "success" | "failure";
 }

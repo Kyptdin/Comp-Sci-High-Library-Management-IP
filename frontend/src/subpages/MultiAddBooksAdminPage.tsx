@@ -9,18 +9,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  } from "@/components/ui/table"
+} from "@/components/ui/table";
 import { BookAddTablePill } from "@/components/BookAddTablePill";
 
 import { useState } from "react";
 import Papa from "papaparse";
 import { useCsvToBook } from "@/hooks/book/useCsvToBook";
-import { ValidateBookEntry, dataInterface } from "@/types/csvBookInterface";
-import { useToast } from "@/components/ui/use-toast"
+import { ValidateBookEntry, DataInterface } from "@/types/csvBookInterface";
+import { useToast } from "@/components/ui/use-toast";
 
 export const MultiAddBooksAdminPage = () => {
   const [csvFile, setCsvFile] = useState(undefined);
-  const [csvBookData, setCsvBookData] = useState<dataInterface[]>();
+  const [csvBookData, setCsvBookData] = useState<DataInterface[]>();
   const { booksValidated } = useCsvToBook(csvBookData);
 
   const { toast } = useToast();
@@ -37,16 +37,16 @@ export const MultiAddBooksAdminPage = () => {
       header: true,
       skipEmptyLines: true,
       complete: function (results: any) {
-        const { data }: { data: dataInterface[] } = results;
+        const { data }: { data: DataInterface[] } = results;
         setCsvBookData(data);
-      }
+      },
     });
 
     toast({
       title: "WARNING: Uploading books",
       description: "Don't close tab or upload new CSV",
       variant: "destructive",
-    })
+    });
   };
 
   return (
@@ -60,8 +60,8 @@ export const MultiAddBooksAdminPage = () => {
           Confirm CSV
         </Button>
       </div>
-      
-      <h1 className="mb-5">{csvFile ? csvFile['name'] : "Upload a file"}</h1>
+
+      <h1 className="mb-5">{csvFile ? csvFile["name"] : "Upload a file"}</h1>
 
       <Separator className="w-1/2 bg-gray-700" />
       <Table>
@@ -70,18 +70,20 @@ export const MultiAddBooksAdminPage = () => {
             <TableHead className="w-1/4 text-white">ISBN</TableHead>
             <TableHead className="w-1/4 text-white">Title</TableHead>
             <TableHead className="w-1/4 text-white">Copies</TableHead>
-            <TableHead className="w-1/4 text-right text-white">ISBN Found</TableHead>
+            <TableHead className="w-1/4 text-white">Uploaded</TableHead>
+            <TableHead className="w-1/4 text-right text-white">
+              ISBN Found
+            </TableHead>
           </TableRow>
         </TableHeader>
-
       </Table>
 
       <ScrollArea className="bg-transparent h-[55vh] w-full">
         <Table>
           <TableBody>
-              {booksValidated?.map((bookData: ValidateBookEntry, key: number) => {
-                return <BookAddTablePill bookData={bookData} key={key} />
-              })}
+            {booksValidated?.map((bookData: ValidateBookEntry, key: number) => {
+              return <BookAddTablePill bookData={bookData} key={key} />;
+            })}
           </TableBody>
         </Table>
       </ScrollArea>

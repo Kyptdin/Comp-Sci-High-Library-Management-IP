@@ -15,10 +15,8 @@ export const EditBooksAdminPage = () => {
   const [bookNameQuery, setBookNameQuery] = useState<string>("");
 
   // Fetch book data based on the search query
-  const {
-    data: bookDataSearchedByTitle,
-    isLoading: isCurrentlyQueryingByTitle,
-  } = useSearchBookBySimilarTitle(bookNameQuery);
+  const { data: bookDataSearchedByTitle } =
+    useSearchBookBySimilarTitle(bookNameQuery);
 
   return (
     <div className="text-white w-[80%] p-4">
@@ -37,9 +35,6 @@ export const EditBooksAdminPage = () => {
           className="w-full px-4 py-2 mb-4 rounded text-lg text-black"
         />
       </div>
-
-      {/* Display a loading message while searching for books */}
-      {isCurrentlyQueryingByTitle && <h1>Currently title</h1>}
 
       {/* Display the list of books matching the search query */}
       <div className="px-4 grid grid-cols-2">

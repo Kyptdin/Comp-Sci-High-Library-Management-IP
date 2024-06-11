@@ -1,94 +1,107 @@
 import { useEffect, useState } from "react";
 
-import { dataInterface, ValidateBookEntry } from "@/types/csvBookInterface";
+import { DataInterface, ValidateBookEntry } from "@/types/csvBookInterface";
 import { VolumeList } from "@/types/googleBooksAPI";
 
 import { useCreateBook } from "@/hooks/book/useCreateBook";
 import { isbnApiLink, fetchBookFromIsbn } from "@/utils/isbnApi";
 
 export const useCsvToBook = (
-    bookDataContainer: dataInterface[] | undefined
+  bookDataContainer: DataInterface[] | undefined
 ) => {
-    const { mutateAsync: createBook } = useCreateBook();
-    const [booksValidated, setBooksValidated] = useState<ValidateBookEntry[]>([]);
+  const { mutateAsync: createBook } = useCreateBook();
+  const [booksValidated, setBooksValidated] = useState<ValidateBookEntry[]>([]);
 
-    const addValidatedBook = async (validatedBook: ValidateBookEntry) => {
-        setBooksValidated((oldValidatedBooks) => [
-            ...oldValidatedBooks,
-            validatedBook,
-        ]);
+  const addValidatedBook = async (validatedBook: ValidateBookEntry) => {
+    setBooksValidated((oldValidatedBooks) => [
+      ...oldValidatedBooks,
+      validatedBook,
+    ]);
 
-        if (validatedBook.Validated) {
-            try {
-                await createBook({
-                    id: validatedBook.Isbn,
-                    total_copies_within_school: validatedBook.Copies,
-                    title: validatedBook.Title,
-                });
-            } catch {
-                console.log(`Book exists already "${validatedBook.Title}"`);
-            }
-        }
-    };
-
-    const validateBook = (bookData: dataInterface) => {
-        if (!bookData.ISBN || bookData.ISBN.length <= 0) return;
-
-        let validateBookEntry: ValidateBookEntry = {
-            Isbn: bookData.ISBN || "--",
-            Validated: false,
-            Title: "--",
-            Copies: bookData.COPIES,
-        };
-
-        fetchBookFromIsbn(isbnApiLink, {
-            arg: bookData.ISBN,
-        }).then((bookDataFromGoogle: VolumeList) => {
-            if (bookDataFromGoogle.totalItems <= 0) {
-                addValidatedBook(validateBookEntry);
-                return;
-            }
-
-            let { volumeInfo } = bookDataFromGoogle.items[0];
-            let { title } = volumeInfo;
-
-            validateBookEntry.Title = title;
-            validateBookEntry.Validated = true;
-            addValidatedBook(validateBookEntry);
+    if (validatedBook.Validated) {
+      try {
+        await createBook({
+          id: validatedBook.Isbn,
+          total_copies_within_school: validatedBook.Copies,
+          title: validatedBook.Title,
         });
+        const newSuccessEntry: ValidateBookEntry = {
+          ...validatedBook,
+          UploadedStatus: "success",
+        };
+        setBooksValidated((oldValidatedBooks) => [
+          ...oldValidatedBooks,
+          newSuccessEntry,
+        ]);
+      } catch {
+        const newFailedEntry: ValidateBookEntry = {
+          ...validatedBook,
+          UploadedStatus: "failure",
+        };
+        setBooksValidated((oldValidatedBooks) => [
+          ...oldValidatedBooks,
+          newFailedEntry,
+        ]);
+      }
+    }
+  };
+
+  const validateBook = async (bookData: DataInterface) => {
+    if (!bookData.ISBN || bookData.ISBN.length <= 0) return;
+
+    const validateBookEntry: ValidateBookEntry = {
+      Isbn: bookData.ISBN || "--",
+      Validated: false,
+      Title: "--",
+      Copies: bookData.COPIES,
+      UploadedStatus: "pending",
     };
 
-    useEffect(() => {
-        if (!bookDataContainer) return;
+    fetchBookFromIsbn(isbnApiLink, {
+      arg: bookData.ISBN,
+    }).then(async (bookDataFromGoogle: VolumeList) => {
+      if (bookDataFromGoogle.totalItems <= 0) {
+        addValidatedBook(validateBookEntry);
+        return;
+      }
 
-        // Split array into chunks using reduce method
-        let updatingChunks = [];
-        const chunkSize = 5;
-        for (let i = 0; i < bookDataContainer.length; i += chunkSize) {
-            updatingChunks.push(bookDataContainer.slice(i, i + chunkSize));
-        }
+      // Error
+      console.log(bookDataFromGoogle);
+      const { volumeInfo } = bookDataFromGoogle.items[0];
+      const { title } = volumeInfo;
 
-        let cleanup = [];
+      validateBookEntry.Title = title;
+      validateBookEntry.Validated = true;
+      await addValidatedBook(validateBookEntry);
+    });
+  };
 
-        // validate the books using timeout
-        for (let i = 0; i < updatingChunks.length; i++) {
-            let updatingChunk = updatingChunks[i];
+  useEffect(() => {
+    if (!bookDataContainer) return;
 
-            cleanup.push(setTimeout(() => {
-                updatingChunk.forEach((bookData: dataInterface) => {
-                    validateBook(bookData);
-                });
-            }, 2000 * i));
-        }
+    const cleanup = [];
 
-        return () => {
-            cleanup.forEach((timeoutCleanup) => {
-                if (!timeoutCleanup) return;
+    // validate the books using timeout
+    for (let i = 0; i < bookDataContainer.length; i++) {
+      const updatingChunk = bookDataContainer[i];
 
-                clearTimeout(timeoutCleanup);
-            })
-        };
-    }, [bookDataContainer]);
+      cleanup.push(
+        setTimeout(() => {
+          // updatingChunk.forEach((bookData: DataInterface) => {
+          validateBook(updatingChunk);
+          // });
+        }, 1000 * (i + 1))
+      );
+    }
 
-    return { booksValidated };
+    return () => {
+      cleanup.forEach((timeoutCleanup) => {
+        if (!timeoutCleanup) return;
+
+        clearTimeout(timeoutCleanup);
+      });
+    };
+  }, [bookDataContainer]);
+
+  return { booksValidated };
 };
