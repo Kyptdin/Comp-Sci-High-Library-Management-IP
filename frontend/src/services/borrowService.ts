@@ -234,28 +234,11 @@ export const editBorrowByUserIdAndIsbn = async (
  */
 export const returnBorrowedBook = async ({ userId, isbn }: ReturnBookProps) => {
   if (!userId || !isbn) return null;
-
-  const borrowData = await getAllBorrowsNotReturnedByIsbnAndUserId(
-    isbn,
-    userId
-  );
-
-  // Can't return the book if the user isn't currently borrowing the booking
-  if (borrowData.length === 0) {
-    throw new Error(
-      "Failed to borrow book. You are not currently borrowing the book"
-    );
-  }
-
-  //Look for all the borrows with the user id of the user and the isbn of the book and set "returned" column to true
-  const editingBorrowsPromisesArr = borrowData.map(() => {
-    return editBorrowByUserIdAndIsbn(userId, isbn, {
-      returned: true,
-    });
+  await fetch("https://return-book-student-email-z694ac4p6hsy.deno.dev/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ userId, isbn }),
   });
-  const settingBorrowsToReturnedData = await Promise.all(
-    editingBorrowsPromisesArr
-  );
-
-  return settingBorrowsToReturnedData;
 };

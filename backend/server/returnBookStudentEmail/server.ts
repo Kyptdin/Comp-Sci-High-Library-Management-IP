@@ -1,9 +1,9 @@
 import { serve } from "https://deno.land/std@0.160.0/http/server.ts";
-import { borrowBook } from "./services/bookService.ts";
+import { parseAndValidateRequestBody } from "./services/validationService.ts";
+import { returnBorrowedBook } from "./services/borrowService.ts";
 import { readUserByUserId } from "./services/userService.ts";
 import { getBookById } from "./services/bookService.ts";
-import { sendBorrowedBookStudentEmail } from "./services/resendService.ts";
-import { validateBorrowRequestBody } from "./services/validator.ts";
+import { sendReturnBookStudentEmail } from "./services/resendService.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -14,34 +14,31 @@ const corsHeaders = {
 
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
-    // Handle preflight requests and fixes CORS issues
+    // Handle preflight requests and fix CORS issues
     return new Response(null, {
       status: 200,
       headers: new Headers(corsHeaders),
     });
   } else if (req.method === "POST") {
     try {
-      // Ensure the body is valid
-      const body = await validateBorrowRequestBody(req);
+      const requestBody = await parseAndValidateRequestBody(req);
 
-      // Borrow the book
-      await borrowBook(body);
+      // Return the book
+      await returnBorrowedBook(requestBody);
 
-      // Get the user meta data such as the person's username and email
-      const userMetaData = await readUserByUserId(body.user);
+      // Get the user's metadata in order to get the user's name and email
+      const userMetaDataList = await readUserByUserId(requestBody.userId);
+      const { email: studentEmail, user_name: studentName } =
+        userMetaDataList[0];
 
-      // Get the book meta data to get the book title
-      const bookMetaData = await getBookById(body.isbn);
+      // Get the book's metadata
+      const bookMetaDataList = await getBookById(requestBody.isbn);
+      const { title: bookName } = bookMetaDataList[0];
 
-      // Use the metadata to send the user an email
-      await sendBorrowedBookStudentEmail({
-        studentEmail: userMetaData[0].email,
-        bookName: bookMetaData[0].title,
-        dueDate: body.return_due_date,
-        studentName: userMetaData[0].user_name,
-      });
+      // Send an email notifiying the user that they have returned the book
+      await sendReturnBookStudentEmail({ studentEmail, studentName, bookName });
 
-      return new Response("Borrow inputs received successfully", {
+      return new Response("Return book inputs received successfully", {
         status: 200,
         headers: new Headers({
           ...corsHeaders,
