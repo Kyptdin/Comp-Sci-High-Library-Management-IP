@@ -1,29 +1,21 @@
-
-import React from 'react'
-import { useState } from 'react';
 import {
     TableCell,
     TableRow,
   } from "@/components/ui/table"
 
-import { isbnApiLink, fetchBookFromIsbn } from "@/utils/isbnApi";
-import { dataInterface } from '@/types/csvBookInterface'; 
+import { ValidateBookEntry } from '@/types/csvBookInterface'; 
+import { FaSquareCheck } from "react-icons/fa6";
+import { FaSquareXmark } from "react-icons/fa6";
 
-export const BookAddTablePill = ({ bookData }: {bookData: dataInterface}) => {
-  let isbn = bookData.ISBN || "Not found"
-  let copies = bookData.COPIES || 0;
-
-  let [ title, setTitle ] = useState<string>("...");
-//   fetchBookFromIsbn(isbnApiLink, {
-//       arg: bookData.ISBN
-//   }).then((bookDataFromGoogle) => {
-//     //   console.log(bookDataFromGoogle);
-//   });
-
+export const BookAddTablePill = ({ bookData }: {bookData: ValidateBookEntry}) => {
   return <TableRow>
-        <TableCell className="w-1/4 font-medium">{isbn}</TableCell>
-        <TableCell className="w-1/4">{title}</TableCell>
-        <TableCell className="w-1/4">{copies}</TableCell>
-        <TableCell className="w-1/4 text-right">{title ? true  : false}</TableCell>
+        <TableCell className="w-1/4 font-medium">{bookData.Isbn}</TableCell>
+        <TableCell className="w-1/4">{bookData.Title}</TableCell>
+        <TableCell className="w-1/4">{bookData.Copies}</TableCell>
+        <TableCell className="min-w-1/4 flex justify-end items-center">
+          {bookData.Validated ? 
+          (<FaSquareCheck size={28} className="text-green-600" />) : 
+          (<FaSquareXmark size={28} className="text-red-600" />)}
+        </TableCell>
     </TableRow>
 }
