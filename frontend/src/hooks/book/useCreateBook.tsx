@@ -8,7 +8,9 @@ import { useNavigate } from "react-router-dom";
  * Custom hook for creating a new book.
  * @returns  Object containing the book creation mutation.
  */
-export const useCreateBook = (): UseMutationResult<
+export const useCreateBook = (
+  displayToast?: boolean
+): UseMutationResult<
   {
     id: string;
     title: string;
@@ -30,6 +32,7 @@ export const useCreateBook = (): UseMutationResult<
     onSuccess: (data) => {
       const viewPage = () => navigate(`/inspect/${data[0].id}`);
 
+      if (!displayToast) return;
       toast({
         variant: "default",
         title: "Successfully Created Book",
@@ -42,6 +45,7 @@ export const useCreateBook = (): UseMutationResult<
       });
     },
     onError: (error) => {
+      if (!displayToast) return;
       toast({
         variant: "destructive",
         title: "Failed to Create Book",
