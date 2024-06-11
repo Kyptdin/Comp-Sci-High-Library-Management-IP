@@ -1,8 +1,8 @@
 import { emailHtml } from "./emailHtml.ts";
 import { supabase } from "./supabaseClient.ts";
-import { Book } from "./types.d.ts";
-import { Borrow } from "./types.d.ts";
-import { UserData } from "./types.d.ts";
+import { Book } from "./types.ts";
+import { Borrow } from "./types.ts";
+import { UserData } from "./types.ts";
 
 /**
  * Retrieves metadata about a specific user from the database.

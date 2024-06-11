@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/Navbar";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore comment
 import { fetcher } from "@/hooks/fetcher";
 import { getIsbnLink } from "@/utils/isbnApi";
@@ -31,7 +32,6 @@ function validateBookData(data: VolumeList) {
  *
  * @returns JSX element representing the book inspection page with detailed book information and interaction options.
  */
-
 export const InspectPage = () => {
   const { data: loggedInUserData } = useGetLoggedInUser();
   const { bookInspectIsbn } = useParams();
@@ -56,12 +56,12 @@ export const InspectPage = () => {
     isbnSearch,
     userId
   );
+  const { data: borrowsOfBookCurrentlyDisplayed } =
+    useGetBorrowsNotReturnedByIsbnAndUserId(isbnSearch, userId);
   const { mutateAsync: borrowBook, isPending: isBorrowingBook } = useBorrowBook(
     isbnSearch,
     userId
   );
-  const { data: borrowsOfBookCurrentlyDisplayed } =
-    useGetBorrowsNotReturnedByIsbnAndUserId(isbnSearch, userId);
 
   const userHasBookCurrentlyDisplayed =
     borrowsOfBookCurrentlyDisplayed !== null &&

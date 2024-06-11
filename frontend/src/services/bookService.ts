@@ -1,15 +1,10 @@
 import { Book, Borrow } from "../types/supabaseTypes.ts";
 import { supabase } from "../supabase/supabaseClient.ts";
 import { fetchBookFromIsbn, isbnApiLink } from "../utils/isbnApi.ts";
-import {
-  createBorrow,
-  getAllBorrowsNotReturnedByIsbn,
-  getBorrowsWithinLastWeekFromUser,
-} from "./borrowService.ts";
 import { VolumeList } from "../types/googleBooksAPI.ts";
 import { EditBooksProp } from "../hooks/book/useEditBook.ts";
 import { convertToTsQuery } from "../utils/convertToTsQuery.ts";
-
+// deployctl deploy --prod --project=borrowed-book-studentmail server.ts --save-config
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
 */
@@ -64,37 +59,13 @@ export const massCreateBooks = async (bookDataArr: Book[]) => {
  * @throws An error if the borrowing process fails.
  */
 export const borrowBook = async (borrowInput: Borrow) => {
-  //Step #1 Checks if the book has any aviable copies within the school
-  const bookSearchByIsbn = await getBookById(borrowInput.isbn);
-  const maxAmountOfCopiesWithinTheSchool =
-    bookSearchByIsbn[0].total_copies_within_school;
-  // Could be improved
-  const copiesDataFromBookThatHaveTheBook =
-    await getAllBorrowsNotReturnedByIsbn(borrowInput.isbn);
-  const totalNumberOfCopiesPeopleHave =
-    copiesDataFromBookThatHaveTheBook.length;
-
-  if (
-    maxAmountOfCopiesWithinTheSchool === 0 ||
-    totalNumberOfCopiesPeopleHave === maxAmountOfCopiesWithinTheSchool
-  ) {
-    throw new Error("Failed to borrow book. No available copies.");
-  }
-
-  // Step #2: Checks if the user has exceeded their limit on the number of books they can borrow per week. Doesn't matter if the user has returned the book or not.
-  const totalBooksBorrowedThisWeek = await getBorrowsWithinLastWeekFromUser(
-    borrowInput.user
-  );
-  const totalNumberOfBooksUserHasBorrowedThisWeek =
-    totalBooksBorrowedThisWeek.length;
-
-  if (totalNumberOfBooksUserHasBorrowedThisWeek > 10) {
-    throw new Error("Failed to borrow book. Reached weekly borrow limit.");
-  }
-
-  // Step #3: If the user hasn't exceeded their limit and there's still copies that can be borrowed then allow the user to borrow
-  const borrowData = await createBorrow(borrowInput);
-  return borrowData;
+  await fetch("https://borrowed-book-studentmail-r5amcvsk3bcs.deno.dev", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(borrowInput),
+  });
 };
 
 /****** GET ROUTES ******/

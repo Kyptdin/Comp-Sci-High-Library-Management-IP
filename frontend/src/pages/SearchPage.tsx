@@ -1,4 +1,3 @@
-import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
 import { BookDisplay } from "@/components/BookDisplay";
 import { Navbar } from "@/components/Navbar";
 import { Error } from "@/components/Error";
@@ -27,10 +26,8 @@ export const SearchPage = () => {
     : !booksForSearchedQuery || booksForSearchedQuery.length < 1
     ? "No"
     : booksForSearchedQuery.length;
-  const arrayLength = 8;
   // This string is created because if the search result only has 1 book, then the website should say "result" instead of "results".
   const resultString = numberOfBooks === 1 ? "result" : "results";
-  const emptyArr = Array.from({ length: arrayLength }, (_, index) => index);
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
