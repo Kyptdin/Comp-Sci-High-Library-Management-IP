@@ -4,7 +4,9 @@ import { fetchBookFromIsbn, isbnApiLink } from "../utils/isbnApi.ts";
 import { VolumeList } from "../types/googleBooksAPI.ts";
 import { EditBooksProp } from "../hooks/book/useEditBook.ts";
 import { convertToTsQuery } from "../utils/convertToTsQuery.ts";
-import { ErrorMessage } from "../types/denoTypes.ts";
+interface ErrorMessage {
+  error: string;
+}
 
 // deployctl deploy --prod --project=borrowed-book-studentmail server.ts --save-config
 /*
