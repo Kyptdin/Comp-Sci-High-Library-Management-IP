@@ -7,78 +7,88 @@ import { useCreateBook } from "@/hooks/book/useCreateBook";
 import { isbnApiLink, fetchBookFromIsbn } from "@/utils/isbnApi";
 
 export const useCsvToBook = (
-  bookDataContainer: dataInterface[] | undefined
+    bookDataContainer: dataInterface[] | undefined
 ) => {
-  const { mutateAsync: createBook } = useCreateBook();
-  const [booksValidated, setBooksValidated] = useState<ValidateBookEntry[]>([]);
+    const { mutateAsync: createBook } = useCreateBook();
+    const [booksValidated, setBooksValidated] = useState<ValidateBookEntry[]>([]);
 
-  const addValidatedBook = async (validatedBook: ValidateBookEntry) => {
-    setBooksValidated((oldValidatedBooks) => [
-      ...oldValidatedBooks,
-      validatedBook,
-    ]);
+    const addValidatedBook = async (validatedBook: ValidateBookEntry) => {
+        setBooksValidated((oldValidatedBooks) => [
+            ...oldValidatedBooks,
+            validatedBook,
+        ]);
 
-    if (validatedBook.Validated) {
-      try {
-        await createBook({
-          id: validatedBook.Isbn,
-          total_copies_within_school: validatedBook.Copies,
-          title: validatedBook.Title,
-        });
-      } catch {
-        console.log(`Book exists already "${validatedBook.Title}"`);
-      }
-    }
-  };
-
-  const validateBook = (bookData: dataInterface) => {
-    if (!bookData.ISBN || bookData.ISBN.length <= 0) return;
-
-    let validateBookEntry: ValidateBookEntry = {
-      Isbn: bookData.ISBN || "--",
-      Validated: false,
-      Title: "--",
-      Copies: bookData.COPIES,
+        if (validatedBook.Validated) {
+            try {
+                await createBook({
+                    id: validatedBook.Isbn,
+                    total_copies_within_school: validatedBook.Copies,
+                    title: validatedBook.Title,
+                });
+            } catch {
+                console.log(`Book exists already "${validatedBook.Title}"`);
+            }
+        }
     };
 
-    fetchBookFromIsbn(isbnApiLink, {
-      arg: bookData.ISBN,
-    }).then((bookDataFromGoogle: VolumeList) => {
-      if (bookDataFromGoogle.totalItems <= 0) {
-        addValidatedBook(validateBookEntry);
-        return;
-      }
+    const validateBook = (bookData: dataInterface) => {
+        if (!bookData.ISBN || bookData.ISBN.length <= 0) return;
 
-      let { volumeInfo } = bookDataFromGoogle.items[0];
-      let { title } = volumeInfo;
+        let validateBookEntry: ValidateBookEntry = {
+            Isbn: bookData.ISBN || "--",
+            Validated: false,
+            Title: "--",
+            Copies: bookData.COPIES,
+        };
 
-      validateBookEntry.Title = title;
-      validateBookEntry.Validated = true;
-      addValidatedBook(validateBookEntry);
-    });
-  };
+        fetchBookFromIsbn(isbnApiLink, {
+            arg: bookData.ISBN,
+        }).then((bookDataFromGoogle: VolumeList) => {
+            if (bookDataFromGoogle.totalItems <= 0) {
+                addValidatedBook(validateBookEntry);
+                return;
+            }
 
-  useEffect(() => {
-    if (!bookDataContainer) return;
+            let { volumeInfo } = bookDataFromGoogle.items[0];
+            let { title } = volumeInfo;
 
-    // Split array into chunks using reduce method
-    let updatingChunks = [];
-    const chunkSize = 5;
-    for (let i = 0; i < bookDataContainer.length; i += chunkSize) {
-      updatingChunks.push(bookDataContainer.slice(i, i + chunkSize));
-    }
-
-    // validate the books using timeout
-    for (let i = 0; i < updatingChunks.length; i++) {
-      let updatingChunk = updatingChunks[i];
-
-      setTimeout(() => {
-        updatingChunk.forEach((bookData: dataInterface) => {
-          validateBook(bookData);
+            validateBookEntry.Title = title;
+            validateBookEntry.Validated = true;
+            addValidatedBook(validateBookEntry);
         });
-      }, 2000 * i);
-    }
-  }, [bookDataContainer]);
+    };
 
-  return { booksValidated };
+    useEffect(() => {
+        if (!bookDataContainer) return;
+
+        // Split array into chunks using reduce method
+        let updatingChunks = [];
+        const chunkSize = 5;
+        for (let i = 0; i < bookDataContainer.length; i += chunkSize) {
+            updatingChunks.push(bookDataContainer.slice(i, i + chunkSize));
+        }
+
+        let cleanup = [];
+
+        // validate the books using timeout
+        for (let i = 0; i < updatingChunks.length; i++) {
+            let updatingChunk = updatingChunks[i];
+
+            cleanup.push(setTimeout(() => {
+                updatingChunk.forEach((bookData: dataInterface) => {
+                    validateBook(bookData);
+                });
+            }, 2000 * i));
+        }
+
+        return () => {
+            cleanup.forEach((timeoutCleanup) => {
+                if (!timeoutCleanup) return;
+
+                clearTimeout(timeoutCleanup);
+            })
+        };
+    }, [bookDataContainer]);
+
+    return { booksValidated };
 };
