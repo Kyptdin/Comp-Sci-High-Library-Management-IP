@@ -1,13 +1,11 @@
-import { Book, Borrow } from "../types/supabaseTypes.ts";
+import type { Book, Borrow } from "../types/supabaseTypes.d.ts";
 import { supabase } from "../supabase/supabaseClient.ts";
 import { fetchBookFromIsbn, isbnApiLink } from "../utils/isbnApi.ts";
-import { VolumeList } from "../types/googleBooksAPI.ts";
+import type { VolumeList } from "../types/googleBooksAPI.d.ts";
 import { EditBooksProp } from "../hooks/book/useEditBook.ts";
 import { convertToTsQuery } from "../utils/convertToTsQuery.ts";
-// import { ErrorMessage } from "../types/denoTypes.ts";
-interface ErrorMessage {
-  error: string;
-}
+import type { ErrorMessage } from "../types/denoTypes.d.ts";
+
 // deployctl deploy --prod --project=borrowed-book-studentmail server.ts --save-config
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
