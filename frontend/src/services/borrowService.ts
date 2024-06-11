@@ -234,11 +234,18 @@ export const editBorrowByUserIdAndIsbn = async (
  */
 export const returnBorrowedBook = async ({ userId, isbn }: ReturnBookProps) => {
   if (!userId || !isbn) return null;
-  await fetch("https://return-book-student-email-z694ac4p6hsy.deno.dev/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ userId, isbn }),
-  });
+  const reponse = await fetch(
+    "https://return-book-student-email-z694ac4p6hsy.deno.dev/",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId, isbn }),
+    }
+  );
+
+  if (!reponse.ok) {
+    throw new Error("Failed to return book");
+  }
 };

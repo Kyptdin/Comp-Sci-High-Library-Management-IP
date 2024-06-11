@@ -39,22 +39,23 @@ export const MissingBookStudentEmail = () => (
               Dear {"{STUDENT'S NAME}"},
             </Text>
             <Text className="text-base leading-7">
-              We are writing to inform you that the book "{"{BOOK NAME}"}" was
-              due on {"{DUE DATE}"}, and has not yet been returned. Please
-              return the as soon as possible.
+              We are writing to inform you that the book{" "}
+              <span className="font-bold">"{"{BOOK NAME}"},"</span> was due on{" "}
+              <span className="font-bold">{"{DUE DATE}"}, </span>
+              and has not yet been returned. Please return the as soon as
+              possible.
             </Text>
             <Text className="text-base leading-7 mt-4">
-              If you have lost "{"{BOOK NAME}"}," please contact your English
-              teacher for further instructions.
+              If you have lost{" "}
+              <span className="font-bold">"{"{BOOK NAME}"}," </span>
+              please contact your English teacher for further instructions.
             </Text>
-            {/* <Button className="text-base leading-7 mt-4 bg-red-500"> */}
             <Link
-              href={"google.com"}
+              href={"{LINK TO RETURN BOOK}"}
               className="bg-black text-white font-bold py-3 px-4 rounded hover:bg-gray-800 mt-8 block text-center"
             >
               Return book
             </Link>
-            {/* </Button> */}
           </Section>
           <Text className="text-base leading-7 mt-4">
             Best Regards,

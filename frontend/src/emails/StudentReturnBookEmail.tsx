@@ -39,7 +39,7 @@ export const StudentReturnBookEmail = () => (
             </Text>
             <Text className="text-base leading-7">
               We are notifying you that you have returned the book "
-              {"{BOOK NAME}"}."
+              <span className="font-bold">{"{BOOK NAME}"}."</span>
             </Text>
             <Text className="text-base leading-7">
               If you have any questions or need further assistance, please don't

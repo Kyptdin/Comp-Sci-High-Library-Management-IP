@@ -46,7 +46,9 @@ const handler = async (req: Request): Promise<Response> => {
         }),
       });
     } catch (error) {
-      return new Response(`Error: ${error.message}`, {
+      const errorMessage = JSON.stringify({ error: error.message });
+
+      return new Response(errorMessage, {
         status: 400,
         headers: new Headers({
           ...corsHeaders,
@@ -55,7 +57,11 @@ const handler = async (req: Request): Promise<Response> => {
       });
     }
   } else {
-    return new Response("Only POST requests are supported", {
+    const errorMessage = JSON.stringify({
+      error: "Only POST requests are supported",
+    });
+
+    return new Response(errorMessage, {
       status: 405,
       headers: new Headers({
         ...corsHeaders,

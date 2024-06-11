@@ -38,9 +38,9 @@ export const MissingBookStudentEmail = () => (
               Dear {"{STUDENT'S NAME}"},
             </Text>
             <Text className="text-base leading-7">
-              We are pleased to inform you of the successful borrowing of the
-              book titled <span className="font-bold">"{"{BOOK NAME}"}."</span>{" "}
-              The due date for returning the book is{" "}
+              We are informing you that you have successfully borrowed
+              <span className="font-bold"> "{"{BOOK NAME}"}."</span> The due
+              date for returning the book is{" "}
               <span className="font-bold">"{"{DUE DATE}."}"</span>
             </Text>
             <Text className="text-base leading-7 mt-4">

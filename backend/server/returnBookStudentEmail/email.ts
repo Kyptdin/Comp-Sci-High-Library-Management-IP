@@ -25,7 +25,7 @@ export const emailHtml: string = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 T
                 <tr>
                   <td>
                     <p style="font-size:1rem;line-height:1.75rem;margin:16px 0;margin-top:1rem">Dear <!-- -->{STUDENT&#x27;S NAME}<!-- -->,</p>
-                    <p style="font-size:1rem;line-height:1.75rem;margin:16px 0">We are notifying you that you have returned the book &quot;<!-- -->{BOOK NAME}<!-- -->.&quot;</p>
+                    <p style="font-size:1rem;line-height:1.75rem;margin:16px 0">We are notifying you that you have returned the book &quot;<span style="font-weight:700">{BOOK NAME}<!-- -->.&quot;</span></p>
                     <p style="font-size:1rem;line-height:1.75rem;margin:16px 0">If you have any questions or need further assistance, please don&#x27;t hesitate to contact us.</p>
                   </td>
                 </tr>

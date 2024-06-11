@@ -25,7 +25,7 @@ export const emailHtml: string = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 T
                 <tr>
                   <td>
                     <p style="font-size:1rem;line-height:1.75rem;margin:16px 0;margin-top:1rem">Dear <!-- -->{STUDENT&#x27;S NAME}<!-- -->,</p>
-                    <p style="font-size:1rem;line-height:1.75rem;margin:16px 0">We are informing you that you have successfully borrowed the book titled <span style="font-weight:700">&quot;<!-- -->{BOOK NAME}<!-- -->.&quot;</span> <!-- -->The due date for returning the book is<!-- --> <span style="font-weight:700">&quot;<!-- -->{DUE DATE}.<!-- -->&quot;</span></p>
+                    <p style="font-size:1rem;line-height:1.75rem;margin:16px 0">We are informing you that you have successfully borrowed<span style="font-weight:700"> &quot;<!-- -->{BOOK NAME}<!-- -->.&quot;</span> The due date for returning the book is<!-- --> <span style="font-weight:700">&quot;<!-- -->{DUE DATE}.<!-- -->&quot;</span></p>
                     <p style="font-size:1rem;line-height:1.75rem;margin:16px 0;margin-top:1rem">If you lose the book<!-- --> <span style="font-weight:700">&quot;<!-- -->{BOOK NAME}<!-- -->,&quot;</span> please contact your English teacher for further instructions.</p>
                   </td>
                 </tr>

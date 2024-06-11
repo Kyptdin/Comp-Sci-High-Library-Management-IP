@@ -4,6 +4,7 @@ import { fetchBookFromIsbn, isbnApiLink } from "../utils/isbnApi.ts";
 import { VolumeList } from "../types/googleBooksAPI.ts";
 import { EditBooksProp } from "../hooks/book/useEditBook.ts";
 import { convertToTsQuery } from "../utils/convertToTsQuery.ts";
+import { ErrorMessage } from "../types/denoTypes.d.ts";
 // deployctl deploy --prod --project=borrowed-book-studentmail server.ts --save-config
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
@@ -59,13 +60,21 @@ export const massCreateBooks = async (bookDataArr: Book[]) => {
  * @throws An error if the borrowing process fails.
  */
 export const borrowBook = async (borrowInput: Borrow) => {
-  await fetch("https://borrowed-book-studentmail-r5amcvsk3bcs.deno.dev", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(borrowInput),
-  });
+  const response = await fetch(
+    "https://borrowed-book-studentmail-r5amcvsk3bcs.deno.dev/",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(borrowInput),
+    }
+  );
+  const data: void | ErrorMessage = await response.json();
+  if (!response.ok) {
+    const errorMessageCasted = data as ErrorMessage;
+    throw new Error(errorMessageCasted.error);
+  }
 };
 
 /****** GET ROUTES ******/
