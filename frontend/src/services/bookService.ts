@@ -73,10 +73,9 @@ export const borrowBook = async (borrowInput: Borrow) => {
       body: JSON.stringify(borrowInput),
     }
   );
-  const data: void | ErrorMessage = await response.json();
   if (!response.ok) {
-    const errorMessageCasted = data as ErrorMessage;
-    throw new Error(errorMessageCasted.error);
+    // const errorMessageCasted = data as ErrorMessage;
+    throw new Error("Failed to borrow book");
   }
 };
 
