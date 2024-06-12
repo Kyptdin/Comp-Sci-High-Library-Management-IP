@@ -17,6 +17,7 @@ import Papa from "papaparse";
 import { ValidateBookEntry, DataInterface } from "@/types/csvBookInterface";
 import { useToast } from "@/components/ui/use-toast";
 import { useCsvToBook } from "@/hooks/csv/useCsvToBook";
+import { MultiAddTableHead } from "@/components/multiAdd/MultiAddTableHead";
 
 export const MultiAddBooksAdminPage = () => {
   const [csvFile, setCsvFile] = useState(undefined);
@@ -67,21 +68,26 @@ export const MultiAddBooksAdminPage = () => {
       <Table>
         <TableHeader>
           <TableRow className="grid  grid-cols-5">
-            <TableHead className="text-white  flex items-center">
-              ISBN
-            </TableHead>
-            <TableHead className="text-white flex items-center">
-              Title
-            </TableHead>
-            <TableHead className="text-white flex items-center">
-              Copies
-            </TableHead>
-            <TableHead className="text-white flex items-center">
-              Uploaded
-            </TableHead>
-            <TableHead className="text-white flex items-center justify-end">
-              Valid
-            </TableHead>
+            <MultiAddTableHead
+              headName="Row  #"
+              toolTipText="The row number within the csv that was uploaded."
+            />
+            <MultiAddTableHead
+              headName="Title"
+              toolTipText="The title of the book which appears after the book has been validated."
+            />
+            <MultiAddTableHead
+              headName="Total Copies"
+              toolTipText="The total amount of copies that exist of this book within the school."
+            />
+            <MultiAddTableHead
+              headName="Uploaded"
+              toolTipText="Displays the status of the book being uploaded to the school database."
+            />
+            <MultiAddTableHead
+              headName="Valid CSV Row"
+              toolTipText="Displays if the row is valid. If the row doesn't have a isbn or total copies, then that row within the csv is invalid."
+            />
           </TableRow>
         </TableHeader>
       </Table>

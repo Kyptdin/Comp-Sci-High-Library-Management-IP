@@ -1,10 +1,11 @@
+import { cn } from "@/lib/utils";
 import { TableHead } from "../ui/table";
-// import {
-//   Tooltip,
-//   TooltipContent,
-//   TooltipProvider,
-//   TooltipTrigger,
-// } from "../ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 interface Props {
   headName: string;
@@ -14,11 +15,23 @@ interface Props {
 
 export const MultiAddTableHead = ({
   headName,
-}: // headClasses,
-Props) => {
+  toolTipText,
+  headClasses,
+}: Props) => {
   return (
-    <TableHead className={`text-white text-left bg-red-500`}>
-      {headName}
-    </TableHead>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <TableHead
+            className={cn(`text-white  flex items-center ${headClasses}`)}
+          >
+            {headName}
+          </TableHead>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{toolTipText}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
