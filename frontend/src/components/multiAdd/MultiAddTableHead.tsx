@@ -11,12 +11,14 @@ interface Props {
   headName: string;
   toolTipText: string;
   headClasses?: string;
+  toolTipClasses?: string;
 }
 
 export const MultiAddTableHead = ({
   headName,
   toolTipText,
   headClasses,
+  toolTipClasses,
 }: Props) => {
   return (
     <TooltipProvider>
@@ -29,7 +31,7 @@ export const MultiAddTableHead = ({
           </TableHead>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{toolTipText}</p>
+          <p className={cn(toolTipClasses)}>{toolTipText}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

@@ -6,49 +6,58 @@ import {
   Table,
   TableBody,
   TableCaption,
-  TableHead,
+  // TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { BookAddTablePill } from "@/components/BookAddTablePill";
+// import { BookAddTablePill } from "@/components/BookAddTablePill";
 
 import { useState } from "react";
-import Papa from "papaparse";
-import { ValidateBookEntry, DataInterface } from "@/types/csvBookInterface";
-import { useToast } from "@/components/ui/use-toast";
-import { useCsvToBook } from "@/hooks/csv/useCsvToBook";
+// import Papa from "papaparse";
+import { DataInterface } from "@/types/csvBookInterface";
+// import { useToast } from "@/components/ui/use-toast";
+// import { useCsvToBook } from "@/hooks/csv/useCsvToBook";
 import { MultiAddTableHead } from "@/components/multiAdd/MultiAddTableHead";
+// import { emit } from "process";
+import { useValidateCSV } from "@/hooks/csv/useValidateCSV";
 
 export const MultiAddBooksAdminPage = () => {
-  const [csvFile, setCsvFile] = useState(undefined);
-  const [csvBookData, setCsvBookData] = useState<DataInterface[]>();
-  const { booksValidated } = useCsvToBook(csvBookData);
+  // const [csvFile, setCsvFile] = useState<File>();
+  // const [csvBookData, setCsvBookData] = useState<DataInterface[]>();
+  const { handleCsvInputting, csvBookData, validateCSVFile, csvFile } =
+    useValidateCSV();
+  // const { booksValidated } = useCsvToBook(csvBookData);
 
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
-  const handleCsvUpload = (event: any) => {
-    setCsvFile(event.target.files[0]);
-  };
-  const uploadCsvFile = (event: any) => {
-    event.preventDefault();
+  // const handleCsvInputting = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = event.target.files;
+  //   if (!files) return;
+  //   const fileInputted = files[0];
+  //   setCsvFile(fileInputted);
+  // };
 
-    if (!csvFile) return;
+  // const uploadCsvFile = (event: any) => {
+  //   event.preventDefault();
 
-    Papa.parse(csvFile, {
-      header: true,
-      skipEmptyLines: true,
-      complete: function (results: any) {
-        const { data }: { data: DataInterface[] } = results;
-        setCsvBookData(data);
-      },
-    });
+  //   if (!csvFile) return;
 
-    toast({
-      title: "WARNING: Uploading books",
-      description: "Don't close tab or upload new CSV",
-      variant: "destructive",
-    });
-  };
+  //   Papa.parse(csvFile, {
+  //     header: true,
+  //     skipEmptyLines: true,
+  //     complete: function (results: any) {
+  //       const { data }: { data: DataInterface[] } = results;
+  //       console.log(data);
+  //       setCsvBookData(data);
+  //     },
+  //   });
+
+  //   toast({
+  //     title: "WARNING: Uploading books",
+  //     description: "Don't close tab or upload new CSV",
+  //     variant: "destructive",
+  //   });
+  // };
 
   return (
     <div className="p-4 w-[80%] font-outfit text-white full-center flex-col justify-start">
@@ -56,9 +65,18 @@ export const MultiAddBooksAdminPage = () => {
       <Separator className="w-1/3 bg-gray-700" />
 
       <div className="flex p-4 gap-3">
-        <Input type={"file"} accept={".csv"} onChange={handleCsvUpload}></Input>
-        <Button variant="secondary" onClick={uploadCsvFile}>
-          Confirm CSV
+        <Input
+          type={"file"}
+          accept={".csv"}
+          onChange={handleCsvInputting}
+        ></Input>
+        <Button
+          variant="secondary"
+          onClick={
+            csvBookData ? () => alert("Upload function") : validateCSVFile
+          }
+        >
+          {csvBookData ? "Upload" : "Validate CSV"}
         </Button>
       </div>
 
@@ -86,8 +104,9 @@ export const MultiAddBooksAdminPage = () => {
             />
             <MultiAddTableHead
               headName="Valid CSV Row"
-              toolTipText="Displays if the row is valid. If the row doesn't have a isbn or total copies, then that row within the csv is invalid."
+              toolTipText="If the row doesn't have an isbn, copies amount, or the isbn already exist in the school database, then the row is invalid."
               headClasses="justify-end"
+              toolTipClasses="w-36"
             />
           </TableRow>
         </TableHeader>
@@ -96,11 +115,11 @@ export const MultiAddBooksAdminPage = () => {
       <ScrollArea className="bg-transparent h-[55vh] w-full">
         <Table>
           <TableBody className="">
-            {booksValidated?.map((bookData: ValidateBookEntry, key: number) => {
+            {/* {booksValidated?.map((bookData: ValidateBookEntry, key: number) => {
               return (
                 <BookAddTablePill bookData={bookData} key={key} index={key} />
               );
-            })}
+            })} */}
           </TableBody>
         </Table>
       </ScrollArea>
