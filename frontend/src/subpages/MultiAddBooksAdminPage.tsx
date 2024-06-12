@@ -87,6 +87,7 @@ export const MultiAddBooksAdminPage = () => {
             <MultiAddTableHead
               headName="Valid CSV Row"
               toolTipText="Displays if the row is valid. If the row doesn't have a isbn or total copies, then that row within the csv is invalid."
+              headClasses="justify-end"
             />
           </TableRow>
         </TableHeader>
