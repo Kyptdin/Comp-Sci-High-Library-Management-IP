@@ -1,36 +1,30 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 
 import { ValidateBookEntry } from "@/types/csvBookInterface";
-import { FaSquareCheck } from "react-icons/fa6";
-import { FaSquareXmark } from "react-icons/fa6";
-import { MdOutlinePending } from "react-icons/md";
+// import { FaSquareCheck } from "react-icons/fa6";
+// import { FaSquareXmark } from "react-icons/fa6";
+// import { MdOutlinePending } from "react-icons/md";
 
-export const BookAddTablePill = ({
-  bookData,
-}: {
+interface Props {
   bookData: ValidateBookEntry;
-}) => {
+  index: number;
+}
+
+export const BookAddTablePill = ({ bookData, index }: Props) => {
   return (
-    <TableRow>
-      <TableCell className="w-1/4 font-medium">{bookData.Isbn}</TableCell>
-      <TableCell className="w-1/4">{bookData.Title}</TableCell>
-      <TableCell className="w-1/4">{bookData.Copies}</TableCell>
-      <TableCell className="w-1/4">
-        {bookData.UploadedStatus === "failure" && (
-          <FaSquareXmark size={28} className="text-red-600" />
-        )}
-        {bookData.UploadedStatus === "success" && (
-          <FaSquareCheck size={28} className="text-green-600" />
-        )}
-        {bookData.UploadedStatus === "pending" && <MdOutlinePending />}
+    <TableRow className="">
+      {/* #1 */}
+      <TableCell className="font-medium">{index + 1}</TableCell>
+      {/* #2 */}
+      <TableCell className="font-medium text-center">{bookData.isbn}</TableCell>
+      {/* #3 */}
+      <TableCell className="font-medium text-right">
+        {bookData.copies}
       </TableCell>
-      <TableCell className="min-w-1/4 flex justify-end items-center">
-        {bookData.Validated ? (
-          <FaSquareCheck size={28} className="text-green-600" />
-        ) : (
-          <FaSquareXmark size={28} className="text-red-600" />
-        )}
-      </TableCell>
+      {/* #4 */}
+      <TableCell className="font-medium text-right">{bookData.isbn}</TableCell>
+      {/* #5 */}
+      <TableCell className="font-medium text-right">{bookData.isbn}</TableCell>
     </TableRow>
   );
 };

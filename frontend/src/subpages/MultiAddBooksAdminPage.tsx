@@ -14,9 +14,9 @@ import { BookAddTablePill } from "@/components/BookAddTablePill";
 
 import { useState } from "react";
 import Papa from "papaparse";
-import { useCsvToBook } from "@/hooks/book/useCsvToBook";
 import { ValidateBookEntry, DataInterface } from "@/types/csvBookInterface";
 import { useToast } from "@/components/ui/use-toast";
+import { useCsvToBook } from "@/hooks/csv/useCsvToBook";
 
 export const MultiAddBooksAdminPage = () => {
   const [csvFile, setCsvFile] = useState(undefined);
@@ -66,13 +66,21 @@ export const MultiAddBooksAdminPage = () => {
       <Separator className="w-1/2 bg-gray-700" />
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-1/4 text-white">ISBN</TableHead>
-            <TableHead className="w-1/4 text-white">Title</TableHead>
-            <TableHead className="w-1/4 text-white">Copies</TableHead>
-            <TableHead className="w-1/4 text-white">Uploaded</TableHead>
-            <TableHead className="w-1/4 text-right text-white">
-              ISBN Found
+          <TableRow className="grid  grid-cols-5">
+            <TableHead className="text-white  flex items-center">
+              ISBN
+            </TableHead>
+            <TableHead className="text-white flex items-center">
+              Title
+            </TableHead>
+            <TableHead className="text-white flex items-center">
+              Copies
+            </TableHead>
+            <TableHead className="text-white flex items-center">
+              Uploaded
+            </TableHead>
+            <TableHead className="text-white flex items-center justify-end">
+              Valid
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -80,9 +88,11 @@ export const MultiAddBooksAdminPage = () => {
 
       <ScrollArea className="bg-transparent h-[55vh] w-full">
         <Table>
-          <TableBody>
+          <TableBody className="">
             {booksValidated?.map((bookData: ValidateBookEntry, key: number) => {
-              return <BookAddTablePill bookData={bookData} key={key} />;
+              return (
+                <BookAddTablePill bookData={bookData} key={key} index={key} />
+              );
             })}
           </TableBody>
         </Table>
