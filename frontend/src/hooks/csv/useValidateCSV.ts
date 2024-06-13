@@ -45,9 +45,6 @@ export const useValidateCSV = () => {
     setCsvFile(fileInputted);
   };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
   /**Find csv row by row index**/
   const findCsvRowByRowIndex = (rowIndex: number) => {
     const csvUploadCopies = [...csvUploadAllRows];
@@ -146,9 +143,6 @@ export const useValidateCSV = () => {
     });
   };
 
->>>>>>> parent of 305b42a (Edited the validated process)
-=======
->>>>>>> parent of 928d39b (Merge pull request #1 from Kyptdin/work-in-progress-upload-all)
   /**Checks if the csv file the user uploaded only has the columns "COPIES" and "ISBN."  **/
   const validateCSVFile = () => {
     // Can't validate a csv if a user didn't input a csv
@@ -169,9 +163,7 @@ export const useValidateCSV = () => {
             description: `You have uploaded the wrong CSV format. Make sure the csv only has the columns "COPIES" and "ISBN." `,
           });
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
         const castedDataInterface = parsedCSV as DataInterface[];
 
         // The validation of the rows is about to begin so status are initialized
@@ -183,9 +175,6 @@ export const useValidateCSV = () => {
         validateCsvRows(castedDataInterface);
 
         setParsedCsvRows(parsedCSV as DataInterface[]);
->>>>>>> parent of 305b42a (Edited the validated process)
-=======
->>>>>>> parent of 928d39b (Merge pull request #1 from Kyptdin/work-in-progress-upload-all)
       },
     });
   };
