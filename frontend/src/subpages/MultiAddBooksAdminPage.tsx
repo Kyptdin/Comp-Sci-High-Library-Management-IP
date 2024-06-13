@@ -10,21 +10,46 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+// import { BookAddTablePill } from "@/components/BookAddTablePill";
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 928d39b (Merge pull request #1 from Kyptdin/work-in-progress-upload-all)
+import { useState } from "react";
+// import Papa from "papaparse";
+import { DataInterface } from "@/types/csvBookInterface";
+// import { useToast } from "@/components/ui/use-toast";
+// import { useCsvToBook } from "@/hooks/csv/useCsvToBook";
+import { MultiAddTableHead } from "@/components/multiAdd/MultiAddTableHead";
+// import { emit } from "process";
+import { useValidateCSV } from "@/hooks/csv/useValidateCSV";
+<<<<<<< HEAD
+=======
+import { MultiAddTableHead } from "@/components/multiAdd/MultiAddTableHead";
 import { useValidateCSV } from "@/hooks/csv/useValidateCSV";
 import { useCsvToBook } from "@/hooks/csv/useCsvToBook";
+>>>>>>> parent of 305b42a (Edited the validated process)
+=======
+>>>>>>> parent of 928d39b (Merge pull request #1 from Kyptdin/work-in-progress-upload-all)
 
 export const MultiAddBooksAdminPage = () => {
   // const [csvFile, setCsvFile] = useState<File>();
   // const [csvBookData, setCsvBookData] = useState<DataInterface[]>();
   const { handleCsvInputting, csvBookData, validateCSVFile, csvFile } =
     useValidateCSV();
-
+<<<<<<< HEAD
+<<<<<<< HEAD
   // const { booksValidated } = useCsvToBook(csvBookData);
+
+=======
 
   const { booksValidated } = useCsvToBook(csvBookData);
-
+>>>>>>> parent of 305b42a (Edited the validated process)
+=======
   // const { booksValidated } = useCsvToBook(csvBookData);
 
+>>>>>>> parent of 928d39b (Merge pull request #1 from Kyptdin/work-in-progress-upload-all)
   // const { toast } = useToast();
 
   // const handleCsvInputting = (event: React.ChangeEvent<HTMLInputElement>) => {
