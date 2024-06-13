@@ -134,7 +134,7 @@ export const useValidateCSV = () => {
     updateCsvUploadStatusByIndex(rowIndex, foundRowByIndex);
   };
 
-  /**Valides the isbn in a row by checking if the isbn has proper length and if the isbn exist in the world**/
+  /**Validates the isbn in a row by checking if the isbn has proper length and if the isbn exist in the world**/
   const validateCsvIsbn = async (isbn: string, rowIndex: number) => {
     const isbnHasCorrectLength = isbn.length > 0;
 
@@ -149,7 +149,6 @@ export const useValidateCSV = () => {
 
     // Only continue if it has proper length to avoid unnecessary API calls
     try {
-      await sleep(2000);
       const googleAPIData = await fetchBookFromIsbn(isbnApiLink, {
         arg: isbn,
       });
@@ -181,14 +180,12 @@ export const useValidateCSV = () => {
   };
 
   /**Makes sures the row contains an isbn which has a length >0 and exist in the world. Additinoally, makes sures the totalNumber of copies is a number. **/
-  const validateCsvRows = async (parsedCSV: DataInterface[]) => {
-    parsedCSV.forEach(async (parsedRow, index) => {
-      const copiesValid = validateCsvRowCopies(parsedRow.COPIES, index);
-      const isbnValid = await validateCsvIsbn(parsedRow.ISBN, index);
-      if (copiesValid && isbnValid) {
-        updateCsvRowValidationAsValid(index);
-      }
-    });
+  const validateCsvRow = async (parsedRow: DataInterface, index: number) => {
+    const copiesValid = validateCsvRowCopies(parsedRow.COPIES, index);
+    const isbnValid = await validateCsvIsbn(parsedRow.ISBN, index);
+    if (copiesValid && isbnValid) {
+      updateCsvRowValidationAsValid(index);
+    }
   };
 
   /**Checks if the csv file the user uploaded only has the columns "COPIES" and "ISBN."  **/
@@ -227,8 +224,17 @@ export const useValidateCSV = () => {
           initCsvUploadAllRows(castedDataInterface);
         }
 
-        // Makes sures all the rows are valid
-        validateCsvRows(castedDataInterface);
+        // const time = 1000; // Initial timeout in milliseconds
+        // const incrementPercentage = 2; // Percentage increase per iteration
+
+        castedDataInterface.forEach((parsedRow, index) => {
+          // Calculate the timeout for the current iteration
+          // const timeout = time + (index * time * incrementPercentage) / 100;
+
+          setTimeout(() => {
+            validateCsvRow(parsedRow, index);
+          }, 1500 * (index + 3));
+        });
 
         setParsedCsvRows(parsedCSV as DataInterface[]);
       },

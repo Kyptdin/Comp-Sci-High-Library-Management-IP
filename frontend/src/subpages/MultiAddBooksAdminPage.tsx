@@ -12,13 +12,13 @@ import {
 
 import { MultiAddTableHead } from "@/components/multiAdd/MultiAddTableHead";
 import { useValidateCSV } from "@/hooks/csv/useValidateCSV";
-import { useCsvToBook } from "@/hooks/csv/useCsvToBook";
+// import { useCsvToBook } from "@/hooks/csv/useCsvToBook";
 
 export const MultiAddBooksAdminPage = () => {
   const { handleCsvInputting, validateCSV, csvFile, allRowsAreValid } =
     useValidateCSV();
 
-  const { booksValidated } = useCsvToBook(csvBookData);
+  // const { booksValidated } = useCsvToBook(csvBookData);
   // const { toast } = useToast();
   // const handleCsvInputting = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   const files = event.target.files;
