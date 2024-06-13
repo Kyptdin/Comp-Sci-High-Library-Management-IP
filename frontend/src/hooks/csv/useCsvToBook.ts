@@ -1,33 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import { DataInterface, ValidateBookEntry } from "@/types/csvBookInterface";
+import { DataInterface } from "@/types/csvBookInterface";
 
 // import { useCreateBook } from "@/hooks/book/useCreateBook";
-import { isbnApiLink, fetchBookFromIsbn } from "@/utils/isbnApi";
-import { VolumeList } from "@/types/googleBooksAPI";
 
 export const useCsvToBook = (
   bookDataContainer: DataInterface[] | undefined
 ) => {
   // const { mutateAsync: createBook } = useCreateBook();
-  const [booksValidated, setBooksValidated] = useState<ValidateBookEntry[]>([]);
+  // const [booksValidated, setBooksValidated] = useState<ValidateBookEntry[]>([]);
 
-  const initBooksValidateBookEntries = () => {
-    if (!bookDataContainer) return;
-    const validateBookEntries: ValidateBookEntry[] = bookDataContainer.map(
-      (_, index) => {
-        const entry: ValidateBookEntry = {
-          isbn: bookDataContainer[index].ISBN,
-          title: "",
-          copies: bookDataContainer[index].COPIES,
-          validatedIsbnStatus: "pending",
-          uploadedStatus: "pending",
-        };
-        return entry;
-      }
-    );
-    setBooksValidated((entries) => [...entries, ...validateBookEntries]);
-  };
+  // const initBooksValidateBookEntries = () => {
+  //   if (!bookDataContainer) return;
+  //   const validateBookEntries: ValidateBookEntry[] = bookDataContainer.map(
+  //     (_, index) => {
+  //       const entry: ValidateBookEntry = {
+  //         isbn: bookDataContainer[index].ISBN,
+  //         title: "",
+  //         copies: bookDataContainer[index].COPIES,
+  //         validatedIsbnStatus: "pending",
+  //         uploadedStatus: "pending",
+  //       };
+  //       return entry;
+  //     }
+  //   );
+  //   setBooksValidated((entries) => [...entries, ...validateBookEntries]);
+  // };
 
   // const addValidatedBook = async (validatedBook: ValidateBookEntry) => {
   //   setBooksValidated((oldValidatedBooks) => [
@@ -101,9 +99,9 @@ export const useCsvToBook = (
     if (!bookDataContainer) return;
 
     // There's files uploaded but there's no status for each of them
-    if (booksValidated.length === 0) {
-      initBooksValidateBookEntries();
-    }
+    // if (booksValidated.length === 0) {
+    //   initBooksValidateBookEntries();
+    // }
 
     const cleanup = [];
 
@@ -129,5 +127,5 @@ export const useCsvToBook = (
     // };
   }, [bookDataContainer]);
 
-  return { booksValidated };
+  // return { booksValidated };
 };

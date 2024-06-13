@@ -3,7 +3,7 @@ import { useState } from "react";
 import Papa from "papaparse";
 import { useToast } from "@/components/ui/use-toast";
 import { fetchBookFromIsbn, isbnApiLink } from "@/utils/isbnApi";
-import { sleep } from "@/utils/sleep";
+
 interface CsvRowValidationError {
   message: string;
 }
