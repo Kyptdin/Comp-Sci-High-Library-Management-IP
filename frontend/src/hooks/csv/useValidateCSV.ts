@@ -1,40 +1,88 @@
-// import { useToast } from "@/components/ui/use-toast";
 import { DataInterface } from "@/types/csvBookInterface";
 import { useState } from "react";
 import Papa from "papaparse";
 import { useToast } from "@/components/ui/use-toast";
+import { fetchBookFromIsbn, isbnApiLink } from "@/utils/isbnApi";
+import { sleep } from "@/utils/sleep";
 interface CsvRowValidationError {
   message: string;
 }
-interface CsvRowValidationStatus {
+
+interface CsvRowUploadError {
+  message: string;
+}
+
+type CsvRowValidationStatus = "valid" | "invalid" | "loading" | "idle";
+
+interface CsvRowValidation {
   rowNumberInCsv: number;
-  isbn: string;
-  copies: string;
-  status: "valid" | "invalid" | "loading" | "idle";
-  validationError: null | CsvRowValidationError;
+  status: CsvRowValidationStatus;
+  validationErrors: CsvRowValidationError[];
+  // TODO: Make sure to store the google api later in this object to avoid doing another api request to the google books api
+}
+
+interface CsvUpload {
+  status: "success" | "failure" | "loading" | "idle";
+  csvUploadErrors: CsvRowUploadError[];
+}
+
+interface CsvUploadAllRow {
+  csvRowValidation: CsvRowValidation;
+  csvRowMetaData: DataInterface;
+  csvRowUpload: CsvUpload;
 }
 
 export const useValidateCSV = () => {
   const [csvFile, setCsvFile] = useState<File>();
-  const [csvBookData, setCsvBookData] = useState<DataInterface[]>();
-  const [inputtedValidCSV, setInputtedValidCSV] = useState<boolean>(true);
-  const [csvRowvalidationErrors, setCsvRowValidationErrors] =
-    useState<CsvRowValidationStatus[]>();
+  const [csvFormatIsValid, setCsvFormatIsValid] = useState<boolean>(false);
+  const [parsedCsvRows, setParsedCsvRows] = useState<DataInterface[]>();
+  const [csvUploadAllRows, setCsvUploadAllRows] = useState<CsvUploadAllRow[]>(
+    []
+  );
   const { toast } = useToast();
+  const allRowsAreValid =
+    // Checking if the length > 0 because the .every returns true when the array is empty
+    csvUploadAllRows.length > 0 &&
+    csvUploadAllRows.every((rowData) => {
+      const status = rowData.csvRowValidation.status;
+      return status === "valid";
+    });
+
+  /**Initializes the validation, metadata, and upload data for all rows within the csv**/
+  const initCsvUploadAllRows = (csvParasedRows: DataInterface[]) => {
+    const csvRowsData: CsvUploadAllRow[] = csvParasedRows.map(
+      (parsedRow, index) => {
+        const csvRowValidation: CsvRowValidation = {
+          rowNumberInCsv: index + 1,
+          status: "loading",
+          validationErrors: [],
+        };
+        const csvRowMetaData: DataInterface = {
+          ISBN: parsedRow.ISBN,
+          COPIES: parsedRow.COPIES,
+        };
+        const csvRowUpload: CsvUpload = {
+          status: "idle",
+          csvUploadErrors: [],
+        };
+        return { csvRowValidation, csvRowMetaData, csvRowUpload };
+      }
+    );
+    setCsvUploadAllRows(() => csvRowsData);
+  };
 
   /**Makes sure the user uploaded a csv that contains only the columns "CSV" and "COPIES." **/
-  const userUploadedProperCSV = (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    parsedCSV: any
-  ): parsedCSV is DataInterface => {
-    const inputtedCorrectCSVFormat =
-      parsedCSV &&
-      typeof parsedCSV === "object" &&
-      typeof parsedCSV.ISBN === "string" &&
-      typeof parsedCSV.COPIES === "number" &&
-      Object.keys(parsedCSV).length === 2;
-
-    return inputtedCorrectCSVFormat;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const userUploadedProperCSV = (books: any[]): boolean => {
+    return books.every((book) => {
+      if (typeof book !== "object" || book === null) {
+        return false; // If the item is not an object or is null, it fails
+      }
+      const keys = Object.keys(book);
+      return (
+        keys.length === 2 && keys.includes("COPIES") && keys.includes("ISBN")
+      );
+    });
   };
 
   /**Hanldes when the inputs the csv in the input element **/
@@ -45,9 +93,6 @@ export const useValidateCSV = () => {
     setCsvFile(fileInputted);
   };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
   /**Find csv row by row index**/
   const findCsvRowByRowIndex = (rowIndex: number) => {
     const csvUploadCopies = [...csvUploadAllRows];
@@ -89,7 +134,7 @@ export const useValidateCSV = () => {
     updateCsvUploadStatusByIndex(rowIndex, foundRowByIndex);
   };
 
-  /**Valides the isbn in a row by checking if the isbn has proper length and if the isbn exist in the world**/
+  /**Validates the isbn in a row by checking if the isbn has proper length and if the isbn exist in the world**/
   const validateCsvIsbn = async (isbn: string, rowIndex: number) => {
     const isbnHasCorrectLength = isbn.length > 0;
 
@@ -104,7 +149,6 @@ export const useValidateCSV = () => {
 
     // Only continue if it has proper length to avoid unnecessary API calls
     try {
-      await sleep(2000);
       const googleAPIData = await fetchBookFromIsbn(isbnApiLink, {
         arg: isbn,
       });
@@ -136,42 +180,43 @@ export const useValidateCSV = () => {
   };
 
   /**Makes sures the row contains an isbn which has a length >0 and exist in the world. Additinoally, makes sures the totalNumber of copies is a number. **/
-  const validateCsvRows = async (parsedCSV: DataInterface[]) => {
-    parsedCSV.forEach(async (parsedRow, index) => {
-      const copiesValid = validateCsvRowCopies(parsedRow.COPIES, index);
-      const isbnValid = await validateCsvIsbn(parsedRow.ISBN, index);
-      if (copiesValid && isbnValid) {
-        updateCsvRowValidationAsValid(index);
-      }
-    });
+  const validateCsvRow = async (parsedRow: DataInterface, index: number) => {
+    const copiesValid = validateCsvRowCopies(parsedRow.COPIES, index);
+    const isbnValid = await validateCsvIsbn(parsedRow.ISBN, index);
+    if (copiesValid && isbnValid) {
+      updateCsvRowValidationAsValid(index);
+    }
   };
 
->>>>>>> parent of 305b42a (Edited the validated process)
-=======
->>>>>>> parent of 928d39b (Merge pull request #1 from Kyptdin/work-in-progress-upload-all)
   /**Checks if the csv file the user uploaded only has the columns "COPIES" and "ISBN."  **/
-  const validateCSVFile = () => {
+  const validateCSV = () => {
     // Can't validate a csv if a user didn't input a csv
-    if (!csvFile) return;
+    if (!csvFile) {
+      toast({
+        title: "No CSV Found",
+        variant: "destructive",
+        description: `Please upload a CSV file to validate.`,
+      });
+      return;
+    }
 
     Papa.parse(csvFile, {
       header: true,
       skipEmptyLines: true,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      complete: function (results: any) {
+      complete: async function (results: any) {
         const parsedCSV = results.data;
-        console.log(parsedCSV);
-        const properCSVUploaded = userUploadedProperCSV(results);
-        if (!properCSVUploaded) {
+        const correctCSVFormat = userUploadedProperCSV(parsedCSV);
+        setCsvFormatIsValid(() => correctCSVFormat);
+        // Makes sure the user uploaded the proper CSV format
+        if (!correctCSVFormat) {
           toast({
             title: "Incorrect CSV Format",
             variant: "destructive",
             description: `You have uploaded the wrong CSV format. Make sure the csv only has the columns "COPIES" and "ISBN." `,
           });
+          return;
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
         const castedDataInterface = parsedCSV as DataInterface[];
 
         // The validation of the rows is about to begin so status are initialized
@@ -179,13 +224,19 @@ export const useValidateCSV = () => {
           initCsvUploadAllRows(castedDataInterface);
         }
 
-        // Makes sures all the rows are valid
-        validateCsvRows(castedDataInterface);
+        // const time = 1000; // Initial timeout in milliseconds
+        // const incrementPercentage = 2; // Percentage increase per iteration
+
+        castedDataInterface.forEach((parsedRow, index) => {
+          // Calculate the timeout for the current iteration
+          // const timeout = time + (index * time * incrementPercentage) / 100;
+
+          setTimeout(() => {
+            validateCsvRow(parsedRow, index);
+          }, 1500 * (index + 3));
+        });
 
         setParsedCsvRows(parsedCSV as DataInterface[]);
->>>>>>> parent of 305b42a (Edited the validated process)
-=======
->>>>>>> parent of 928d39b (Merge pull request #1 from Kyptdin/work-in-progress-upload-all)
       },
     });
   };
@@ -196,9 +247,12 @@ export const useValidateCSV = () => {
 
   return {
     userUploadedProperCSV,
-    csvBookData,
+    parsedCsvRows,
+    allRowsAreValid,
+    csvFormatIsValid,
+    csvUploadAllRows,
     handleCsvInputting,
-    validateCSVFile,
+    validateCSV,
     csvFile,
   };
 };
