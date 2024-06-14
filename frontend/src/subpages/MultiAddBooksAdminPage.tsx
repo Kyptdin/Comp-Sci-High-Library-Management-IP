@@ -12,11 +12,20 @@ import {
 
 import { MultiAddTableHead } from "@/components/multiAdd/MultiAddTableHead";
 import { useValidateCSV } from "@/hooks/csv/useValidateCSV";
+import { BookAddTablePill } from "@/components/BookAddTablePill";
 // import { useCsvToBook } from "@/hooks/csv/useCsvToBook";
 
 export const MultiAddBooksAdminPage = () => {
-  const { handleCsvInputting, validateCSV, csvFile, allRowsAreValid } =
-    useValidateCSV();
+  const {
+    handleCsvInputting,
+    validateCSV,
+    csvFile,
+    allRowsAreValid,
+    csvUploadAllRows,
+    csvFormatIsValid,
+  } = useValidateCSV();
+
+  console.log(csvUploadAllRows);
 
   // const { booksValidated } = useCsvToBook(csvBookData);
   // const { toast } = useToast();
@@ -108,19 +117,11 @@ export const MultiAddBooksAdminPage = () => {
 
       <ScrollArea className="bg-transparent h-[55vh] w-full">
         <Table>
-          <TableBody className="">
-            {/* {csvFormatIsValid &&
-              booksValidated?.map(
-                (bookData: ValidateBookEntry, key: number) => {
-                  return (
-                    <BookAddTablePill
-                      bookData={bookData}
-                      key={key}
-                      index={key}
-                    />
-                  );
-                }
-              )} */}
+          <TableBody>
+            {csvFormatIsValid &&
+              csvUploadAllRows.map((csvRow, index) => {
+                return <BookAddTablePill csvRow={csvRow} key={index} />;
+              })}
           </TableBody>
         </Table>
       </ScrollArea>

@@ -26,7 +26,7 @@ interface CsvUpload {
   csvUploadErrors: CsvRowUploadError[];
 }
 
-interface CsvUploadAllRow {
+export interface CsvUploadAllRow {
   csvRowValidation: CsvRowValidation;
   csvRowMetaData: DataInterface;
   csvRowUpload: CsvUpload;
@@ -184,6 +184,7 @@ export const useValidateCSV = () => {
     const copiesValid = validateCsvRowCopies(parsedRow.COPIES, index);
     const isbnValid = await validateCsvIsbn(parsedRow.ISBN, index);
     if (copiesValid && isbnValid) {
+      console.log(`Is valid!! ${index}`);
       updateCsvRowValidationAsValid(index);
     }
   };
