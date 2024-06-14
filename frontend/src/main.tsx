@@ -17,6 +17,7 @@ import { AddBooksAdminPage } from "./subpages/AddBooksAdminPage.tsx";
 import { EditBooksAdminPage } from "./subpages/EditBooksAdminPage.tsx";
 import { ReportBooksPage } from "./subpages/ReportBooksPage.tsx";
 import { MultiAddBooksAdminPage } from "./subpages/MultiAddBooksAdminPage.tsx";
+import { CurrentBorrow } from "./pages/CurrentBorrow.tsx";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -42,6 +43,15 @@ const router = createBrowserRouter([
     element: (
       <ProtectedPage>
         <InspectPage />
+      </ProtectedPage>
+    ),
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "borrowing",
+    element: (
+      <ProtectedPage>
+        <CurrentBorrow />
       </ProtectedPage>
     ),
     errorElement: <ErrorPage />,

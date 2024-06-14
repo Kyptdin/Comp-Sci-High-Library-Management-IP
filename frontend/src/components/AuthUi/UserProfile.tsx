@@ -7,7 +7,8 @@ import {
 } from "@/components/ui/dropdown-menu"; // Custom dropdown menu components
 
 import { IoLogOut } from "react-icons/io5"; // Logout icon from react-icons/io5
-import { BiSolidBookAdd } from "react-icons/bi"; // Add book icon from react-icons/bi
+import { MdAdminPanelSettings } from "react-icons/md"; // Admin icon from react-icons/md
+import { FaBookBookmark } from "react-icons/fa6"; // Borrowing icon from react-icons/fa6
 import { Skeleton } from "@/components/ui/skeleton"; // Custom Skeleton component for loading state
 import { useLogout } from "@/hooks/auth/useLogout"; // Custom hook to handle logout
 import { cn } from "@/lib/utils"; // Utility function for conditional class names
@@ -88,10 +89,18 @@ export const UserProfile = ({ profileImageUrl }: Props) => {
             className="cursor-pointer"
             onClick={() => navigate("/admin/addBooks")} // Navigate to addBooks page on click
           >
-            <BiSolidBookAdd size={28} />
-            <p className="font-bold font-lg ml-1">Add book</p>
+            <MdAdminPanelSettings size={28} />
+            <p className="font-bold font-lg ml-1">Admin Menu</p>
           </DropdownMenuItem>
         )}
+
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => navigate("/borrowing")} // Navigate to addBooks page on click
+        >
+          <FaBookBookmark size={24} />
+          <p className="font-bold font-lg ml-2">My books</p>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

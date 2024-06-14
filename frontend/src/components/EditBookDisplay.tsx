@@ -18,10 +18,11 @@ import { Link } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useEditBook } from "@/hooks/book/useEditBook";
 import { BooksUpdate } from "@/types/supabaseTypes";
 import { useDeleteBook } from "@/hooks/book/useDeleteBook";
+import { useGetBookById } from "@/hooks/book/useGetBookById";
 
 interface Props {
   title: string;
@@ -69,6 +70,14 @@ export const EditBookDisplay = ({
   const { mutate: deleteBook } = useDeleteBook(titleQuery);
 
   const inspectPage = `/inspect/${isbn}`;
+
+  const { data } = useGetBookById(isbn);
+  useEffect(() => {
+    if (!data || data.length <= 0) { return; }
+
+    const { total_copies_within_school } = data[0];
+    setAmountOfCopiesInBook(total_copies_within_school);
+  }, [data]);
 
   const onSubmitEditBook = () => {
     const updateBookObj: BooksUpdate = {

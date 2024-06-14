@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { EditBookDisplay } from "@/components/EditBookDisplay";
 import { useSearchBookBySimilarTitle } from "@/hooks/book/useSearchBookBySimilarTitle";
+import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
 
 /**
@@ -13,10 +14,11 @@ import { useState } from "react";
 export const EditBooksAdminPage = () => {
   // State to hold the search query for book names
   const [bookNameQuery, setBookNameQuery] = useState<string>("");
+  const debounceBookNameQuery = useDebounce(bookNameQuery, 500);
 
   // Fetch book data based on the search query
   const { data: bookDataSearchedByTitle } =
-    useSearchBookBySimilarTitle(bookNameQuery);
+    useSearchBookBySimilarTitle(debounceBookNameQuery);
 
   return (
     <div className="text-white w-[80%] p-4">
