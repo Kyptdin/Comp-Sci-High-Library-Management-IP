@@ -2,6 +2,7 @@ import { isEmail } from "@/utils/isEmail";
 import { supabase } from "../supabase/supabaseClient";
 import { Borrow, BorrowStats, UserData } from "../types/supabaseTypes";
 import { v4 as uuidv4 } from "uuid";
+import { convertToTsQuery } from "@/utils/convertToTsQuery";
 
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
@@ -116,6 +117,23 @@ export const readUserByUserId = async (userId: string) => {
     .select("*")
     // Filters
     .eq("user_id", userId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return users;
+};
+
+/**Search user by a similar name using a search engine **/
+export const searchUserBySimilarUsername = async (userName: string) => {
+  const { data: users, error } = await supabase
+    .from("users")
+    .select("user_name")
+    .textSearch("user_name", convertToTsQuery(userName), {
+      type: "phrase",
+      config: "english",
+    });
 
   if (error) {
     throw new Error(error.message);

@@ -2,9 +2,10 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { BorrowBookDisplay } from "@/components/BorrowBookDisplay";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetUserBorrowDataByUserEmail } from "@/hooks/borrow/useGetUserBorrowDataByUserEmail";
 import { Borrow } from "@/types/supabaseTypes";
+import { searchUserBySimilarUsername } from "@/services/userService";
 
 /**
  * This component allows an admin to search for a user by their email address and view their borrow statistics and history.
@@ -18,6 +19,10 @@ export const SearchStudentAdminPage = () => {
     isLoading,
     isError,
   } = useGetUserBorrowDataByUserEmail(emailQuery);
+
+  useEffect(() => {
+    searchUserBySimilarUsername("Isaa");
+  }, []);
 
   // Extract user data
   const username = userDataFromSearch?.userMetaData[0].user_name;
