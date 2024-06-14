@@ -3,7 +3,6 @@ import { supabase } from "../supabase/supabaseClient.ts";
 import { fetchBookFromIsbn, isbnApiLink } from "../utils/isbnApi.ts";
 import { VolumeList } from "../types/googleBooksAPI.ts";
 import { EditBooksProp } from "../hooks/book/useEditBook.ts";
-import { convertToTsQuery } from "../utils/convertToTsQuery.ts";
 
 // deployctl deploy --prod --project=borrowed-book-studentmail server.ts --save-config
 /*
@@ -125,35 +124,21 @@ export const getBookByTitle = async (title: string) => {
  */
 export const searchBookBySimilarTitle = async (searchString: string) => {
   // Gets all the books that match the search string
-  const { data, error } = await supabase
+  const { data: booksFoundByTitle, error } = await supabase
     .from("books")
-    .select("title")
-    .textSearch("title", convertToTsQuery(searchString), {
-      type: "phrase",
-      config: "english",
-    });
+    .select("*")
+    .ilike("title", `%${searchString}%`);
 
   if (error) {
     throw new Error(error.message);
   }
   // There's no books that have a title that matches the search string so null is returned
-  if (!data || data.length === 0) {
+  if (!booksFoundByTitle || booksFoundByTitle.length === 0) {
     return null;
   }
-  // Fetches the data for the assocaited title in parrellel
-  const requestArrOfBooks = data.map(async (titleObj) => {
-    return await getBookByTitle(titleObj.title);
-  });
-  const bookDataForSearchQuery = await Promise.allSettled(requestArrOfBooks);
-  const successfulQuries = bookDataForSearchQuery.filter(
-    (query) => query.status === "fulfilled"
-  ) as PromiseFulfilledResult<Book[]>[];
-  // Flattening the results because rendering the search results is easier if there's just 1 array; no sub arrays
-  const successfulQuriesFlatten = successfulQuries.flatMap(
-    (book) => book.value
-  );
+
   const requestArrOfBooksGoogleAPI: Promise<VolumeList>[] =
-    successfulQuriesFlatten.map(async (successfulQurie) => {
+    booksFoundByTitle.map(async (successfulQurie) => {
       return fetchBookFromIsbn(isbnApiLink, {
         arg: successfulQurie.id,
       });
@@ -166,7 +151,7 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
       const failedQuery = query.status === "rejected";
       if (query.status === "rejected") {
         // Removing from the array because the website should only render books that the program was able to get the cover of
-        successfulQuriesFlatten.splice(index, 1);
+        booksFoundByTitle.splice(index, 1);
       }
       return !failedQuery;
     }
@@ -183,7 +168,7 @@ export const searchBookBySimilarTitle = async (searchString: string) => {
       authors,
     };
   });
-  const bookDataPairedWithImage = successfulQuriesFlatten.map((data, index) => {
+  const bookDataPairedWithImage = booksFoundByTitle.map((data, index) => {
     return { ...data, googleBooksApiData: googleAPIDAtaFlat[index] };
   });
   return bookDataPairedWithImage;
