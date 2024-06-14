@@ -129,11 +129,10 @@ export const readUserByUserId = async (userId: string) => {
 export const searchUserBySimilarUsername = async (userName: string) => {
   const { data: users, error } = await supabase
     .from("users")
-    .select("user_name")
-    .textSearch("user_name", convertToTsQuery(userName), {
-      type: "phrase",
-      config: "english",
-    });
+    .select("*")
+    .ilike("user_name", `%${userName}%`);
+
+  console.log(users);
 
   if (error) {
     throw new Error(error.message);

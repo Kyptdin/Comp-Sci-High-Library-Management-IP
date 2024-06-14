@@ -6,47 +6,38 @@ import { useEffect, useState } from "react";
 import { useGetUserBorrowDataByUserEmail } from "@/hooks/borrow/useGetUserBorrowDataByUserEmail";
 import { Borrow } from "@/types/supabaseTypes";
 import { searchUserBySimilarUsername } from "@/services/userService";
+import { useGetUserBorrowDataByUserName } from "@/hooks/borrow/useGetUserBorrowDataByUserName";
 
 /**
  * This component allows an admin to search for a user by their email address and view their borrow statistics and history.
  * It uses the `useGetUserBorrowDataByUserEmail` hook to fetch user data based on the email query.
  */
 export const SearchStudentAdminPage = () => {
-  const [emailQuery, setEmailQuery] = useState<string>("");
-  // Fetch user data based on the email query
-  const {
-    data: userDataFromSearch,
-    isLoading,
-    isError,
-  } = useGetUserBorrowDataByUserEmail(emailQuery);
+  const [userNameQuery, setUserNameQuery] = useState<string>("");
 
-  useEffect(() => {
-    searchUserBySimilarUsername("Isaa");
-  }, []);
-
-  // Extract user data
-  const username = userDataFromSearch?.userMetaData[0].user_name;
-  const borrows = userDataFromSearch?.borrrows;
-  const userStatistics = userDataFromSearch?.borrowStats;
-  const showSearchResults = userDataFromSearch && !isLoading;
+  const { isError, isLoading } = useGetUserBorrowDataByUserName(userNameQuery);
 
   return (
     <div className="w-[80%] p-4 font-outfit">
-      <div className=" p-4 rounded-md">
+      <div className="p-4 rounded-md">
         <h1 className="text-4xl text-white">Search User</h1>
         {/* Horizontal separator */}
         <Separator className="w-full bg-gray-500 my-5" />
         <Input
-          onChange={(e) => setEmailQuery(e.target.value)}
-          value={emailQuery}
+          onChange={(e) => setUserNameQuery(e.target.value)}
+          value={userNameQuery}
           type="text"
-          placeholder="Search user by their email"
+          placeholder="Search user by their name"
           className="w-full px-4 py-2 mb-4 rounded text-lg"
         />
-        {/* Display error message if there is an error */}
+
         <p className="text-xl">{isError}</p>
+
+        {/* User selection */}
+
+        {/* BORROWS */}
         {/* Display search results if available */}
-        {showSearchResults && (
+        {/* {false && showSearchResults && (
           <div className="text-white">
             <div className="my-[40px] p-2">
               <h2 className="text-3xl mb-5">
@@ -54,7 +45,7 @@ export const SearchStudentAdminPage = () => {
               </h2>
 
               {/* Display borrow statistics */}
-              <div className="flex text-lg text-gray-700">
+        {/* <div className="flex text-lg text-gray-700">
                 <p className="p-1 px-4 mx-1 rounded-full bg-white">
                   Borrowed:{" "}
                   <span className="font-bold text-black">
@@ -73,7 +64,7 @@ export const SearchStudentAdminPage = () => {
             </div>
 
             {/* Display borrow history */}
-            {!isLoading ? (
+        {/* {!isLoading ? (
               <ScrollArea className="bg-transparent h-[55vh]">
                 {borrows?.map((borrow: Borrow, key: number) => {
                   return <BorrowBookDisplay bookData={borrow} key={key} />;
@@ -83,7 +74,7 @@ export const SearchStudentAdminPage = () => {
               <></>
             )}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
