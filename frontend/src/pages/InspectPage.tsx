@@ -78,9 +78,9 @@ export const InspectPage = () => {
     useGetBorrowsNotReturnedByIsbnAndUserId(isbnSearch, userId);
 
   const userHasBookCurrentlyDisplayed =
-    borrowsOfBookCurrentlyDisplayed !== null &&
-    borrowsOfBookCurrentlyDisplayed !== undefined &&
-    borrowsOfBookCurrentlyDisplayed.length > 0;
+    borrowsOfBookCurrentlyDisplayed && 
+    borrowsOfBookCurrentlyDisplayed.length > 0; 
+
   const pageIsCurrentlyLoading =
     isCurrnetlyGettingIsbnInSupabase || isCurrentlyFetchingGoogleBooksAPI;
 
