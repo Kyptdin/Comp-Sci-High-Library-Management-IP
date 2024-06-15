@@ -9,7 +9,7 @@ import {
 } from '@/hooks/borrow/useGetUserBorrowDataByUserEmail'
 
 import { Borrow } from '@/types/supabaseTypes'
-import { BookDisplayFromIsbn } from '@/components/BookDisplayFromIsbn'
+import { BookDisplayFromIsbn } from '@/components/Display/BookDisplayFromIsbn'
 
 export const CurrentBorrow = () => {
     const { data } = useGetLoggedInUser();

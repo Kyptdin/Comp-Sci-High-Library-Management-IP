@@ -1,7 +1,7 @@
 // Import necessary types and components
 import { Borrow } from "@/types/supabaseTypes";
-import { BookDisplaySkeleton } from "@/components/BookDisplaySkeleton";
-import { BookDisplayImage } from "@/components/BookDisplayImage";
+import { BookDisplaySkeleton } from "@/components/Display/BookDisplaySkeleton";
+import { BookDisplayImage } from "@/components/Display/BookDisplayImage";
 
 // Import hooks and utility functions
 import useSWR from "swr";

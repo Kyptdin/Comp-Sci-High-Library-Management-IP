@@ -1,9 +1,13 @@
-// Import the TbError404 icon from the react-icons/tb library
-import { TbError404 } from "react-icons/tb";
+import { Button } from "@/components/ui/button";
+
+import { TbFaceIdError } from "react-icons/tb";
+import { FaExclamationTriangle } from "react-icons/fa";
+
+import { useNavigate } from "react-router-dom";
 
 // Define the Props interface for the component props
 interface Props {
-  errorCode?: number; // Optional error code
+  returnHome?: boolean; // Optional error code
   errorMessage?: string; // Optional error message
 }
 
@@ -29,13 +33,25 @@ interface Props {
  * This will render an error message with the specified error message. If no error message is provided,
  * it will display a default message indicating a failed resource.
  */
-export const Error = ({ errorMessage }: Props) => {
+export const Error = ({ errorMessage, returnHome = true }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <div className="w-full h-[50vh] flex justify-center items-center flex-col">
-      <TbError404 size={50} color="white" className="my-5" />
+      <TbFaceIdError size={60} color="white" className="mb-3 animate-bounce"/>
+      
       <p className="text-3xl text-white font-outfit">
         {errorMessage ? errorMessage : "Failed to find resource"}
       </p>
+
+      {returnHome ? <Button 
+        variant="link"
+        className="text-blue-500 font-outfit" 
+        onClick={() => navigate("/")}
+      >
+        <FaExclamationTriangle className="mr-3"/>
+        Return home
+      </Button> : <></>}
     </div>
   );
 };

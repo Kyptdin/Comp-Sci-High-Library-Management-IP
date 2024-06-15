@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useState } from 'react';
 
-import { BookDisplay } from '@/components/BookDisplay'
-import { BookDisplaySkeleton } from '@/components/BookDisplaySkeleton';
+import { BookDisplay } from '@/components/Display/BookDisplay'
+import { BookDisplaySkeleton } from '@/components/Display/BookDisplaySkeleton';
 
 import { fetchBookFromIsbn, isbnApiLink } from '@/utils/isbnApi'
 

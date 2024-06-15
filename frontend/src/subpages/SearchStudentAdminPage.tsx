@@ -1,12 +1,16 @@
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { useGetUserBorrowDataByUserName } from "@/hooks/borrow/useGetUserBorrowDataByUserName";
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Borrow } from "@/types/supabaseTypes";
-import { BorrowBookDisplay } from "@/components/BorrowBookDisplay";
+
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+import { BorrowBookDisplay } from "@/components/Display/BorrowBookDisplay";
+import { StudentPill } from "@/components/StudentSearch/StudentPill";
+import { Error } from "@/components/Error";
+
+import { useDebounce } from "@uidotdev/usehooks";
 
 /**
  * This component allows an admin to search for a user by their email address and view their borrow statistics and history.
@@ -14,8 +18,10 @@ import { BorrowBookDisplay } from "@/components/BorrowBookDisplay";
  */
 export const SearchStudentAdminPage = () => {
   const [userNameQuery, setUserNameQuery] = useState<string>("");
+  const debouncedUserNameQuery = useDebounce(userNameQuery, 400);
+
   const { isError, isLoading, data } =
-    useGetUserBorrowDataByUserName(userNameQuery);
+    useGetUserBorrowDataByUserName(debouncedUserNameQuery);
   const [currentIndexOUserBorrow, setCurrentIndexOUserBorrow] =
     useState<number>();
 
@@ -29,6 +35,13 @@ export const SearchStudentAdminPage = () => {
     userStatistics = data?.borrowStatsArr[currentIndexOUserBorrow];
     borrows = data?.borrowsData[currentIndexOUserBorrow];
   }
+
+  const hasSelectedUser = currentIndexOUserBorrow !== undefined;
+  const resultsFoundByQuery = usersFoundBySearchQuery && 
+    usersFoundBySearchQuery?.length > 0;
+  const errorMessage = debouncedUserNameQuery?.length <= 0 ? 
+    "Search a user first" : 
+    "No users found";
 
   return (
     <div className="w-[80%] p-4 font-outfit">
@@ -50,45 +63,33 @@ export const SearchStudentAdminPage = () => {
         <p className="text-xl">{isError}</p>
 
         {/* User selection */}
-        {currentIndexOUserBorrow === undefined && (
+        {!hasSelectedUser && (
           <div className="grid grid-cols-4 gap-5">
             {usersFoundBySearchQuery?.map((userMetaData, index) => {
               const stats = data?.borrowStatsArr[index];
-              return (
-                <Card
-                  className="cursor-pointer"
-                  onClick={() => {
-                    setCurrentIndexOUserBorrow(index);
-                  }}
-                >
-                  <CardHeader>
-                    <CardTitle>{userMetaData.user_name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p>
-                      <span className="font-semibold">Borrowed:</span>{" "}
-                      {stats?.borrowed}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Returned:</span>
-                      {stats?.returned}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Missing:</span>
-                      {stats?.missing}
-                    </p>
-                  </CardContent>
-                </Card>
-              );
+
+              return <StudentPill
+                userName={userMetaData.user_name}
+                borrowedAmount={stats?.borrowed}
+                returnedAmount={stats?.returned}
+                missingAmount={stats?.missing}
+                onClick={() => setCurrentIndexOUserBorrow(index)}
+              />
             })}
           </div>
         )}
 
+        {/* Error when there is no usernames*/}
+        {!resultsFoundByQuery && <Error
+          errorMessage={errorMessage}
+          returnHome={false}
+        />}
+
         {/* BORROWS */}
         {/* Display search results if available */}
-        {currentIndexOUserBorrow !== undefined && (
+        {hasSelectedUser && (
           <div className="text-white">
-            <div className="my-[40px] p-2">
+            <div className="my-[20px] p-2">
               <h2 className="text-3xl mb-5">
                 Name: {isLoading ? "loading" : username}
               </h2>
@@ -114,7 +115,7 @@ export const SearchStudentAdminPage = () => {
 
             {/* Display borrow history */}
             {!isLoading ? (
-              <ScrollArea className="bg-transparent h-[55vh]">
+              <ScrollArea className="bg-transparent h-[50vh]">
                 {borrows?.map((borrow: Borrow, key: number) => {
                   return <BorrowBookDisplay bookData={borrow} key={key} />;
                 })}

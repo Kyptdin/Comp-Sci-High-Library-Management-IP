@@ -1,5 +1,5 @@
 // Import necessary components and hooks
-import { BookDisplayImage } from "@/components/BookDisplayImage";
+import { BookDisplayImage } from "@/components/Display/BookDisplayImage";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
