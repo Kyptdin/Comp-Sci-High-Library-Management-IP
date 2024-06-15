@@ -114,6 +114,16 @@ export const getBookByTitle = async (title: string) => {
   return books;
 };
 
+/**Get the total number of rows**/
+export const getTotalNumberOfRows = async () => {
+  const { data, count } = await supabase
+    .from("books")
+    .select("*", { count: "exact", head: true });
+
+  console.log(data);
+  console.log(count);
+};
+
 // Uses a search engine provided by supabase. The books returned doesn't always have to exactly match the search string just has to be similar to the search string
 /**
  * Searches for books in the database with titles similar to the search string.
