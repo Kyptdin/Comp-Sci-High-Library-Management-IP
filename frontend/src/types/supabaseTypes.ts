@@ -333,5 +333,11 @@ export type BooksUpdate = Database["public"]["Tables"]["books"]["Update"];
 /**The total upvotes and downvotes a book has**/
 export type BookRatings = Tables<"book_ratings">;
 
+/**
+ * Represents an update operation for the "books" table.
+ */
+export type BookRatingsUpdate =
+  Database["public"]["Tables"]["book_ratings"]["Update"];
+
 /**All the ratings a user has made**/
 export type UserBookRatings = Tables<"user_book_ratings">;

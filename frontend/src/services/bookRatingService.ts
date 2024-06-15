@@ -1,5 +1,5 @@
 import { supabase } from "../supabase/supabaseClient";
-import { BookRatings } from "@/types/supabaseTypes";
+import { BookRatings, BookRatingsUpdate } from "@/types/supabaseTypes";
 
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
@@ -34,5 +34,35 @@ export const getBookRatingById = async () => {
 };
 
 /****** UPDATE ROUTES ******/
+export const upvoteBookRating = async (updateBookRating: BookRatingsUpdate) => {
+  const { data: updateDataBookRating, error } = await supabase
+    .from("book_ratings")
+    .update(updateBookRating)
+    .eq("some_column", "someValue")
+    .select();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return updateDataBookRating;
+};
+
+export const downvoteBookRatingById = async (
+  id: string,
+  updateBookRating: BookRatingsUpdate
+) => {
+  const { data: updateDataBookRating, error } = await supabase
+    .from("book_ratings")
+    .update(updateBookRating)
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return updateDataBookRating;
+};
 
 /****** DELETE ROUTES ******/
