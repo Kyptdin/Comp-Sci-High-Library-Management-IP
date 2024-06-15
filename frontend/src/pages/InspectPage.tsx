@@ -1,29 +1,33 @@
 import { Navbar } from "@/components/Navbar";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore comment
-import { fetcher } from "@/hooks/fetcher";
-import { getIsbnLink } from "@/utils/isbnApi";
+import { BookDisplaySkeleton } from "@/components/Display/BookDisplaySkeleton";
+import { BookDisplayImage } from "@/components/Display/BookDisplayImage";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Voting } from "@/components/Interactions/Voting";
+import { Button } from "@/components/ui/button";
+import { Error } from "@/components/Error";
+import { cn } from "@/lib/utils";
+
+import { v4 as uuidv4 } from "uuid";
 import { useParams } from "react-router-dom";
-import useSWR from "swr";
 import { useReturnBook } from "@/hooks/borrow/useReturnBook";
 import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useBookReportDialog } from "@/hooks/book/useBookReportDialog";
 import { useBorrowBook } from "@/hooks/borrow/useBorrowBook";
 import { useGetBookById } from "@/hooks/book/useGetBookById";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore comment
+import { fetcher } from "@/hooks/fetcher";
+import { getIsbnLink } from "@/utils/isbnApi";
+import useSWR from "swr";
+import { 
+  useGetBorrowsNotReturnedByIsbnAndUserId
+} from "@/hooks/borrow/useGetBorrowsNotReturnedByUserIdAndIsbn";
+
 import { VolumeList } from "@/types/googleBooksAPI";
-import { BookDisplaySkeleton } from "@/components/Display/BookDisplaySkeleton";
-import { BookDisplayImage } from "@/components/Display/BookDisplayImage";
-import { Error } from "@/components/Error";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { v4 as uuidv4 } from "uuid";
-import { useGetBorrowsNotReturnedByIsbnAndUserId } from "@/hooks/borrow/useGetBorrowsNotReturnedByUserIdAndIsbn";
 
 function validateBookData(data: VolumeList) {
   if (data == undefined) return false;
   if (!data?.items || data?.items?.length <= 0) return false;
-
   return true;
 }
 /**
@@ -34,8 +38,10 @@ function validateBookData(data: VolumeList) {
  */
 export const InspectPage = () => {
   const { data: loggedInUserData } = useGetLoggedInUser();
+
   const { bookInspectIsbn } = useParams();
   const isbnSearch = bookInspectIsbn?.split("-").join("");
+
   const {
     data: googleBooksData,
     isLoading: isCurrentlyFetchingGoogleBooksAPI,
@@ -46,22 +52,30 @@ export const InspectPage = () => {
     isLoading: isCurrnetlyGettingIsbnInSupabase,
     isError: isErrrorFindingIsbnInSupabase,
   } = useGetBookById(isbnSearch);
+
+  // this is to re-define it's type from any to certain type
   const googleBooksDataAPI: VolumeList = googleBooksData;
   const isbnExistInTheWorld: boolean = error;
+
   const userId = loggedInUserData?.userMetaData[0].user_id;
   const bookId = bookDataFoundByIsbn ? bookDataFoundByIsbn[0].id : null;
-  const { DialogComponent, openDialog, isReportingBook } =
-    useBookReportDialog(bookId); //Used for reporting
-  const { mutateAsync: returnBook, isPending: isReturningBook } = useReturnBook(
-    isbnSearch,
-    userId
-  );
+
+  const { 
+    DialogComponent, 
+    openDialog, 
+    isReportingBook 
+  } = useBookReportDialog(bookId); //Used for reporting
+  const { 
+    mutateAsync: returnBook, 
+    isPending: isReturningBook 
+  } = useReturnBook(isbnSearch, userId);
+  const { 
+    mutateAsync: borrowBook, 
+    isPending: isBorrowingBook 
+  } = useBorrowBook(isbnSearch, userId);
+
   const { data: borrowsOfBookCurrentlyDisplayed } =
     useGetBorrowsNotReturnedByIsbnAndUserId(isbnSearch, userId);
-  const { mutateAsync: borrowBook, isPending: isBorrowingBook } = useBorrowBook(
-    isbnSearch,
-    userId
-  );
 
   const userHasBookCurrentlyDisplayed =
     borrowsOfBookCurrentlyDisplayed !== null &&
@@ -89,7 +103,10 @@ export const InspectPage = () => {
       <Navbar />
 
       {doNotDisplayBook ? (
-        <Error errorMessage="Failed to find book with isbn" />
+        <Error 
+          errorMessage="Failed to find book with isbn"
+          returnHome={true}
+         />
       ) : (
         <div className="full-center p-5">
           <div className="w-1/4 full-center flex-col">
@@ -188,9 +205,12 @@ export const InspectPage = () => {
                 Report Missing
               </Button>
             </div>
+
+            <Voting/>
           </div>
         </div>
       )}
+
       {!doNotDisplayBook && DialogComponent}
     </div>
   );
