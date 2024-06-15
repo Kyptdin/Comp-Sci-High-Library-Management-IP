@@ -3,6 +3,8 @@ import { supabase } from "../supabase/supabaseClient.ts";
 import { fetchBookFromIsbn, isbnApiLink } from "../utils/isbnApi.ts";
 import { VolumeList } from "../types/googleBooksAPI.ts";
 import { EditBooksProp } from "../hooks/book/useEditBook.ts";
+import { createBookRating } from "./bookRatingService.ts";
+import { v4 as uuidv4 } from "uuid";
 
 // deployctl deploy --prod --project=borrowed-book-studentmail server.ts --save-config
 /*
@@ -23,6 +25,15 @@ export const createBook = async (bookData: Book) => {
   if (error) {
     throw new Error(error.message);
   }
+
+  if (data.length === 0) {
+    throw new Error(`Book failed to be created.`);
+  }
+
+  const bookId = data[0].id;
+
+  createBookRating({ id: uuidv4(), upvotes: 0, downvotes: 0, book_id: bookId });
+
   return data;
 };
 
