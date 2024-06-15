@@ -44,6 +44,7 @@ interface Props {
 export const UserProfile = ({ profileImageUrl }: Props) => {
   const { mutateAsync } = useLogout(); // Hook to handle logout
   const navigate = useNavigate(); // Hook to navigate programmatically
+  
   const { data } = useGetLoggedInUser(); // Hook to get logged in user data
   const isAdmin = data?.userMetaData[0].admin_status === "admin"; // Check if the user is an admin
 

@@ -1,7 +1,7 @@
 // Import necessary components and hooks
 import { ImLibrary } from "react-icons/im";
 import { LoginButton } from "@/components/AuthUi/LoginButton";
-import { SearchBar } from "@/components/SearchBar";
+import { SearchBar } from "@/components/Discover/SearchBar";
 import { Link } from "react-router-dom";
 import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { UserProfile } from "./AuthUi/UserProfile";

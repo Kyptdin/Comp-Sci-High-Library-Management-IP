@@ -1,9 +1,10 @@
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { EditBookDisplay } from "@/components/EditBookDisplay";
+import { EditBookDisplay } from "@/components/Display/EditBookDisplay";
 import { useSearchBookBySimilarTitle } from "@/hooks/book/useSearchBookBySimilarTitle";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
+import { Error } from "@/components/Error";
 
 /**
  * Component for the admin page to edit books. Allows searching for books by title
@@ -19,6 +20,11 @@ export const EditBooksAdminPage = () => {
   // Fetch book data based on the search query
   const { data: bookDataSearchedByTitle } =
     useSearchBookBySimilarTitle(debounceBookNameQuery);
+
+  const hasSearched = debounceBookNameQuery.length > 0;
+  const errorMessage = !hasSearched ?
+    "Please search up a book" :
+    "No book found";
 
   return (
     <div className="text-white w-[80%] p-4">
@@ -36,6 +42,12 @@ export const EditBooksAdminPage = () => {
           placeholder="Enter book name"
           className="w-full px-4 py-2 mb-4 rounded text-lg text-black"
         />
+
+        {/* error message */}
+        {!bookDataSearchedByTitle && <Error
+          errorMessage={errorMessage}
+          returnHome={true}
+        />}
       </div>
 
       {/* Display the list of books matching the search query */}
