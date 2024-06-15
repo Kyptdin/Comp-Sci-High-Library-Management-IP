@@ -114,6 +114,47 @@ export const getBookByTitle = async (title: string) => {
   return books;
 };
 
+/**Get the total number of rows**/
+export const getTotalNumberOfRows = async () => {
+  const { count } = await supabase
+    .from("books")
+    .select("*", { count: "exact", head: true });
+
+  return count;
+};
+
+/**Get the books with pagination**/
+export const getBooksWithPagination = async (
+  startIndex: number,
+  endIndex: number
+) => {
+  const { data: books, error } = await supabase
+    .from("books")
+    .select("*")
+    .range(startIndex, endIndex);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return books;
+};
+
+/**Get a random book from the school database**/
+export const getRandomBook = async () => {
+  const totalRows = await getTotalNumberOfRows();
+
+  if (!totalRows) {
+    throw new Error("No books exist within the school database");
+  }
+
+  const randomIndex = Math.floor(Math.random() * totalRows);
+
+  const randomBook = await getBooksWithPagination(randomIndex, randomIndex);
+
+  return randomBook;
+};
+
 // Uses a search engine provided by supabase. The books returned doesn't always have to exactly match the search string just has to be similar to the search string
 /**
  * Searches for books in the database with titles similar to the search string.
