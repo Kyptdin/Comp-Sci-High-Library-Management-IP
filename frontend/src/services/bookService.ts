@@ -116,12 +116,28 @@ export const getBookByTitle = async (title: string) => {
 
 /**Get the total number of rows**/
 export const getTotalNumberOfRows = async () => {
-  const { data, count } = await supabase
+  const { count } = await supabase
     .from("books")
     .select("*", { count: "exact", head: true });
 
-  console.log(data);
-  console.log(count);
+  return count;
+};
+
+/**Get the books with pagination**/
+export const getBooksWithPagination = async (
+  startIndex: number,
+  endIndex: number
+) => {
+  const { data: books, error } = await supabase
+    .from("books")
+    .select("*")
+    .range(startIndex, endIndex);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return books;
 };
 
 // Uses a search engine provided by supabase. The books returned doesn't always have to exactly match the search string just has to be similar to the search string
