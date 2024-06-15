@@ -11,6 +11,7 @@ import { StudentPill } from "@/components/StudentSearch/StudentPill";
 import { Error } from "@/components/Error";
 
 import { useDebounce } from "@uidotdev/usehooks";
+import { SmallStudentStat } from "@/components/StudentSearch/SmallStudentStat";
 
 /**
  * This component allows an admin to search for a user by their email address and view their borrow statistics and history.
@@ -49,15 +50,16 @@ export const SearchStudentAdminPage = () => {
         <h1 className="text-4xl text-white">Search User</h1>
         {/* Horizontal separator */}
         <Separator className="w-full bg-gray-500 my-5" />
+
         <Input
+          type="text"
+          placeholder="Search user by their name"
+          className="w-full px-4 py-2 mb-4 rounded text-lg"
+          value={userNameQuery}
           onChange={(e) => {
             setCurrentIndexOUserBorrow(undefined);
             setUserNameQuery(e.target.value);
           }}
-          value={userNameQuery}
-          type="text"
-          placeholder="Search user by their name"
-          className="w-full px-4 py-2 mb-4 rounded text-lg"
         />
 
         <p className="text-xl">{isError}</p>
@@ -82,7 +84,7 @@ export const SearchStudentAdminPage = () => {
         {/* Error when there is no usernames*/}
         {!resultsFoundByQuery && <Error
           errorMessage={errorMessage}
-          returnHome={false}
+          returnHome={true}
         />}
 
         {/* BORROWS */}
@@ -96,20 +98,21 @@ export const SearchStudentAdminPage = () => {
 
               {/* Display borrow statistics */}
               <div className="flex text-lg text-gray-700">
-                <p className="p-1 px-4 mx-1 rounded-full bg-white">
-                  Borrowed:{" "}
-                  <span className="font-bold text-black">
-                    {userStatistics?.borrowed}
-                  </span>
-                </p>
-                <p className="p-1 px-4 mx-1 rounded-full bg-white text-black">
-                  Returned:{" "}
-                  <span className="font-bold">{userStatistics?.returned}</span>
-                </p>
-                <p className="p-1 px-4 mx-1 rounded-full bg-orange-700 text-white">
-                  Missing:{" "}
-                  <span className="font-bold">{userStatistics?.missing}</span>
-                </p>
+                <SmallStudentStat
+                  statName="Borrowing"
+                  statNumber={userStatistics?.borrowed}
+                />
+
+                <SmallStudentStat
+                  statName="Returned"
+                  statNumber={userStatistics?.returned}
+                />
+
+                <SmallStudentStat
+                  statName="Missing"
+                  statNumber={userStatistics?.missing}
+                  className="bg-orange-700 text-white"
+                />
               </div>
             </div>
 

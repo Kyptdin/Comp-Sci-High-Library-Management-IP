@@ -1,4 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+    Card, 
+    CardContent, 
+    CardHeader, 
+    CardTitle 
+} from "@/components/ui/card";
+import { StudentStats } from "@/components/StudentSearch/StudentStats";
 
 interface StudentPillProps {
     userName?: string,
@@ -24,19 +30,20 @@ export const StudentPill = ({
                 <CardTitle>{userName}</CardTitle>
             </CardHeader>
 
-            <CardContent>
-                <p>
-                    <span className="font-semibold">Borrowed:</span>{" "}
-                    {borrowedAmount}
-                </p>
-                <p>
-                    <span className="font-semibold">Returned:</span>{" "}
-                    {returnedAmount}
-                </p>
-                <p>
-                    <span className="font-semibold">Missing:</span>{" "}
-                    {missingAmount}
-                </p>
+            <CardContent className="grid grid-cols-3 gap-2">
+                <StudentStats
+                    statName="Borrowing"
+                    statNumber={borrowedAmount}
+                />
+                <StudentStats
+                    statName="Returned"
+                    statNumber={returnedAmount}
+                />
+                <StudentStats
+                    statName="Missing"
+                    statNumber={missingAmount}
+                    className="bg-red-200 text-red-700 border-red-300"
+                />
             </CardContent>
         </Card>
     )
