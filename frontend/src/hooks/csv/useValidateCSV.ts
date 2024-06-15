@@ -1,5 +1,5 @@
 import { DataInterface } from "@/types/csvBookInterface";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Papa from "papaparse";
 import { useToast } from "@/components/ui/use-toast";
 import { fetchBookFromIsbn, isbnApiLink } from "@/utils/isbnApi";
@@ -47,6 +47,7 @@ export const useValidateCSV = () => {
       const status = rowData.csvRowValidation.status;
       return status === "valid";
     });
+  const [isValidating, setIsValidating] = useState<boolean>(false);
 
   /**Initializes the validation, metadata, and upload data for all rows within the csv**/
   const initCsvUploadAllRows = (csvParasedRows: DataInterface[]) => {
@@ -94,103 +95,163 @@ export const useValidateCSV = () => {
   };
 
   /**Find csv row by row index**/
-  const findCsvRowByRowIndex = (rowIndex: number) => {
-    const csvUploadCopies = [...csvUploadAllRows];
-    const rowWithIncorrectISBN = csvUploadCopies.find((rowData) => {
-      return rowData.csvRowValidation.rowNumberInCsv === rowIndex + 1;
-    });
-    return rowWithIncorrectISBN;
-  };
+  // Assuming csvUploadAllRows is defined in the same scope or passed as a prop
+  const findCsvRowByRowIndex = useCallback(
+    (rowIndex: number) => {
+      const csvUploadCopies = [...csvUploadAllRows];
+      const rowWithIncorrectISBN = csvUploadCopies.find((rowData) => {
+        return rowData.csvRowValidation.rowNumberInCsv === rowIndex + 1;
+      });
+      return rowWithIncorrectISBN;
+    },
+    [csvUploadAllRows] // Dependencies array
+  );
 
-  /**Update the csv upload status by index**/
-  const updateCsvUploadStatusByIndex = (
-    rowIndex: number,
-    updatedRowData: CsvUploadAllRow
-  ) => {
-    const csvUploadCopies = [...csvUploadAllRows];
-    csvUploadCopies.splice(rowIndex, 1, updatedRowData);
-  };
+  const updateCsvUploadStatusByIndex = useCallback(
+    (rowIndex: number, updatedRowData: CsvUploadAllRow) => {
+      const csvUploadCopies = [...csvUploadAllRows];
+      csvUploadCopies.splice(rowIndex, 1, updatedRowData);
+    },
+    [csvUploadAllRows] // Dependencies array
+  );
 
-  /**Update csv row validation as invalid**/
-  const updateCsvRowValidationAsInvalid = (
-    rowIndex: number,
-    errorMessage: string
-  ) => {
-    const foundRowByIndex = findCsvRowByRowIndex(rowIndex);
-    if (!foundRowByIndex) return;
-    foundRowByIndex.csvRowValidation.status = "invalid";
-    foundRowByIndex.csvRowValidation.validationErrors.push({
-      message: errorMessage,
-    });
-    updateCsvUploadStatusByIndex(rowIndex, foundRowByIndex);
-  };
+  const updateCsvRowValidationAsInvalid = useCallback(
+    (rowIndex: number, errorMessage: string) => {
+      const foundRowByIndex = findCsvRowByRowIndex(rowIndex);
+      if (!foundRowByIndex) return;
+      foundRowByIndex.csvRowValidation.status = "invalid";
+      foundRowByIndex.csvRowValidation.validationErrors.push({
+        message: errorMessage,
+      });
+      updateCsvUploadStatusByIndex(rowIndex, foundRowByIndex);
+    },
+    [findCsvRowByRowIndex, updateCsvUploadStatusByIndex] // Dependencies array
+  );
 
   /**Update csv row valation as valid**/
-  const updateCsvRowValidationAsValid = (rowIndex: number) => {
-    const foundRowByIndex = findCsvRowByRowIndex(rowIndex);
-    if (!foundRowByIndex) return;
-    foundRowByIndex.csvRowValidation.status = "valid";
-    foundRowByIndex.csvRowValidation.validationErrors = [];
-    updateCsvUploadStatusByIndex(rowIndex, foundRowByIndex);
-  };
+  const updateCsvRowValidationAsValid = useCallback(
+    (rowIndex: number) => {
+      const foundRowByIndex = findCsvRowByRowIndex(rowIndex);
+      if (!foundRowByIndex) return;
+      foundRowByIndex.csvRowValidation.status = "valid";
+      foundRowByIndex.csvRowValidation.validationErrors = [];
+      updateCsvUploadStatusByIndex(rowIndex, foundRowByIndex);
+    },
+    [findCsvRowByRowIndex, updateCsvUploadStatusByIndex] // Dependencies array, add any dependencies if necessary
+  );
 
   /**Validates the isbn in a row by checking if the isbn has proper length and if the isbn exist in the world**/
-  const validateCsvIsbn = async (isbn: string, rowIndex: number) => {
-    const isbnHasCorrectLength = isbn.length > 0;
+  const validateCsvIsbn = useCallback(
+    async (isbn: string, rowIndex: number) => {
+      const isbnHasCorrectLength = isbn.length > 0;
 
-    // There's no isbn in the row so row is invalid
-    if (!isbnHasCorrectLength) {
-      updateCsvRowValidationAsInvalid(
-        rowIndex,
-        "Row does not contain an isbn."
-      );
-      return false;
-    }
+      // There's no isbn in the row so row is invalid
+      if (!isbnHasCorrectLength) {
+        updateCsvRowValidationAsInvalid(
+          rowIndex,
+          "Row does not contain an isbn."
+        );
+        return false;
+      }
 
-    // Only continue if it has proper length to avoid unnecessary API calls
-    try {
-      const googleAPIData = await fetchBookFromIsbn(isbnApiLink, {
-        arg: isbn,
-      });
-      const isbnExistInWorld = googleAPIData.items.length > 0;
-      if (!isbnExistInWorld) return false;
-    } catch (error) {
-      updateCsvRowValidationAsInvalid(
-        rowIndex,
-        "ISBN within the row coudl not not be found."
-      );
-      return false;
-    }
+      // Only continue if it has proper length to avoid unnecessary API calls
+      try {
+        const googleAPIData = await fetchBookFromIsbn(isbnApiLink, {
+          arg: isbn,
+        });
+        const isbnExistInWorld = googleAPIData.items.length > 0;
+        if (!isbnExistInWorld) return false;
+      } catch (error) {
+        updateCsvRowValidationAsInvalid(
+          rowIndex,
+          "ISBN within the row could not be found."
+        );
+        return false;
+      }
 
-    // At this point the row has a valid isbn with proper length which actually exist
-    return true;
-  };
+      return true;
+    },
+    [updateCsvRowValidationAsInvalid] // Dependencies array, add any dependencies if necessary
+  );
 
   /**Returns if the csv that instead in a row is valid**/
-  const validateCsvRowCopies = (copies: string, rowIndex: number) => {
-    const isCopiesValid = copies.length > 0 && isFinite(Number(copies));
-    if (!isCopiesValid) {
-      updateCsvRowValidationAsInvalid(
-        rowIndex,
-        "Row does not contain the amount of copies."
-      );
-      return false;
-    }
-    return true;
-  };
+  const validateCsvRowCopies = useCallback(
+    (copies: string, rowIndex: number) => {
+      const isCopiesValid = copies.length > 0 && isFinite(Number(copies));
+      if (!isCopiesValid) {
+        updateCsvRowValidationAsInvalid(
+          rowIndex,
+          "Row does not contain the amount of copies."
+        );
+        return false;
+      }
+      return true;
+    },
+    [updateCsvRowValidationAsInvalid] // Dependencies array, add any dependencies if necessary
+  );
 
   /**Makes sures the row contains an isbn which has a length >0 and exist in the world. Additinoally, makes sures the totalNumber of copies is a number. **/
-  const validateCsvRow = async (parsedRow: DataInterface, index: number) => {
-    const copiesValid = validateCsvRowCopies(parsedRow.COPIES, index);
-    const isbnValid = await validateCsvIsbn(parsedRow.ISBN, index);
-    if (copiesValid && isbnValid) {
-      console.log(`Is valid!! ${index}`);
-      updateCsvRowValidationAsValid(index);
-    }
-  };
+  const validateCsvRow = useCallback(
+    async (parsedRow: DataInterface, index: number) => {
+      const copiesValid = validateCsvRowCopies(parsedRow.COPIES, index);
+      const isbnValid = await validateCsvIsbn(parsedRow.ISBN, index);
+      if (copiesValid && isbnValid) {
+        console.log(`Is valid!! ${index}`);
+        updateCsvRowValidationAsValid(index);
+      }
+    },
+    [updateCsvRowValidationAsValid, validateCsvRowCopies, validateCsvIsbn] // Dependencies array, add any dependencies if necessary
+  );
 
   /**Checks if the csv file the user uploaded only has the columns "COPIES" and "ISBN."  **/
   const validateCSV = () => {
+    setIsValidating(() => true);
+    // Can't validate a csv if a user didn't input a csv
+    // if (!csvFile) {
+    //   toast({
+    //     title: "No CSV Found",
+    //     variant: "destructive",
+    //     description: `Please upload a CSV file to validate.`,
+    //   });
+    //   return;
+    // }
+    // Papa.parse(csvFile, {
+    //   header: true,
+    //   skipEmptyLines: true,
+    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //   complete: async function (results: any) {
+    //     const parsedCSV = results.data;
+    //     const correctCSVFormat = userUploadedProperCSV(parsedCSV);
+    //     setCsvFormatIsValid(() => correctCSVFormat);
+    //     // Makes sure the user uploaded the proper CSV format
+    //     if (!correctCSVFormat) {
+    //       toast({
+    //         title: "Incorrect CSV Format",
+    //         variant: "destructive",
+    //         description: `You have uploaded the wrong CSV format. Make sure the csv only has the columns "COPIES" and "ISBN." `,
+    //       });
+    //       return;
+    //     }
+    //     const castedDataInterface = parsedCSV as DataInterface[];
+    //     // The validation of the rows is about to begin so status are initialized
+    //     if (!csvUploadAllRows || csvUploadAllRows.length === 0) {
+    //       initCsvUploadAllRows(castedDataInterface);
+    //     }
+    //     // const time = 1000; // Initial timeout in milliseconds
+    //     // const incrementPercentage = 2; // Percentage increase per iteration
+    //     castedDataInterface.forEach((parsedRow, index) => {
+    //       // Calculate the timeout for the current iteration
+    //       // const timeout = time + (index * time * incrementPercentage) / 100;
+    //       setTimeout(() => {
+    //         validateCsvRow(parsedRow, index);
+    //       }, 1500 * (index + 3));
+    //     });
+    //     setParsedCsvRows(parsedCSV as DataInterface[]);
+    //   },
+    // });
+  };
+
+  useEffect(() => {
     // Can't validate a csv if a user didn't input a csv
     if (!csvFile) {
       toast({
@@ -230,7 +291,6 @@ export const useValidateCSV = () => {
 
         castedDataInterface.forEach((parsedRow, index) => {
           // Calculate the timeout for the current iteration
-          // const timeout = time + (index * time * incrementPercentage) / 100;
 
           setTimeout(() => {
             validateCsvRow(parsedRow, index);
@@ -240,11 +300,7 @@ export const useValidateCSV = () => {
         setParsedCsvRows(parsedCSV as DataInterface[]);
       },
     });
-  };
-
-  // useEffect(() => {
-  //   //Make sure the spreadsheet contains columsn for the isbn and the copies amount
-  // }, []);
+  }, [csvFile, csvUploadAllRows, toast, validateCsvRow, isValidating]);
 
   return {
     userUploadedProperCSV,
