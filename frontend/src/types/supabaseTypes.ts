@@ -330,4 +330,8 @@ export type BorrowsUpdate = Database["public"]["Tables"]["borrows"]["Update"];
  */
 export type BooksUpdate = Database["public"]["Tables"]["books"]["Update"];
 
+/**The total upvotes and downvotes a book has**/
 export type BookRatings = Tables<"book_ratings">;
+
+/**All the ratings a user has made**/
+export type UserBookRatings = Tables<"user_book_ratings">;
