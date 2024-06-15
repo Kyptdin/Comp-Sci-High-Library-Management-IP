@@ -12,7 +12,7 @@ import {
 
 import { MultiAddTableHead } from "@/components/multiAdd/MultiAddTableHead";
 import { useValidateCSV } from "@/hooks/csv/useValidateCSV";
-import { BookAddTablePill } from "@/components/BookAddTablePill";
+import { BookAddTablePill } from "@/components/Display/BookAddTablePill";
 // import { useCsvToBook } from "@/hooks/csv/useCsvToBook";
 
 export const MultiAddBooksAdminPage = () => {
