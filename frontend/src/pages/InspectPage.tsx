@@ -2,6 +2,8 @@ import { Navbar } from "@/components/Navbar";
 import { BookDisplaySkeleton } from "@/components/Display/BookDisplaySkeleton";
 import { BookDisplayImage } from "@/components/Display/BookDisplayImage";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { GoogleRating } from "@/components/Interactions/GoogleRating";
 import { Voting } from "@/components/Interactions/Voting";
 import { Button } from "@/components/ui/button";
 import { Error } from "@/components/Error";
@@ -97,9 +99,11 @@ export const InspectPage = () => {
   const imageLinks = volumeInfo?.imageLinks;
   const authors = volumeInfo?.authors;
   const description = volumeInfo?.description;
+  const averageRating = volumeInfo?.averageRating;
+  const categories = volumeInfo?.categories;
 
   return (
-    <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950">
+    <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950 font-outfit">
       <Navbar />
 
       {doNotDisplayBook ? (
@@ -120,7 +124,7 @@ export const InspectPage = () => {
           <div className="text-white w-1/2 p-3">
             <h1 className="font-bold text-4xl">{title}</h1>
             <h3 className="text-2xl text-gray-300">
-              By: {authors ? authors[0] : "Unknown"}
+              By: {authors}
             </h3>
 
             <ScrollArea
@@ -205,8 +209,14 @@ export const InspectPage = () => {
                 Report Missing
               </Button>
             </div>
-
-            <Voting/>
+            
+            <div className="flex justify-start items-center gap-5">
+              <Voting/>
+              <Separator orientation="vertical" className="h-[60px] opacity-25"/>
+              <GoogleRating rating={averageRating}/>
+              <Separator orientation="vertical" className="h-[60px] opacity-25"/>
+              <h1>{categories}</h1>
+            </div>
           </div>
         </div>
       )}
