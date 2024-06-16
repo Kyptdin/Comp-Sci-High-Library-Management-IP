@@ -21,10 +21,29 @@ export const createUserBookRating = async (
 };
 
 /****** GET ROUTES ******/
-export const getUserBookRatingById = async () => {
+export const getUserBookRatingById = async (id: string) => {
   const { data: userBookRatings, error } = await supabase
     .from("user_book_ratings")
-    .select("id");
+    .select("*")
+    .eq("id", id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return userBookRatings;
+};
+
+export const getUserBookRatingByUserIdAndRatingId = async (
+  userId: string,
+  ratingId: string
+) => {
+  const { data: userBookRatings, error } = await supabase
+    .from("user_book_ratings")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("rating_id", ratingId)
+    .select();
 
   if (error) {
     throw new Error(error.message);
