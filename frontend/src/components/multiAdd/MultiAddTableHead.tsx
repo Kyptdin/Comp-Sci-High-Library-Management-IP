@@ -25,7 +25,7 @@ export const MultiAddTableHead = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <TableHead
-            className={cn(`text-white  flex items-center ${headClasses}`)}
+            className={cn(`text-white flex items-center ${headClasses}`)}
           >
             {headName}
           </TableHead>

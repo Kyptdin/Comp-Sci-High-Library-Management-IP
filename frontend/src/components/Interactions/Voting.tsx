@@ -26,7 +26,7 @@ export const Voting = () => {
       <div className="full-center flex-col">
         <Button 
           variant="link" 
-          className="text-green-500 text-lg"
+          className="text-green-500 text-lg p-2"
           onClick={() => updateVoteValueTo(1)}
         >
           {(voteValue != 1) ? 
@@ -40,7 +40,7 @@ export const Voting = () => {
       <div className="full-center flex-col">
         <Button 
           variant="link" 
-          className="text-red-500 text-lg"
+          className="text-red-500 text-lg p-2"
           onClick={() => updateVoteValueTo(-1)}
         >
           {(voteValue != -1) ? 
