@@ -10,9 +10,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { MultiAddTableHead } from "@/components/MultiAdd/MultiAddTableHead";
 import { useValidateCSV } from "@/hooks/csv/useValidateCSV";
-import { BookAddTablePill } from "@/components/MultiAdd/BookAddTablePill";
+import { BookAddTablePill } from "@/components/multiAdd/BookAddTablePill";
+import { MultiAddTableHead } from "@/components/multiAdd/MultiAddTableHead";
 
 export const MultiAddBooksAdminPage = () => {
   const {
@@ -119,10 +119,7 @@ export const MultiAddBooksAdminPage = () => {
           <TableBody>
             {csvFormatIsValid &&
               csvUploadAllRows.map((csvRow, index) => {
-                return <BookAddTablePill 
-                  csvRow={csvRow} 
-                  key={index} 
-                />;
+                return <BookAddTablePill csvRow={csvRow} key={index} />;
               })}
           </TableBody>
         </Table>

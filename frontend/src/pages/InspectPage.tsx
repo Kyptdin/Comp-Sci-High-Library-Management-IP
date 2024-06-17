@@ -16,31 +16,19 @@ import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useBookReportDialog } from "@/hooks/book/useBookReportDialog";
 import { useBorrowBook } from "@/hooks/borrow/useBorrowBook";
 import { useGetBookById } from "@/hooks/book/useGetBookById";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore comment
 import { fetcher } from "@/hooks/fetcher";
 import { getIsbnLink } from "@/utils/isbnApi";
 import useSWR from "swr";
-import { 
-  useGetBorrowsNotReturnedByIsbnAndUserId
-} from "@/hooks/borrow/useGetBorrowsNotReturnedByUserIdAndIsbn";
+import { useGetBorrowsNotReturnedByIsbnAndUserId } from "@/hooks/borrow/useGetBorrowsNotReturnedByUserIdAndIsbn";
 
 import { VolumeList } from "@/types/googleBooksAPI";
 
-function validateBookData(data: VolumeList) {
-  if (data == undefined) return false;
-  if (!data?.items || data?.items?.length <= 0) return false;
-  return true;
+function validateBookData(data: VolumeList): boolean {
+  return data != undefined && data.items && data.items.length > 0;
 }
-/**
- * This component is used to display detailed information about a book and provide interaction options like borrowing, returning, and reporting missing books.
- * It fetches data from the Google Books API and the Supabase database based on the provided ISBN. Users can borrow books if available, return borrowed books, and report missing books.
- *
- * @returns JSX element representing the book inspection page with detailed book information and interaction options.
- */
-export const InspectPage = () => {
-  const { data: loggedInUserData } = useGetLoggedInUser();
 
+export const InspectPage: React.FC = () => {
+  const { data: loggedInUserData } = useGetLoggedInUser();
   const { bookInspectIsbn } = useParams();
   const isbnSearch = bookInspectIsbn?.split("-").join("");
 
@@ -49,52 +37,49 @@ export const InspectPage = () => {
     isLoading: isCurrentlyFetchingGoogleBooksAPI,
     error,
   } = useSWR(getIsbnLink(isbnSearch), fetcher);
+
   const {
     data: bookDataFoundByIsbn,
-    isLoading: isCurrnetlyGettingIsbnInSupabase,
-    isError: isErrrorFindingIsbnInSupabase,
+    isLoading: isCurrentlyGettingIsbnInSupabase,
+    isError: isErrorFindingIsbnInSupabase,
   } = useGetBookById(isbnSearch);
 
-  // this is to re-define it's type from any to certain type
   const googleBooksDataAPI: VolumeList = googleBooksData;
-  const isbnExistInTheWorld: boolean = error;
+  const isbnExistInTheWorld: boolean = !!error;
 
-  const userId = loggedInUserData?.userMetaData[0].user_id;
-  const bookId = bookDataFoundByIsbn ? bookDataFoundByIsbn[0].id : null;
+  const userId = loggedInUserData?.userMetaData[0]?.user_id;
+  const bookId = bookDataFoundByIsbn ? bookDataFoundByIsbn[0]?.id : null;
 
-  const { 
-    DialogComponent, 
-    openDialog, 
-    isReportingBook 
-  } = useBookReportDialog(bookId); //Used for reporting
-  const { 
-    mutateAsync: returnBook, 
-    isPending: isReturningBook 
-  } = useReturnBook(isbnSearch, userId);
-  const { 
-    mutateAsync: borrowBook, 
-    isPending: isBorrowingBook 
-  } = useBorrowBook(isbnSearch, userId);
+  const { DialogComponent, openDialog, isReportingBook } =
+    useBookReportDialog(bookId);
+  const { mutateAsync: returnBook, isPending: isReturningBook } = useReturnBook(
+    isbnSearch,
+    userId
+  );
+  const { mutateAsync: borrowBook, isPending: isBorrowingBook } = useBorrowBook(
+    isbnSearch,
+    userId
+  );
 
   const { data: borrowsOfBookCurrentlyDisplayed } =
     useGetBorrowsNotReturnedByIsbnAndUserId(isbnSearch, userId);
 
   const userHasBookCurrentlyDisplayed =
-    borrowsOfBookCurrentlyDisplayed && 
-    borrowsOfBookCurrentlyDisplayed.length > 0; 
+    borrowsOfBookCurrentlyDisplayed &&
+    borrowsOfBookCurrentlyDisplayed.length > 0;
 
   const pageIsCurrentlyLoading =
-    isCurrnetlyGettingIsbnInSupabase || isCurrentlyFetchingGoogleBooksAPI;
+    isCurrentlyGettingIsbnInSupabase || isCurrentlyFetchingGoogleBooksAPI;
 
   const doNotDisplayBook =
     !pageIsCurrentlyLoading &&
-    (isErrrorFindingIsbnInSupabase ||
+    (isErrorFindingIsbnInSupabase ||
       !bookDataFoundByIsbn ||
       bookDataFoundByIsbn.length === 0 ||
       isbnExistInTheWorld ||
       !validateBookData(googleBooksDataAPI));
 
-  const volumeInfo = googleBooksDataAPI?.items[0].volumeInfo;
+  const volumeInfo = googleBooksDataAPI?.items[0]?.volumeInfo;
   const title = volumeInfo?.title;
   const imageLinks = volumeInfo?.imageLinks;
   const authors = volumeInfo?.authors;
@@ -105,12 +90,8 @@ export const InspectPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-t from-gray-950 to-teal-950 font-outfit">
       <Navbar />
-
       {doNotDisplayBook ? (
-        <Error 
-          errorMessage="Failed to find book with isbn"
-          returnHome={true}
-         />
+        <Error errorMessage="Failed to find book with isbn" returnHome={true} />
       ) : (
         <div className="full-center p-5">
           <div className="w-1/4 full-center flex-col">
@@ -120,13 +101,9 @@ export const InspectPage = () => {
               <BookDisplayImage src={imageLinks?.thumbnail} />
             )}
           </div>
-
           <div className="text-white w-1/2 p-3">
             <h1 className="font-bold text-4xl">{title}</h1>
-            <h3 className="text-2xl text-gray-300">
-              By: {authors}
-            </h3>
-
+            <h3 className="text-2xl text-gray-300">By: {authors}</h3>
             <ScrollArea
               className={cn(
                 "text-md text-gray-500",
@@ -135,7 +112,6 @@ export const InspectPage = () => {
             >
               {description || "No description"}
             </ScrollArea>
-
             <div className="flex items-center justify-left">
               {!userHasBookCurrentlyDisplayed && (
                 <Button
@@ -144,30 +120,16 @@ export const InspectPage = () => {
                   disabled={isBorrowingBook}
                   onClick={() => {
                     if (!isbnSearch || !userId) return;
-                    // Create a new Date object for the current date
                     const currentDate = new Date();
-
-                    // Get the year, month, and day components for the current date
-                    const currentYear = currentDate.getFullYear();
-                    // Adding 1 to getMonth because it returns zero-based month (0 for January)
-                    const currentMonth = currentDate.getMonth() + 1;
-                    const currentDay = currentDate.getDate();
-
-                    // Format the current date as "year, month, day"
-                    const formattedCurrentDate = `${currentYear}-${currentMonth}-${currentDay}`;
-
-                    // Calculate the date for 7 days in the future
-                    currentDate.setDate(currentDate.getDate() + 7);
-
-                    // Get the year, month, and day components for the future date
-                    const futureYear = currentDate.getFullYear();
-                    // Adding 1 to getMonth because it returns zero-based month (0 for January)
-                    const futureMonth = currentDate.getMonth() + 1;
-                    const futureDay = currentDate.getDate();
-
-                    // Format the future date as "year, month, day"
-                    const formattedFutureDate = `${futureYear}-${futureMonth}-${futureDay}`;
-
+                    const formattedCurrentDate = currentDate
+                      .toISOString()
+                      .split("T")[0];
+                    const futureDate = new Date(
+                      currentDate.setDate(currentDate.getDate() + 7)
+                    );
+                    const formattedFutureDate = futureDate
+                      .toISOString()
+                      .split("T")[0];
                     borrowBook({
                       borrow_id: uuidv4(),
                       damaged: false,
@@ -182,7 +144,6 @@ export const InspectPage = () => {
                   Borrow
                 </Button>
               )}
-
               {userHasBookCurrentlyDisplayed && (
                 <Button
                   variant="secondary"
@@ -195,7 +156,6 @@ export const InspectPage = () => {
                   Return
                 </Button>
               )}
-
               <Button
                 className={cn(
                   "text-white text-lg",
@@ -209,18 +169,22 @@ export const InspectPage = () => {
                 Report Missing
               </Button>
             </div>
-            
             <div className="flex justify-start items-center gap-5">
-              <Voting/>
-              <Separator orientation="vertical" className="h-[60px] opacity-25"/>
-              <GoogleRating rating={averageRating}/>
-              <Separator orientation="vertical" className="h-[60px] opacity-25"/>
+              <Voting />
+              <Separator
+                orientation="vertical"
+                className="h-[60px] opacity-25"
+              />
+              <GoogleRating rating={averageRating} />
+              <Separator
+                orientation="vertical"
+                className="h-[60px] opacity-25"
+              />
               <h1>{categories}</h1>
             </div>
           </div>
         </div>
       )}
-
       {!doNotDisplayBook && DialogComponent}
     </div>
   );

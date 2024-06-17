@@ -1,4 +1,4 @@
-import { UserBookRatings } from "@/types/supabaseTypes";
+import { UserBookRatings, UserBookRatingsUpdate } from "@/types/supabaseTypes";
 import { supabase } from "../supabase/supabaseClient";
 
 /*
@@ -53,5 +53,18 @@ export const getUserBookRatingByUserIdAndRatingId = async (
 };
 
 /****** UPDATE ROUTES ******/
+export const updateUserBookRatingsById = async (
+  id: string,
+  newData: UserBookRatingsUpdate
+) => {
+  const { error } = await supabase
+    .from("user_book_ratings")
+    .update(newData)
+    .eq("id", id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
 
 /****** DELETE ROUTES ******/
