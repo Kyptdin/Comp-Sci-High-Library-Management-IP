@@ -1,8 +1,10 @@
 import { useToast } from "@/components/ui/use-toast";
 import { upvoteBookRating } from "@/services/bookRatingService";
-import { UserBookRatings } from "@/types/supabaseTypes";
+import { BookRatings, UserBookRatings } from "@/types/supabaseTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { UserGetUserBookRatingsByUserIdAndRatingIdData } from "../userBookRating/useGetUserBookRatingByUserIdAndRatingId";
+import { QueryUserGetUserBookRatingsByUserIdAndRatingIdData } from "../userBookRating/useGetUserBookRatingByUserIdAndRatingId";
+import { QueryGetBookRatingByBookId } from "./useGetBookRatingByBookId";
+// import { QueryGetBookRatingByBookId } from "./useGetBookRatingByBookId";
 
 interface MutationProps {
   userId: string;
@@ -32,7 +34,7 @@ export const useUpvoteBook = (
     });
 
     // Snapshot the previous value
-    const previousUserBookRatingsData: UserGetUserBookRatingsByUserIdAndRatingIdData =
+    const previousUserBookRatingsData: QueryUserGetUserBookRatingsByUserIdAndRatingIdData =
       queryClient.getQueryData(queryKeyUserBookRatings);
 
     // Optimistically update to the new value
@@ -45,18 +47,57 @@ export const useUpvoteBook = (
 
     queryClient.setQueryData(queryKeyUserBookRatings, () => [userBookRating]);
 
-    return { previousUserBookRatingsData };
+    let userUpvotedBook = null;
+
+    if (
+      !previousUserBookRatingsData ||
+      previousUserBookRatingsData.length === 0 ||
+      previousUserBookRatingsData[0].is_upvote === false
+    ) {
+      userUpvotedBook = false;
+    }
+
+    if (
+      previousUserBookRatingsData &&
+      previousUserBookRatingsData.length === 0 &&
+      previousUserBookRatingsData[0].is_upvote === true
+    ) {
+      userUpvotedBook = true;
+    }
+
+    return {
+      previousUserBookRatingsData,
+      userUpvotedBook,
+    };
   };
 
   // Opimistically increases the count for the number of upvotes
-  const makeOptimisticBookRatingChange = async () => {
+  const makeOptimisticBookRatingChange = async (
+    userUpvotedBook: boolean | null
+  ) => {
     // Cancel any outgoing refetches
     // (so they don't overwrite our optimistic update)
     await queryClient.cancelQueries({
       queryKey: queryKeyBookRating,
     });
 
-    // Snapshot the previous value
+    // Snapshot the previous value QueryGetBookRatingByBookId
+    const previousBookRating: QueryGetBookRatingByBookId =
+      queryClient.getQueryData(queryKeyUserBookRatings);
+
+    const previousDownvotes = previousBookRating?.downvotes as number;
+    const previousUpvotes = previousBookRating?.upvotes as number;
+
+    // Optimistically update to the new value
+    const userBookRating: BookRatings = {
+      id: "",
+      upvotes: previousUpvotes + 1,
+      downvotes:
+        userUpvotedBook === false ? previousDownvotes - 1 : previousDownvotes,
+    };
+
+    queryClient.setQueryData(queryKeyUserBookRatings, () => [userBookRating]);
+    return { previousBookRating };
   };
 
   const mutation = useMutation({
@@ -64,7 +105,14 @@ export const useUpvoteBook = (
       await upvoteBookRating(userId, bookId),
 
     onMutate: async () => {
-      await makeOptimisticUserUpvoteChange();
+      const { previousUserBookRatingsData, userUpvotedBook } =
+        await makeOptimisticUserUpvoteChange();
+
+      const { previousBookRating } = await makeOptimisticBookRatingChange(
+        userUpvotedBook
+      );
+
+      return { previousUserBookRatingsData, previousBookRating };
     },
 
     onError: (error, _, context) => {
@@ -72,11 +120,16 @@ export const useUpvoteBook = (
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const castedContext = context as any;
       const previousUserBookRatingsData =
-        castedContext.previousUserBookRatingsData as UserGetUserBookRatingsByUserIdAndRatingIdData;
+        castedContext.previousUserBookRatingsData as QueryUserGetUserBookRatingsByUserIdAndRatingIdData;
       queryClient.setQueryData(
         queryKeyUserBookRatings,
         previousUserBookRatingsData
       );
+
+      // Resets the optimsitic changes associated with the book ratings
+      const previousBookRatingsData =
+        castedContext.previousUserBookRatingsData as QueryGetBookRatingByBookId;
+      queryClient.setQueryData(queryKeyBookRating, previousBookRatingsData);
 
       toast({
         title: "Failed to Upvote Book",

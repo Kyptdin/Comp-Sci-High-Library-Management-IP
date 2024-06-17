@@ -2,7 +2,7 @@ import { getUserBookRatingByUserIdAndRatingId } from "@/services/userBookRatingS
 import { UserBookRatings } from "@/types/supabaseTypes";
 import { useQuery } from "@tanstack/react-query";
 
-export type UserGetUserBookRatingsByUserIdAndRatingIdData =
+export type QueryUserGetUserBookRatingsByUserIdAndRatingIdData =
   | UserBookRatings[]
   | null
   | undefined;
