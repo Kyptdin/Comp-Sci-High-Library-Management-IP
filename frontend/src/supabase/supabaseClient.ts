@@ -5,7 +5,7 @@
  */
 
 import { createClient } from "@supabase/supabase-js";
-import { Database } from "../types/supabaseTypes";
+import { Database } from "./types";
 
 // Supabase URL and API key for authentication
 const supabaseUrl = "https://vygjxzhtqazwuskkaxpz.supabase.co";

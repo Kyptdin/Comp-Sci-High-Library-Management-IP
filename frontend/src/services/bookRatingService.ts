@@ -5,6 +5,7 @@ import {
   updateUserBookRatingsById,
 } from "./userBookRatingService";
 import { v4 as uuidv4 } from "uuid";
+import { supabase } from "@/supabase/supabaseClient";
 /*
 Supabse does not provide routes. Instead, Supabase provides a SDK to allow programmers to make api calls through the frontend. I just put "POST ROUTES" to help you understand what this functions can be sorta understood as. To test these "routes" you can just call the function in a useEffect hook whenever the page loads.
 */
@@ -42,7 +43,7 @@ export const getBookRatingByBookId = async (bookId: string) => {
   const { data: bookRatings, error } = await supabase
     .from("book_ratings")
     .select("*")
-    .eq("book_id", bookId);
+    .eq("id", bookId);
 
   if (error) {
     throw new Error(error.message);
@@ -66,12 +67,15 @@ export const upvoteBookRating = async (userId: string, bookId: string) => {
   }
 
   //Check if the user has already upvoted
+  console.log(`userId: ${userId} ratingId: ${ratingId}`);
+
   const userRatingTowardsBook = await getUserBookRatingByUserIdAndRatingId(
     userId,
     ratingId
   );
   const userMadeAnyRatingTowardsBook = userRatingTowardsBook.length > 0;
   console.log(userRatingTowardsBook);
+
   if (userMadeAnyRatingTowardsBook && userRatingTowardsBook[0].is_upvote) {
     throw new Error("You have already upvoted the book.");
   }
