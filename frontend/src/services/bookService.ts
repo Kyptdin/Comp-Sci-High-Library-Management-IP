@@ -1,5 +1,5 @@
 import { Book, Borrow } from "../types/supabaseTypes.ts";
-import { supabase } from "../supabase/supabaseClient.ts";
+import { supabase } from "../../supabase/supabaseClient.ts";
 import { fetchBookFromIsbn, isbnApiLink } from "../utils/isbnApi.ts";
 import { VolumeList } from "../types/googleBooksAPI.ts";
 import { EditBooksProp } from "../hooks/book/useEditBook.ts";

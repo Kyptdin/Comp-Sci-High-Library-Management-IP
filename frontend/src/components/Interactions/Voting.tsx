@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useGetBookRatingByBookId } from "@/hooks/bookRating/useGetBookRatingByBookId";
 import { useUpvoteBook } from "@/hooks/bookRating/useUpvoteBook";
 import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
+import { useGetUserBookRatingByUserIdAndRatingId } from "@/hooks/userBookRating/useGetUserBookRatingByUserIdAndRatingId";
 
 import { VscThumbsup } from "react-icons/vsc";
 import { VscThumbsdown } from "react-icons/vsc";
@@ -14,9 +15,14 @@ export const Voting = () => {
   const { data: bookRatingData } = useGetBookRatingByBookId(bookInspectIsbn);
   const { mutate: upvoteBook } = useUpvoteBook();
   const { data: loggedInUserData } = useGetLoggedInUser();
+  const userId = loggedInUserData?.userMetaData[0].user_id;
+  const ratingId = bookRatingData ? bookRatingData[0].id : undefined;
+  const { data: userBookRatingData } = useGetUserBookRatingByUserIdAndRatingId(
+    userId,
+    ratingId
+  );
 
   const handleUpvoteButtonClick = () => {
-    const userId = loggedInUserData?.generalUserData.id;
     if (!userId || !bookInspectIsbn) return;
     upvoteBook({ userId, bookId: bookInspectIsbn });
   };
@@ -29,19 +35,29 @@ export const Voting = () => {
           className="text-green-500 text-lg p-2"
           onClick={handleUpvoteButtonClick}
         >
-          <VscThumbsup size={32} />
-          <VscThumbsupFilled size={32} />
+          {userBookRatingData &&
+          userBookRatingData[0].is_upvote &&
+          userBookRatingData[0].is_upvote !== null ? (
+            <VscThumbsupFilled size={32} />
+          ) : (
+            <VscThumbsup size={32} />
+          )}
         </Button>
 
-        {bookRatingData && bookRatingData.length > 0 && (
+        {bookRatingData && userBookRatingData && bookRatingData.length > 0 && (
           <span>{bookRatingData[0].upvotes}</span>
         )}
       </div>
 
       <div className="full-center flex-col">
         <Button variant="link" className="text-red-500 text-lg p-2">
-          <VscThumbsdown size={32} />
-          <VscThumbsdownFilled size={32} />
+          {userBookRatingData &&
+          !userBookRatingData[0].is_upvote &&
+          userBookRatingData[0].is_upvote !== null ? (
+            <VscThumbsdownFilled size={32} />
+          ) : (
+            <VscThumbsdown size={32} />
+          )}
         </Button>
 
         {bookRatingData && bookRatingData.length > 0 && (

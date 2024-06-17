@@ -1,5 +1,5 @@
 import { Report } from "../types/supabaseTypes.ts";
-import { supabase } from "../supabase/supabaseClient.ts";
+import { supabase } from "../../supabase/supabaseClient.ts";
 import { readUserByUserId } from "./userService.ts";
 import { getBookById } from "./bookService.ts";
 

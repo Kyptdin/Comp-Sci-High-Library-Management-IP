@@ -1,4 +1,4 @@
-import { Database, Tables } from "@/supabase/types";
+import { Database, Tables } from "supabase/types";
 
 /**
  * Represents user data from the "users" table.

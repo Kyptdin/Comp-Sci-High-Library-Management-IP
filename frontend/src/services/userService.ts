@@ -1,5 +1,5 @@
 import { isEmail } from "@/utils/isEmail";
-import { supabase } from "../supabase/supabaseClient";
+import { supabase } from "../../supabase/supabaseClient";
 import { Borrow, BorrowStats, UserData } from "../types/supabaseTypes";
 import { v4 as uuidv4 } from "uuid";
 import { convertToTsQuery } from "@/utils/convertToTsQuery";

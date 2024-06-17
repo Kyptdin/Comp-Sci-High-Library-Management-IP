@@ -1,4 +1,4 @@
-import { supabase } from "@/supabase/supabaseClient";
+import { supabase } from "../../supabase/supabaseClient";
 
 /**
  * Logs the user in using Google OAuth authentication.

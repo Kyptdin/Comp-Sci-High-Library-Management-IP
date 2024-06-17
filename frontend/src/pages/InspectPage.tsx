@@ -16,6 +16,8 @@ import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useBookReportDialog } from "@/hooks/book/useBookReportDialog";
 import { useBorrowBook } from "@/hooks/borrow/useBorrowBook";
 import { useGetBookById } from "@/hooks/book/useGetBookById";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { fetcher } from "@/hooks/fetcher";
 import { getIsbnLink } from "@/utils/isbnApi";
 import useSWR from "swr";

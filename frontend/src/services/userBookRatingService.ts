@@ -1,5 +1,5 @@
 import { UserBookRatings } from "@/types/supabaseTypes";
-import { supabase } from "../supabase/supabaseClient";
+import { supabase } from "../../supabase/supabaseClient";
 import { UserBookRatingsUpdate } from "../types/supabaseTypes";
 
 /*
