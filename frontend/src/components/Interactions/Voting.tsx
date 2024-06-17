@@ -16,7 +16,7 @@ export const Voting = () => {
   const { data: loggedInUserData } = useGetLoggedInUser();
   const userId = loggedInUserData?.userMetaData[0].user_id;
   const ratingId = bookRatingData ? bookRatingData[0].id : undefined;
-  const { mutate: upvoteBook } = useUpvoteBook(
+  const { mutateAsync: upvoteBook } = useUpvoteBook(
     bookInspectIsbn,
     userId,
     ratingId
