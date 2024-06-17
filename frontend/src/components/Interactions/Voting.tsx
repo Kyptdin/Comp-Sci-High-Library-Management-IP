@@ -13,10 +13,14 @@ import { useParams } from "react-router-dom";
 export const Voting = () => {
   const { bookInspectIsbn } = useParams();
   const { data: bookRatingData } = useGetBookRatingByBookId(bookInspectIsbn);
-  const { mutate: upvoteBook } = useUpvoteBook();
   const { data: loggedInUserData } = useGetLoggedInUser();
   const userId = loggedInUserData?.userMetaData[0].user_id;
   const ratingId = bookRatingData ? bookRatingData[0].id : undefined;
+  const { mutate: upvoteBook } = useUpvoteBook(
+    bookInspectIsbn,
+    userId,
+    ratingId
+  );
   const { data: userBookRatingData } = useGetUserBookRatingByUserIdAndRatingId(
     userId,
     ratingId
@@ -36,6 +40,7 @@ export const Voting = () => {
           onClick={handleUpvoteButtonClick}
         >
           {userBookRatingData &&
+          userBookRatingData.length > 0 &&
           userBookRatingData[0].is_upvote &&
           userBookRatingData[0].is_upvote !== null ? (
             <VscThumbsupFilled size={32} />
@@ -52,6 +57,7 @@ export const Voting = () => {
       <div className="full-center flex-col">
         <Button variant="link" className="text-red-500 text-lg p-2">
           {userBookRatingData &&
+          userBookRatingData.length > 0 &&
           !userBookRatingData[0].is_upvote &&
           userBookRatingData[0].is_upvote !== null ? (
             <VscThumbsdownFilled size={32} />

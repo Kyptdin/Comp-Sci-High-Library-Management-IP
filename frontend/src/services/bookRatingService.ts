@@ -82,7 +82,6 @@ export const upvoteBookRating = async (userId: string, bookId: string) => {
 
   // Create a new user rating row to keep track of the user rating
   if (!userMadeAnyRatingTowardsBook) {
-    alert("user has not made a rating");
     await createUserBookRating({
       id: uuidv4(),
       is_upvote: true,
@@ -90,7 +89,6 @@ export const upvoteBookRating = async (userId: string, bookId: string) => {
       user_id: userId,
     });
   } else {
-    alert("rating has been made");
     await updateUserBookRatingsById(userRatingTowardsBook[0].id, {
       is_upvote: true,
     });
