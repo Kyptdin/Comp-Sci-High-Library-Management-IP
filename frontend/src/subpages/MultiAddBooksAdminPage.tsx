@@ -2,17 +2,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 
 import { useValidateCSV } from "@/hooks/csv/useValidateCSV";
-import { BookAddTablePill } from "@/components/MultiAdd/BookAddTablePill";
-import { MultiAddTableHead } from "@/components/MultiAdd/MultiAddTableHead";
 import { BookAddPill } from "@/components/MultiAdd/BookAddPill";
 
 export const MultiAddBooksAdminPage = () => {
