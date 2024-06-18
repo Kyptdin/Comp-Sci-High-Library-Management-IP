@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/table";
 
 import { useValidateCSV } from "@/hooks/csv/useValidateCSV";
-import { BookAddTablePill } from "@/components/multiAdd/BookAddTablePill";
-import { MultiAddTableHead } from "@/components/multiAdd/MultiAddTableHead";
+import { BookAddTablePill } from "@/components/MultiAdd/BookAddTablePill";
+import { MultiAddTableHead } from "@/components/MultiAdd/MultiAddTableHead";
+import { BookAddPill } from "@/components/MultiAdd/BookAddPill";
 
 export const MultiAddBooksAdminPage = () => {
   const {
@@ -23,8 +24,6 @@ export const MultiAddBooksAdminPage = () => {
     csvUploadAllRows,
     csvFormatIsValid,
   } = useValidateCSV();
-
-  console.log(csvUploadAllRows);
 
   // const { booksValidated } = useCsvToBook(csvBookData);
   // const { toast } = useToast();
@@ -78,10 +77,11 @@ export const MultiAddBooksAdminPage = () => {
         </Button>
       </div>
 
-      <h1 className="mb-5">{csvFile ? csvFile["name"] : "Upload a file"}</h1>
+      <h1 className="mb-5 text-xl  text-yellow-300">
+        {csvFile ? csvFile["name"] : "Upload a file"}
+      </h1>
 
-      <Separator className="w-1/2 bg-gray-700" />
-      <Table>
+      {/* <Table>
         <TableHeader>
           <TableRow className="grid grid-cols-6">
             <MultiAddTableHead
@@ -112,9 +112,9 @@ export const MultiAddBooksAdminPage = () => {
             />
           </TableRow>
         </TableHeader>
-      </Table>
+      </Table> */}
 
-      <ScrollArea className="bg-transparent h-[55vh] w-full">
+      {/* <ScrollArea className="bg-transparent h-[55vh] w-full">
         <Table>
           <TableBody>
             {csvFormatIsValid &&
@@ -123,11 +123,18 @@ export const MultiAddBooksAdminPage = () => {
               })}
           </TableBody>
         </Table>
+      </ScrollArea> */}
+
+      <ScrollArea className="bg-transparent h-[60vh] w-full">
+        <div className="grid grid-cols-4 gap-5">
+          {csvFormatIsValid &&
+            csvUploadAllRows.map((csvRow, index) => {
+              return <BookAddPill csvRow={csvRow} key={index} />;
+            })}
+        </div>
       </ScrollArea>
 
-      <Table>
-        <TableCaption>A list of uploaded books.</TableCaption>
-      </Table>
+      <h1 className="opacity-25 mt-5">A list of uploaded books</h1>
     </div>
   );
 };
