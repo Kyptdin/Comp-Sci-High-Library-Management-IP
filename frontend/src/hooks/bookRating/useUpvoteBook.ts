@@ -1,9 +1,6 @@
 import { useToast } from "@/components/ui/use-toast";
 import { upvoteBookRating } from "@/services/bookRatingService";
-import { BookRatings, UserBookRatings } from "@/types/supabaseTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { QueryUserGetUserBookRatingsByUserIdAndRatingIdData } from "../userBookRating/useGetUserBookRatingByUserIdAndRatingId";
-// import { QueryGetBookRatingByBookId } from "./useGetBookRatingByBookId";
 
 interface MutationProps {
   userId: string;

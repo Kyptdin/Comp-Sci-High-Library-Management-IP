@@ -136,19 +136,19 @@ export type Database = {
       user_book_ratings: {
         Row: {
           id: string
-          is_upvote: boolean
+          is_upvote: boolean | null
           rating_id: string
           user_id: string
         }
         Insert: {
           id?: string
-          is_upvote: boolean
+          is_upvote?: boolean | null
           rating_id: string
           user_id: string
         }
         Update: {
           id?: string
-          is_upvote?: boolean
+          is_upvote?: boolean | null
           rating_id?: string
           user_id?: string
         }
