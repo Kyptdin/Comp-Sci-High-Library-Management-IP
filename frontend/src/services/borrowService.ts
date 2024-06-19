@@ -210,7 +210,6 @@ export const editBorrowByUserIdAndIsbn = async (
   isbn: string,
   newBorrowData: BorrowsUpdate
 ) => {
-  // TODO: Fix the error in the function. Unable to edit the borrows due to some duplicate key error
   const { data, error } = await supabase
     .from("borrows")
     .update(newBorrowData)

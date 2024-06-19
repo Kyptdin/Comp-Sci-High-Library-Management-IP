@@ -9,20 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Error } from "@/components/Error";
 import { cn } from "@/lib/utils";
 
-import { v4 as uuidv4 } from "uuid";
 import { useParams } from "react-router-dom";
-import { useReturnBook } from "@/hooks/borrow/useReturnBook";
-import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useBookReportDialog } from "@/hooks/book/useBookReportDialog";
-import { useBorrowBook } from "@/hooks/borrow/useBorrowBook";
 import { useGetBookById } from "@/hooks/book/useGetBookById";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { fetcher } from "@/hooks/fetcher";
 import { getIsbnLink } from "@/utils/isbnApi";
 import useSWR from "swr";
-import { useGetBorrowsNotReturnedByIsbnAndUserId } from "@/hooks/borrow/useGetBorrowsNotReturnedByUserIdAndIsbn";
-
 import { VolumeList } from "@/types/googleBooksAPI";
 
 function validateBookData(data: VolumeList): boolean {
@@ -30,7 +24,6 @@ function validateBookData(data: VolumeList): boolean {
 }
 
 export const InspectPage: React.FC = () => {
-  const { data: loggedInUserData } = useGetLoggedInUser();
   const { bookInspectIsbn } = useParams();
   const isbnSearch = bookInspectIsbn?.split("-").join("");
 
@@ -49,26 +42,18 @@ export const InspectPage: React.FC = () => {
   const googleBooksDataAPI: VolumeList = googleBooksData;
   const isbnExistInTheWorld: boolean = !!error;
 
-  const userId = loggedInUserData?.userMetaData[0]?.user_id;
   const bookId = bookDataFoundByIsbn ? bookDataFoundByIsbn[0]?.id : null;
 
   const { DialogComponent, openDialog, isReportingBook } =
     useBookReportDialog(bookId);
-  const { mutateAsync: returnBook, isPending: isReturningBook } = useReturnBook(
-    isbnSearch,
-    userId
-  );
-  const { mutateAsync: borrowBook, isPending: isBorrowingBook } = useBorrowBook(
-    isbnSearch,
-    userId
-  );
 
-  const { data: borrowsOfBookCurrentlyDisplayed } =
-    useGetBorrowsNotReturnedByIsbnAndUserId(isbnSearch, userId);
+  // const { data: borrowsOfBookCurrentlyDisplayed } =
+  //   useGetBorrowsNotReturnedByIsbnAndUserId(isbnSearch, userId);
 
-  const userHasBookCurrentlyDisplayed =
-    borrowsOfBookCurrentlyDisplayed &&
-    borrowsOfBookCurrentlyDisplayed.length > 0;
+  // May need this variable to stop the user from requesting a book they already have
+  // const userHasBookCurrentlyDisplayed =
+  //   borrowsOfBookCurrentlyDisplayed &&
+  //   borrowsOfBookCurrentlyDisplayed.length > 0;
 
   const pageIsCurrentlyLoading =
     isCurrentlyGettingIsbnInSupabase || isCurrentlyFetchingGoogleBooksAPI;
@@ -115,62 +100,27 @@ export const InspectPage: React.FC = () => {
               {description || "No description"}
             </ScrollArea>
             <div className="flex items-center justify-left">
-              {!userHasBookCurrentlyDisplayed && (
-                <Button
-                  variant="secondary"
-                  className="text-lg w-1/4 mr-3 py-6"
-                  disabled={isBorrowingBook}
-                  onClick={() => {
-                    if (!isbnSearch || !userId) return;
-                    const currentDate = new Date();
-                    const formattedCurrentDate = currentDate
-                      .toISOString()
-                      .split("T")[0];
-                    const futureDate = new Date(
-                      currentDate.setDate(currentDate.getDate() + 7)
-                    );
-                    const formattedFutureDate = futureDate
-                      .toISOString()
-                      .split("T")[0];
-                    borrowBook({
-                      borrow_id: uuidv4(),
-                      damaged: false,
-                      returned: false,
-                      isbn: isbnSearch,
-                      user: userId,
-                      return_due_date: formattedFutureDate,
-                      date_borrowed: formattedCurrentDate,
-                    });
-                  }}
-                >
-                  Borrow
-                </Button>
-              )}
-              {userHasBookCurrentlyDisplayed && (
-                <Button
-                  variant="secondary"
-                  className="text-lg w-1/4 mr-3 py-6"
-                  disabled={isReturningBook}
-                  onClick={() => {
-                    returnBook({ userId, isbn: isbnSearch });
-                  }}
-                >
-                  Return
-                </Button>
-              )}
+              <Button
+                variant="secondary"
+                className={cn("text-lg w-1/4 mr-3 py-6", "hover:bg-white")}
+              >
+                Request
+              </Button>
               <Button
                 className={cn(
                   "text-white text-lg",
                   "py-6 mr-3 w-1/4",
-                  "bg-red-900 hover:text-black"
+                  "bg-red-900",
+                  "hover:bg-red-800"
                 )}
                 variant="secondary"
                 disabled={isReportingBook}
                 onClick={openDialog}
               >
-                Report Missing
+                Report
               </Button>
             </div>
+
             <div className="flex justify-start items-center gap-5">
               <Voting />
               <Separator

@@ -27,7 +27,6 @@ export const Voting = () => {
   const { data: userRatingOnBook, isLoading: isGettingUserBookRating } =
     useGetUserLatestRatingOnBook(bookInspectIsbn, userId);
 
-  // TODO: Make sure to get the query that gets the user's rating on the book into consideration
   const displayUpvoteAndDownvoteButtons =
     !upvoteAndDownVoteDataLoading &&
     !isGettingUserBookRating &&
