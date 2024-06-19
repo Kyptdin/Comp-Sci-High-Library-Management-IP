@@ -11,6 +11,7 @@ export type Database = {
     Tables: {
       book_requests: {
         Row: {
+          approved: boolean | null
           book_id: string
           created_at: string
           explanation: string
@@ -19,6 +20,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          approved?: boolean | null
           book_id: string
           created_at: string
           explanation: string
@@ -27,6 +29,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          approved?: boolean | null
           book_id?: string
           created_at?: string
           explanation?: string

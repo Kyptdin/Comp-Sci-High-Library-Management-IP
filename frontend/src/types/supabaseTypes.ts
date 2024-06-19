@@ -44,3 +44,8 @@ export type UserBookRatings = Tables<"user_book_ratings">;
 
 export type UserBookRatingsUpdate =
   Database["public"]["Tables"]["user_book_ratings"]["Update"];
+
+export type BookRequests = Tables<"book_requests">;
+
+export type BookRequestsUpdate =
+  Database["public"]["Tables"]["book_requests"]["Update"];
