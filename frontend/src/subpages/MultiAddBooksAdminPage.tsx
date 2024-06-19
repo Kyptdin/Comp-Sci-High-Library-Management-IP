@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { useValidateCSV } from "@/hooks/csv/useValidateCSV";
-import { BookAddPill } from "@/components/MultiAdd/BookAddPill";
+import { BookAddPill } from "@/components/multiAdd/BookAddPill";
 
 export const MultiAddBooksAdminPage = () => {
   const {

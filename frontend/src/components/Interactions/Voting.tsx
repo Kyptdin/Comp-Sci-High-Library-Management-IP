@@ -2,10 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
 import { useDownvoteBook } from "@/hooks/userBookRating/useDownvoteBook";
 import { useGetBookUpvoteAndDownvoteById } from "@/hooks/userBookRating/useGetBookUpvoteAndDownvoteById";
-import {
-  useGetUserLatestRatingOnBook,
-  useGetUserLatestRatingOnBooks,
-} from "@/hooks/userBookRating/useGetUserLatestRatingOnBook";
+import { useGetUserLatestRatingOnBook } from "@/hooks/userBookRating/useGetUserLatestRatingOnBook";
 import { useUpvoteBook } from "@/hooks/userBookRating/useUpvoteBook";
 
 import { VscThumbsup } from "react-icons/vsc";
