@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { useGetBookRatingByBookId } from "@/hooks/bookRating/useGetBookRatingByBookId";
-import { useUpvoteBook } from "@/hooks/bookRating/useUpvoteBook";
 import { useGetLoggedInUser } from "@/hooks/user/useGetLoggedInUser";
-import { useGetUserBookRatingByUserIdAndRatingId } from "@/hooks/userBookRating/useGetUserBookRatingByUserIdAndRatingId";
+import { useDownvoteBook } from "@/hooks/userBookRating/useDownvoteBook";
+import { useGetBookUpvoteAndDownvoteById } from "@/hooks/userBookRating/useGetBookUpvoteAndDownvoteById";
+import {
+  useGetUserLatestRatingOnBook,
+  useGetUserLatestRatingOnBooks,
+} from "@/hooks/userBookRating/useGetUserLatestRatingOnBook";
+import { useUpvoteBook } from "@/hooks/userBookRating/useUpvoteBook";
 
 import { VscThumbsup } from "react-icons/vsc";
 import { VscThumbsdown } from "react-icons/vsc";
@@ -12,23 +16,44 @@ import { useParams } from "react-router-dom";
 
 export const Voting = () => {
   const { bookInspectIsbn } = useParams();
-  const { data: bookRatingData } = useGetBookRatingByBookId(bookInspectIsbn);
   const { data: loggedInUserData } = useGetLoggedInUser();
   const userId = loggedInUserData?.userMetaData[0].user_id;
-  const ratingId = bookRatingData ? bookRatingData[0].id : undefined;
-  const { mutateAsync: upvoteBook } = useUpvoteBook(
+
+  const { mutateAsync: upvoteBook } = useUpvoteBook(bookInspectIsbn, userId);
+  const { mutateAsync: downvoteBook } = useDownvoteBook(
     bookInspectIsbn,
-    userId,
-    ratingId
-  );
-  const { data: userBookRatingData } = useGetUserBookRatingByUserIdAndRatingId(
-    userId,
-    ratingId
+    userId
   );
 
-  const handleUpvoteButtonClick = () => {
+  const { data: downAndUpvoteData, isLoading: upvoteAndDownVoteDataLoading } =
+    useGetBookUpvoteAndDownvoteById(bookInspectIsbn);
+  const { data: userRatingOnBook, isLoading: isGettingUserBookRating } =
+    useGetUserLatestRatingOnBook(bookInspectIsbn, userId);
+
+  // TODO: Make sure to get the query that gets the user's rating on the book into consideration
+  const displayUpvoteAndDownvoteButtons =
+    !upvoteAndDownVoteDataLoading &&
+    !isGettingUserBookRating &&
+    downAndUpvoteData &&
+    userRatingOnBook;
+  const currentUpvotes = displayUpvoteAndDownvoteButtons
+    ? downAndUpvoteData.upvoteData.totalUpvotes
+    : null;
+  const currentDownvotes = displayUpvoteAndDownvoteButtons
+    ? downAndUpvoteData.downVoteData.totalDownvotes
+    : null;
+  const userUpvotedBook =
+    displayUpvoteAndDownvoteButtons && userRatingOnBook.length > 0
+      ? userRatingOnBook[0].is_upvote
+      : undefined;
+
+  const handleUpvoteOrDownvote = (isUpvote: boolean) => {
     if (!userId || !bookInspectIsbn) return;
-    upvoteBook({ userId, bookId: bookInspectIsbn });
+    if (isUpvote) {
+      upvoteBook({ userId, bookId: bookInspectIsbn });
+      return;
+    }
+    downvoteBook({ userId, bookId: bookInspectIsbn });
   };
 
   return (
@@ -37,38 +62,32 @@ export const Voting = () => {
         <Button
           variant="link"
           className="text-green-500 text-lg p-2"
-          onClick={handleUpvoteButtonClick}
+          onClick={() => handleUpvoteOrDownvote(true)}
         >
-          {userBookRatingData &&
-          userBookRatingData.length > 0 &&
-          userBookRatingData[0].is_upvote &&
-          userBookRatingData[0].is_upvote !== null ? (
+          {userUpvotedBook ? (
             <VscThumbsupFilled size={32} />
           ) : (
             <VscThumbsup size={32} />
           )}
         </Button>
 
-        {bookRatingData && userBookRatingData && bookRatingData.length > 0 && (
-          <span>{bookRatingData[0].upvotes}</span>
-        )}
+        <span>{currentUpvotes}</span>
       </div>
 
       <div className="full-center flex-col">
-        <Button variant="link" className="text-red-500 text-lg p-2">
-          {userBookRatingData &&
-          userBookRatingData.length > 0 &&
-          !userBookRatingData[0].is_upvote &&
-          userBookRatingData[0].is_upvote !== null ? (
+        <Button
+          variant="link"
+          className="text-red-500 text-lg p-2"
+          onClick={() => handleUpvoteOrDownvote(false)}
+        >
+          {userUpvotedBook === false ? (
             <VscThumbsdownFilled size={32} />
           ) : (
             <VscThumbsdown size={32} />
           )}
         </Button>
 
-        {bookRatingData && bookRatingData.length > 0 && (
-          <span>{bookRatingData[0].downvotes}</span>
-        )}
+        <span>{currentDownvotes}</span>
       </div>
     </div>
   );

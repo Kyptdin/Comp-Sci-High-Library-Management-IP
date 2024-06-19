@@ -1,5 +1,5 @@
 import { useToast } from "@/components/ui/use-toast";
-import { upvoteBookRating } from "@/services/bookRatingService";
+import { upvoteBookRating } from "@/services/userBookRatingService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface MutationProps {
@@ -9,20 +9,14 @@ interface MutationProps {
 
 export const useUpvoteBook = (
   bookId: string | undefined,
-  userId: string | undefined,
-  ratingId: string | undefined
+  userId: string | undefined
 ) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const queryKeyUserBookRatings = [
-    "getUserbookRatingByUserIdAndRatingId",
-    userId,
-    ratingId,
-  ];
-  const queryKeyBookRating = ["getBookRatingByBookId", bookId];
 
   const mutation = useMutation({
     mutationFn: async ({ userId, bookId }: MutationProps) => {
+      if (!bookId) return null;
       return await upvoteBookRating(userId, bookId);
     },
 
@@ -36,10 +30,10 @@ export const useUpvoteBook = (
 
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeyBookRating,
+        queryKey: ["getBookUpvoteAndDownvoteById", bookId],
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeyUserBookRatings,
+        queryKey: ["getUserLatestRatingByBookIdAndUserId", bookId, userId],
       });
     },
   });

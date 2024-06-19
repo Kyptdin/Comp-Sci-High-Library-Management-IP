@@ -9,32 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      book_ratings: {
-        Row: {
-          downvotes: number
-          id: string
-          upvotes: number
-        }
-        Insert: {
-          downvotes?: number
-          id: string
-          upvotes?: number
-        }
-        Update: {
-          downvotes?: number
-          id?: string
-          upvotes?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "book_ratings_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "books"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       books: {
         Row: {
           id: string
@@ -135,24 +109,34 @@ export type Database = {
       }
       user_book_ratings: {
         Row: {
+          book_id: string
+          created_at: string | null
           id: string
           is_upvote: boolean | null
-          rating_id: string
           user_id: string
         }
         Insert: {
+          book_id: string
+          created_at?: string | null
           id?: string
           is_upvote?: boolean | null
-          rating_id: string
           user_id: string
         }
         Update: {
+          book_id?: string
+          created_at?: string | null
           id?: string
           is_upvote?: boolean | null
-          rating_id?: string
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "user_book_ratings_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "user_ratings_user_id_fkey"
             columns: ["user_id"]
