@@ -16,11 +16,12 @@ export const Voting = () => {
   const { data: loggedInUserData } = useGetLoggedInUser();
   const userId = loggedInUserData?.userMetaData[0].user_id;
 
-  const { mutateAsync: upvoteBook } = useUpvoteBook(bookInspectIsbn, userId);
-  const { mutateAsync: downvoteBook } = useDownvoteBook(
+  const { mutateAsync: upvoteBook, isPending: isUpvotingBook } = useUpvoteBook(
     bookInspectIsbn,
     userId
   );
+  const { mutateAsync: downvoteBook, isPending: isDownvotingBook } =
+    useDownvoteBook(bookInspectIsbn, userId);
 
   const { data: downAndUpvoteData, isLoading: upvoteAndDownVoteDataLoading } =
     useGetBookUpvoteAndDownvoteById(bookInspectIsbn);
@@ -43,6 +44,8 @@ export const Voting = () => {
       ? userRatingOnBook[0].is_upvote
       : undefined;
 
+  const notAllowedToUpOrDownVote = isUpvotingBook || isDownvotingBook;
+
   const handleUpvoteOrDownvote = (isUpvote: boolean) => {
     if (!userId || !bookInspectIsbn) return;
     if (isUpvote) {
@@ -56,9 +59,9 @@ export const Voting = () => {
     <div className="font-outfit full-center justify-start p-2 my-3">
       <div className="full-center flex-col">
         <Button
-          variant="link"
-          className="text-green-500 text-lg p-2"
+          className={`text-green-500 text-lg p-2 `}
           onClick={() => handleUpvoteOrDownvote(true)}
+          disabled={notAllowedToUpOrDownVote}
         >
           {userUpvotedBook ? (
             <VscThumbsupFilled size={32} />
@@ -72,9 +75,9 @@ export const Voting = () => {
 
       <div className="full-center flex-col">
         <Button
-          variant="link"
           className="text-red-500 text-lg p-2"
           onClick={() => handleUpvoteOrDownvote(false)}
+          disabled={notAllowedToUpOrDownVote}
         >
           {userUpvotedBook === false ? (
             <VscThumbsdownFilled size={32} />

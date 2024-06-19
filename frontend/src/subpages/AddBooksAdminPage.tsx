@@ -19,7 +19,7 @@ import { useBookValidator } from "@/hooks/book/useBookValidator";
  * Component for the admin page to add books.
  */
 export const AddBooksAdminPage = () => {
-  const { mutateAsync: createBook } = useCreateBook();
+  const { mutateAsync: createBook } = useCreateBook(true);
 
   const [bookIsbn, setBookIsbn] = useState<string>("");
   const [totalCopies, setTotalCopies] = useState<number>(0);
