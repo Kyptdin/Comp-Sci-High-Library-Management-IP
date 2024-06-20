@@ -13,7 +13,7 @@ export type Database = {
         Row: {
           approved: boolean | null
           book_id: string
-          created_at: string
+          created_at: string | null
           explanation: string
           id: string
           reason: string
@@ -22,7 +22,7 @@ export type Database = {
         Insert: {
           approved?: boolean | null
           book_id: string
-          created_at: string
+          created_at?: string | null
           explanation: string
           id?: string
           reason: string
@@ -31,7 +31,7 @@ export type Database = {
         Update: {
           approved?: boolean | null
           book_id?: string
-          created_at?: string
+          created_at?: string | null
           explanation?: string
           id?: string
           reason?: string

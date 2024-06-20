@@ -132,39 +132,39 @@ export const useBookReportDialog = (bookId: string | null | undefined) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Report Book</DialogTitle>
-          <DialogDescription className="pb-2">
-            {/* Provide book title here */}
-          </DialogDescription>
-
-          <Select
-            onValueChange={(newReason) => {
-              setReason(newReason);
-            }}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Pick a reason" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="I lost the book">I lost the book</SelectItem>
-              <SelectItem value="The book is damaged">
-                The book is damaged
-              </SelectItem>
-              <SelectItem value="The book is missing">
-                The book is missing
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          {state.isError && (
-            <p className="text-sm text-red-500 font-semibold">
-              Please include a reason
-            </p>
-          )}
-
-          <Textarea
-            placeholder="Explain here."
-            onChange={(e) => setExplanation(e.target.value)}
-          />
         </DialogHeader>
+        <DialogDescription className="pb-2">
+          {/* Provide book title here */}
+        </DialogDescription>
+
+        {state.isError && (
+          <p className="text-sm text-red-500 font-semibold">
+            Please include a reason
+          </p>
+        )}
+        <Select
+          onValueChange={(newReason) => {
+            setReason(newReason);
+          }}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Pick a reason" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="I lost the book">I lost the book</SelectItem>
+            <SelectItem value="The book is damaged">
+              The book is damaged
+            </SelectItem>
+            <SelectItem value="The book is missing">
+              The book is missing
+            </SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Textarea
+          placeholder="Explain here."
+          onChange={(e) => setExplanation(e.target.value)}
+        />
         <DialogFooter>
           <Button
             onClick={() => {

@@ -18,6 +18,7 @@ import { fetcher } from "@/hooks/fetcher";
 import { getIsbnLink } from "@/utils/isbnApi";
 import useSWR from "swr";
 import { VolumeList } from "@/types/googleBooksAPI";
+import { useBookRequestDialog } from "@/hooks/bookRequest/useBookRequestDialog";
 
 function validateBookData(data: VolumeList): boolean {
   return data != undefined && data.items && data.items.length > 0;
@@ -42,18 +43,14 @@ export const InspectPage: React.FC = () => {
   const googleBooksDataAPI: VolumeList = googleBooksData;
   const isbnExistInTheWorld: boolean = !!error;
 
-  const bookId = bookDataFoundByIsbn ? bookDataFoundByIsbn[0]?.id : null;
+  const bookId = bookDataFoundByIsbn ? bookDataFoundByIsbn[0]?.id : undefined;
 
   const { DialogComponent, openDialog, isReportingBook } =
     useBookReportDialog(bookId);
-
-  // const { data: borrowsOfBookCurrentlyDisplayed } =
-  //   useGetBorrowsNotReturnedByIsbnAndUserId(isbnSearch, userId);
-
-  // May need this variable to stop the user from requesting a book they already have
-  // const userHasBookCurrentlyDisplayed =
-  //   borrowsOfBookCurrentlyDisplayed &&
-  //   borrowsOfBookCurrentlyDisplayed.length > 0;
+  const {
+    DialogComponent: BookRequestDialogComponent,
+    handleOpenDialog: openBookRequestDialog,
+  } = useBookRequestDialog(bookId);
 
   const pageIsCurrentlyLoading =
     isCurrentlyGettingIsbnInSupabase || isCurrentlyFetchingGoogleBooksAPI;
@@ -103,6 +100,7 @@ export const InspectPage: React.FC = () => {
               <Button
                 variant="secondary"
                 className={cn("text-lg w-1/4 mr-3 py-6", "hover:bg-white")}
+                onClick={openBookRequestDialog}
               >
                 Request
               </Button>
@@ -137,7 +135,9 @@ export const InspectPage: React.FC = () => {
           </div>
         </div>
       )}
-      {!doNotDisplayBook && DialogComponent}
+
+      {DialogComponent}
+      {BookRequestDialogComponent}
     </div>
   );
 };

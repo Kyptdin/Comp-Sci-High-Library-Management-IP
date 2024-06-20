@@ -1,8 +1,11 @@
 import { BookRequests, BookRequestsUpdate } from "@/types/supabaseTypes";
-import { supabase } from "supabase/supabaseClient";
+import { supabase } from "../../supabase/supabaseClient";
+import { v4 as uuidv4 } from "uuid";
 
 /****** POST ROUTES ******/
-export const createBookRequest = async (bookRequestData: BookRequests) => {
+export const createBookRequest = async (
+  bookRequestData: Omit<BookRequests, "created_at">
+) => {
   const { data, error } = await supabase
     .from("book_requests")
     .insert(bookRequestData)
@@ -14,6 +17,37 @@ export const createBookRequest = async (bookRequestData: BookRequests) => {
 
   return data;
 };
+
+export const requestBook = async (
+  userId: string,
+  bookId: string,
+  reason: string,
+  explanation: string
+) => {
+  // Checks if the user has already made a request to have the book
+  const requestUserMadeTowardsBook = await getBookRequestByUserIdAndBookId(
+    userId,
+    bookId
+  );
+
+  if (requestUserMadeTowardsBook.length > 0) {
+    throw new Error(
+      `You have already made a request to obtain the book. Please wait for your teacher to approve your request.`
+    );
+  }
+
+  const bookRequestCreationData = await createBookRequest({
+    id: uuidv4(),
+    approved: null,
+    book_id: bookId,
+    reason,
+    explanation,
+    user_id: userId,
+  });
+
+  return bookRequestCreationData;
+};
+
 /****** GET ROUTES ******/
 export const getBookRequestById = async (id: string) => {
   const { data: bookRequests, error } = await supabase
