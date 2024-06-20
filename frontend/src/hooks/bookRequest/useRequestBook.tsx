@@ -8,6 +8,7 @@ interface MutationProps {
   reason: string;
   explanation: string;
 }
+// TODO: Edit this to use deno because we need emailing with resend api
 export const useRequestBook = () => {
   const { toast } = useToast();
 
@@ -29,6 +30,12 @@ export const useRequestBook = () => {
         title: "Failed to Request Book",
         description: errorMessage,
         variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Successfully Created Book Request",
+        description: "Please check your email for confirmation.",
       });
     },
   });

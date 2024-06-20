@@ -25,14 +25,17 @@ export const requestBook = async (
   explanation: string
 ) => {
   // Checks if the user has already made a request to have the book
-  const requestUserMadeTowardsBook = await getBookRequestByUserIdAndBookId(
+  const requestUserMadeTowardsBook = await getLatestRequestUserMadeForBook(
     userId,
     bookId
   );
 
-  if (requestUserMadeTowardsBook.length > 0) {
+  if (
+    requestUserMadeTowardsBook.length > 0 &&
+    requestUserMadeTowardsBook[0].approved === null
+  ) {
     throw new Error(
-      `You have already made a request to obtain the book. Please wait for your teacher to approve your request.`
+      `You already have a request pending for the book. Please wait until your teacher approves your request.`
     );
   }
 
@@ -62,7 +65,7 @@ export const getBookRequestById = async (id: string) => {
   return bookRequests;
 };
 
-export const getBookRequestByUserIdAndBookId = async (
+export const getLatestRequestUserMadeForBook = async (
   userId: string,
   bookId: string
 ) => {
@@ -70,7 +73,9 @@ export const getBookRequestByUserIdAndBookId = async (
     .from("book_requests")
     .select("*")
     .eq("user_id", userId)
-    .eq("book_id", bookId);
+    .eq("book_id", bookId)
+    .order("created_at", { ascending: false })
+    .limit(1); // limit to the latest row
 
   if (error) {
     throw new Error(error.message);
