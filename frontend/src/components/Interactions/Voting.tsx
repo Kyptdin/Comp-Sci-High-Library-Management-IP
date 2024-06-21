@@ -62,6 +62,7 @@ export const Voting = () => {
           className={`text-green-500 text-lg p-2 `}
           onClick={() => handleUpvoteOrDownvote(true)}
           disabled={notAllowedToUpOrDownVote}
+          variant="link"
         >
           {userUpvotedBook ? (
             <VscThumbsupFilled size={32} />
@@ -78,6 +79,7 @@ export const Voting = () => {
           className="text-red-500 text-lg p-2"
           onClick={() => handleUpvoteOrDownvote(false)}
           disabled={notAllowedToUpOrDownVote}
+          variant="link"
         >
           {userUpvotedBook === false ? (
             <VscThumbsdownFilled size={32} />
