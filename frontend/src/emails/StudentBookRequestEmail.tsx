@@ -38,9 +38,8 @@ export const StudentBookRequestEmail = () => (
               Dear {"{STUDENT'S NAME}"},
             </Text>
             <Text className="text-base leading-7">
-              We are notifying you to confirm that you have made a request
-              regarding the book "
-              <span className="font-bold">{"{BOOK NAME}"}."</span>
+              We are informing you that you have made a request regarding the
+              book <span className="font-bold">"{"{BOOK NAME}"}."</span>
             </Text>
             {/* The type of request */}
             <Text className="text-base leading-7">

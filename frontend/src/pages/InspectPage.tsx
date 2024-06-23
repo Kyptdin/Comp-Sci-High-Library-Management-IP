@@ -45,8 +45,7 @@ export const InspectPage: React.FC = () => {
 
   const bookId = bookDataFoundByIsbn ? bookDataFoundByIsbn[0]?.id : undefined;
 
-  const { DialogComponent, openDialog, isReportingBook } =
-    useBookReportDialog(bookId);
+  const { DialogComponent } = useBookReportDialog(bookId);
   const {
     DialogComponent: BookRequestDialogComponent,
     handleOpenDialog: openBookRequestDialog,
@@ -104,7 +103,7 @@ export const InspectPage: React.FC = () => {
               >
                 Request
               </Button>
-              <Button
+              {/* <Button
                 className={cn(
                   "text-white text-lg",
                   "py-6 mr-3 w-1/4",
@@ -116,7 +115,7 @@ export const InspectPage: React.FC = () => {
                 onClick={openDialog}
               >
                 Report
-              </Button>
+              </Button> */}
             </div>
 
             <div className="flex justify-start items-center gap-5">

@@ -27,17 +27,24 @@ export const useBookRequestDialog = (bookId: string | undefined) => {
   const { mutateAsync: requestBook } = useRequestBook();
   const { data: userLoggedInUserData } = useGetLoggedInUser();
 
-  const [reason, setReason] = useState<string>("");
-  const [explanation, setExplanation] = useState<string>("");
-  const [errors, setErrors] = useState<InputError[]>([]);
   const reasons = [
     "I want to read the book during study hall",
     "One of my classes requires the book",
-    "I want to read the book in my personal time",
+    "I want to read the book during my personal time",
     "Other reason",
   ];
+  const [reason, setReason] = useState<string>("");
+
+  const requestVariants = ["Borrow", "Return"];
+  const [requestType, setRequestType] = useState<string>("");
+
+  const [explanation, setExplanation] = useState<string>("");
+  const [errors, setErrors] = useState<InputError[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
+  const requestTypeErrorMessage = errors.find(
+    (error) => error.inputName === "requestType"
+  )?.message;
   const reasonErrorMessage = errors.find(
     (error) => error.inputName === "reason"
   )?.message;
@@ -45,6 +52,19 @@ export const useBookRequestDialog = (bookId: string | undefined) => {
     (error) => error.inputName === "explanation"
   )?.message;
 
+  const validateRequestType = () => {
+    if (requestType.length === 0 || !requestType) {
+      setErrors((errors) => [
+        ...errors,
+        {
+          inputName: "requestType",
+          message: "Please provide a type of request",
+        },
+      ]);
+      return false;
+    }
+    return true;
+  };
   const validateReason = () => {
     if (reason.length === 0 || !reason) {
       setErrors((errors) => [
@@ -67,10 +87,11 @@ export const useBookRequestDialog = (bookId: string | undefined) => {
   };
 
   const handleSubmit = async () => {
+    const isRequestTypeValid = validateRequestType();
     const isReasonValid = validateReason();
     const isExplanationValid = validateExplanation();
 
-    if (!isReasonValid || !isExplanationValid) {
+    if (!isReasonValid || !isExplanationValid || isRequestTypeValid) {
       return;
     }
     const userId = userLoggedInUserData?.userMetaData[0].user_id;
@@ -83,6 +104,7 @@ export const useBookRequestDialog = (bookId: string | undefined) => {
 
   const handleOpenDialog = () => {
     setReason("");
+    setRequestType("");
     setExplanation("");
     setErrors([]);
     setIsDialogOpen(true);
@@ -104,12 +126,43 @@ export const useBookRequestDialog = (bookId: string | undefined) => {
           <DialogTitle>Request a Book</DialogTitle>
         </DialogHeader>
 
+        {/* SELECT PART FOR THE TYPE OF REQUEST */}
+        {requestTypeErrorMessage ? (
+          <p className="text-sm text-red-500 font-semibold">
+            {requestTypeErrorMessage}
+          </p>
+        ) : null}
+        <Select
+          value={requestType}
+          onValueChange={(newValue) => {
+            if (newValue.length > 0) {
+              setErrors(
+                errors.filter((error) => error.inputName !== "requestType")
+              );
+            }
+            setReason(newValue);
+          }}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Pick a type of request" />
+          </SelectTrigger>
+          <SelectContent>
+            {requestVariants.map((requestVariant) => {
+              return (
+                <SelectItem value={requestVariant}>{requestVariant}</SelectItem>
+              );
+            })}
+          </SelectContent>
+        </Select>
+
+        {/* SELECT PART FOR THE REASON */}
         {reasonErrorMessage ? (
           <p className="text-sm text-red-500 font-semibold">
             {reasonErrorMessage}
           </p>
         ) : null}
         <Select
+          value={reason}
           onValueChange={(newValue) => {
             if (newValue.length > 0) {
               setErrors(errors.filter((error) => error.inputName !== "reason"));

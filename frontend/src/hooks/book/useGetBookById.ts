@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 /**
  * Custom hook to fetch a book by its ID.
  * @param {string | undefined} id - The ID of the book to fetch.
- * @returns {Object} Object containing the book query.
  */
 export const useGetBookById = (id: string | undefined) => {
   const query = useQuery({
