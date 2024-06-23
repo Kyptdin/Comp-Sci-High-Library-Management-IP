@@ -2,24 +2,20 @@ import { useToast } from "@/components/ui/use-toast";
 import { requestBook } from "@/services/bookRequestService";
 import { useMutation } from "@tanstack/react-query";
 
-interface MutationProps {
+export interface RequestBookMutationProps {
   userId: string;
   bookId: string;
   reason: string;
   explanation: string;
+  requestType: string;
 }
-// TODO: Edit this to use deno because we need emailing with resend api
+
 export const useRequestBook = () => {
   const { toast } = useToast();
 
   const mutation = useMutation({
-    mutationFn: async ({
-      userId,
-      bookId,
-      reason,
-      explanation,
-    }: MutationProps) => {
-      return await requestBook(userId, bookId, reason, explanation);
+    mutationFn: async (bookRequestData: RequestBookMutationProps) => {
+      return await requestBook(bookRequestData);
     },
     onError: (error) => {
       const errorMessage = error.message.includes("already")

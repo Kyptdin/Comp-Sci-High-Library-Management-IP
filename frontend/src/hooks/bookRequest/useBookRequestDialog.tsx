@@ -91,13 +91,13 @@ export const useBookRequestDialog = (bookId: string | undefined) => {
     const isReasonValid = validateReason();
     const isExplanationValid = validateExplanation();
 
-    if (!isReasonValid || !isExplanationValid || isRequestTypeValid) {
+    if (!isReasonValid || !isExplanationValid || !isRequestTypeValid) {
       return;
     }
     const userId = userLoggedInUserData?.userMetaData[0].user_id;
     if (!userId || !bookId) return;
 
-    await requestBook({ userId, bookId, reason, explanation });
+    await requestBook({ userId, bookId, reason, explanation, requestType });
 
     setIsDialogOpen(false);
   };
@@ -140,7 +140,7 @@ export const useBookRequestDialog = (bookId: string | undefined) => {
                 errors.filter((error) => error.inputName !== "requestType")
               );
             }
-            setReason(newValue);
+            setRequestType(newValue);
           }}
         >
           <SelectTrigger>

@@ -1,6 +1,7 @@
 import { BookRequests, BookRequestsUpdate } from "@/types/supabaseTypes";
 import { supabase } from "../../supabase/supabaseClient";
 import { v4 as uuidv4 } from "uuid";
+import { RequestBookMutationProps } from "@/hooks/bookRequest/useRequestBook";
 
 /****** POST ROUTES ******/
 export const createBookRequest = async (
@@ -18,12 +19,13 @@ export const createBookRequest = async (
   return data;
 };
 
-export const requestBook = async (
-  userId: string,
-  bookId: string,
-  reason: string,
-  explanation: string
-) => {
+export const requestBook = async ({
+  userId,
+  bookId,
+  reason,
+  explanation,
+  requestType,
+}: RequestBookMutationProps) => {
   // Checks if the user has already made a request to have the book
   const requestUserMadeTowardsBook = await getLatestRequestUserMadeForBook(
     userId,
@@ -46,6 +48,7 @@ export const requestBook = async (
     reason,
     explanation,
     user_id: userId,
+    request_type: requestType,
   });
 
   return bookRequestCreationData;

@@ -17,6 +17,7 @@ export type Database = {
           explanation: string
           id: string
           reason: string
+          request_type: string
           user_id: string
         }
         Insert: {
@@ -26,6 +27,7 @@ export type Database = {
           explanation: string
           id?: string
           reason: string
+          request_type: string
           user_id: string
         }
         Update: {
@@ -35,6 +37,7 @@ export type Database = {
           explanation?: string
           id?: string
           reason?: string
+          request_type?: string
           user_id?: string
         }
         Relationships: [
