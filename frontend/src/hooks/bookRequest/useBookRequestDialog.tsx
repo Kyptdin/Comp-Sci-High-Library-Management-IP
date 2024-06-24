@@ -95,9 +95,25 @@ export const useBookRequestDialog = (bookId: string | undefined) => {
       return;
     }
     const userId = userLoggedInUserData?.userMetaData[0].user_id;
-    if (!userId || !bookId) return;
+    const userEmail = userLoggedInUserData?.userMetaData[0].email;
+    const studentName = userLoggedInUserData?.userMetaData[0].user_name;
 
-    await requestBook({ userId, bookId, reason, explanation, requestType });
+    if (!userId || !bookId || !userEmail || !studentName) return;
+
+    /***
+     *  studentEmail:
+  studentName:
+  bookName:
+  reason:
+  explanation: 
+  requestType
+  userId
+  bookId
+     * 
+     * 
+     * 
+    */
+    await requestBook({ studentEmail: userEmail, studentName });
 
     setIsDialogOpen(false);
   };

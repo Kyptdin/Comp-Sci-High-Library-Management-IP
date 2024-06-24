@@ -1,21 +1,23 @@
 import { useToast } from "@/components/ui/use-toast";
-import { requestBook } from "@/services/bookRequestService";
+import { sendBookRequest } from "@/services/bookRequestService";
 import { useMutation } from "@tanstack/react-query";
 
 export interface RequestBookMutationProps {
-  userId: string;
-  bookId: string;
+  studentEmail: string;
+  studentName: string;
+  bookName: string;
   reason: string;
   explanation: string;
   requestType: string;
+  userId: string;
+  bookId: string;
 }
-
 export const useRequestBook = () => {
   const { toast } = useToast();
 
   const mutation = useMutation({
     mutationFn: async (bookRequestData: RequestBookMutationProps) => {
-      return await requestBook(bookRequestData);
+      return await sendBookRequest(bookRequestData);
     },
     onError: (error) => {
       const errorMessage = error.message.includes("already")
