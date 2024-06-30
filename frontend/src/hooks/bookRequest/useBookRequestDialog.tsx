@@ -23,7 +23,10 @@ interface InputError {
   message: string;
 }
 
-export const useBookRequestDialog = (bookId: string | undefined) => {
+export const useBookRequestDialog = (
+  bookId: string | undefined,
+  bookName: string
+) => {
   const { mutateAsync: requestBook } = useRequestBook();
   const { data: userLoggedInUserData } = useGetLoggedInUser();
 
@@ -100,20 +103,16 @@ export const useBookRequestDialog = (bookId: string | undefined) => {
 
     if (!userId || !bookId || !userEmail || !studentName) return;
 
-    /***
-     *  studentEmail:
-  studentName:
-  bookName:
-  reason:
-  explanation: 
-  requestType
-  userId
-  bookId
-     * 
-     * 
-     * 
-    */
-    await requestBook({ studentEmail: userEmail, studentName });
+    await requestBook({
+      studentEmail: userEmail,
+      studentName,
+      bookName,
+      reason,
+      explanation,
+      requestType,
+      userId,
+      bookId,
+    });
 
     setIsDialogOpen(false);
   };
