@@ -80,7 +80,6 @@ export const useValidateCSV = () => {
                     csvUploadRow.csvRowMetaData.COPIES
                   ),
                 }).then(() => {
-                  console.log(`Successfully created`);
                   updateCsvUploadDataByIndex(
                     csvUploadRowIndex,
                     "success",
@@ -89,7 +88,6 @@ export const useValidateCSV = () => {
                 });
               })
               .catch(() => {
-                console.log("Failed to create the book");
                 updateCsvUploadDataByIndex(csvUploadRowIndex, "failure");
               });
           }, calculatedIndividualDelayTime);

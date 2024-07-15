@@ -40,6 +40,11 @@ export const InspectPage: React.FC = () => {
     isError: isErrorFindingIsbnInSupabase,
   } = useGetBookById(isbnSearch);
 
+  const bookName =
+    bookDataFoundByIsbn && bookDataFoundByIsbn.length > 0
+      ? bookDataFoundByIsbn[0].title
+      : undefined;
+
   const googleBooksDataAPI: VolumeList = googleBooksData;
   const isbnExistInTheWorld: boolean = !!error;
 
@@ -49,7 +54,7 @@ export const InspectPage: React.FC = () => {
   const {
     DialogComponent: BookRequestDialogComponent,
     handleOpenDialog: openBookRequestDialog,
-  } = useBookRequestDialog(bookId);
+  } = useBookRequestDialog(bookId, bookName);
 
   const pageIsCurrentlyLoading =
     isCurrentlyGettingIsbnInSupabase || isCurrentlyFetchingGoogleBooksAPI;

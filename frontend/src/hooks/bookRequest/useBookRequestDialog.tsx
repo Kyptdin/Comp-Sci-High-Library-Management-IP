@@ -25,7 +25,7 @@ interface InputError {
 
 export const useBookRequestDialog = (
   bookId: string | undefined,
-  bookName: string
+  bookName: string | undefined
 ) => {
   const { mutateAsync: requestBook } = useRequestBook();
   const { data: userLoggedInUserData } = useGetLoggedInUser();
@@ -101,7 +101,7 @@ export const useBookRequestDialog = (
     const userEmail = userLoggedInUserData?.userMetaData[0].email;
     const studentName = userLoggedInUserData?.userMetaData[0].user_name;
 
-    if (!userId || !bookId || !userEmail || !studentName) return;
+    if (!userId || !bookId || !userEmail || !studentName || !bookName) return;
 
     await requestBook({
       studentEmail: userEmail,

@@ -47,22 +47,26 @@ const handler = async (request: Request): Promise<Response> => {
   let requestBody: RequestBookMutationProps;
   try {
     const body = await request.json();
+    validateRequestBookMutationProps(body);
 
     if (!validateRequestBookMutationProps(body)) {
       throw new Error("Invalid payload");
     }
+
     requestBody = body as RequestBookMutationProps;
 
     // Insert a row for the book request
-    await requestBook(requestBody);
+    await requestBook(requestBody); //Error right here
 
     // Send an email notification to confirm to the user that they have made a request
     await sendBookRequestConfirmationEmail(requestBody);
   } catch (error) {
+    const errorObj = error as Error;
+
     return new Response(
       JSON.stringify({
-        message: "Invalid request payload",
-        error: error.message,
+        message: errorObj.message,
+        error: errorObj,
       }),
       {
         status: 400,

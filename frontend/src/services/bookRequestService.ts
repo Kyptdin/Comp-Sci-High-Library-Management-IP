@@ -19,7 +19,7 @@ export const createBookRequest = async (
 };
 
 export const sendBookRequest = async (data: RequestBookMutationProps) => {
-  const url = "https://dash.deno.com/projects/book-request-email";
+  const url = "http://localhost:8000/";
 
   const requestOptions: RequestInit = {
     method: "POST",
@@ -28,15 +28,17 @@ export const sendBookRequest = async (data: RequestBookMutationProps) => {
     },
     body: JSON.stringify(data),
   };
+  alert(`Got here #1`);
 
   try {
     const response = await fetch(url, requestOptions);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+    alert(`Got here #2`);
 
     const responseData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(responseData.message);
+    }
 
     return responseData;
   } catch (error) {

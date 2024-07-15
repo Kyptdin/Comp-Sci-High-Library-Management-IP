@@ -7,7 +7,6 @@ import { supabase } from "../supabase/supabaseClient.ts";
  * @returns The user data.
  */
 export const readUserByUserId = async (userId: string) => {
-  console.log(userId);
   const { data: users, error } = await supabase
     .from("users")
     .select("*")

@@ -111,7 +111,6 @@ export const readUserByEmail = async (email: string) => {
  * @returns The user data.
  */
 export const readUserByUserId = async (userId: string) => {
-  console.log(userId);
   const { data: users, error } = await supabase
     .from("users")
     .select("*")
@@ -131,8 +130,6 @@ export const searchUserBySimilarUsername = async (userName: string) => {
     .from("users")
     .select("*")
     .ilike("user_name", `%${userName}%`);
-
-  console.log(users);
 
   if (error) {
     throw new Error(error.message);

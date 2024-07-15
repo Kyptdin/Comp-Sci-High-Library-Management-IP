@@ -5,6 +5,5 @@ export function convertToTsQuery(input: string): string {
   const tsQuery = words.map((word) => `'${word}'`).join(" & ");
   // use the following only for websearch
   // const tsQuery = `'${words.join(" or ")}'`;
-  console.log(tsQuery);
   return tsQuery;
 }

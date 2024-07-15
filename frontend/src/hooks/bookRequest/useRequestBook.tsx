@@ -20,10 +20,7 @@ export const useRequestBook = () => {
       return await sendBookRequest(bookRequestData);
     },
     onError: (error) => {
-      const errorMessage = error.message.includes("already")
-        ? error.message
-        : "";
-
+      const errorMessage = error.message;
       toast({
         title: "Failed to Request Book",
         description: errorMessage,
