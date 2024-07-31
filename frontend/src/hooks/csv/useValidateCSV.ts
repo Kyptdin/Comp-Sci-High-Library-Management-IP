@@ -36,7 +36,7 @@ export const useValidateCSV = () => {
       }
 
       const updatedCsvUploadAllRows = [...csvUploadAllRows];
-      let csvRowUpload = updatedCsvUploadAllRows[index]!.csvRowUpload;
+      const csvRowUpload = updatedCsvUploadAllRows[index]!.csvRowUpload;
       csvRowUpload.status = uploadStatus;
       csvRowUpload.title = title;
       setCsvUploadAllRows(updatedCsvUploadAllRows);
